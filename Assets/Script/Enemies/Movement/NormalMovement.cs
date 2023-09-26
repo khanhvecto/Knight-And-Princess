@@ -5,10 +5,12 @@ using UnityEngine;
 
 public class NormalMovement: MonoBehaviour
 {
+    //Reference
     [SerializeField] private Rigidbody2D rb2D;
     [SerializeField] private Transform touchPoint;
     [SerializeField] private Animator animator;
     [SerializeField] private EnemyState stateScript;
+    [SerializeField] private CombatStats statSO;
 
     [Header("Layer")]
     [SerializeField] private LayerMask groundLayer;
@@ -19,11 +21,16 @@ public class NormalMovement: MonoBehaviour
     private Vector2 spawnPlace;
     private float leftMoveRange;
     private float rightMoveRange;
-    private bool isFacingLeft = true;
 
     [Header("Check wall stuck")]
     [SerializeField] private float checkWallRange;
     private bool isWallJumping = false;
+
+    private void Start()
+    {
+        speed = statSO.normalSpeed;
+        jumpForce = statSO.jumpForce;
+    }
 
     //The movement states are set up in animation behavior
 
@@ -47,17 +54,17 @@ public class NormalMovement: MonoBehaviour
                     if (Mathf.Abs(distance) <= 0.2)    //If the spawn place is too close, reset it away
                                                                                 //the wall
                     {
-                        if(isFacingLeft)
+                        if(stateScript.facingLeft)
                         {
                             spawnPlace.x += 0.2f;
-                            flip();
+                            stateScript.flip();
                             distance = transform.position.x - spawnPlace.x;
                             leftMoveRange = transform.position.x - spawnPlace.x;
                         }
                         else
                         {
                             spawnPlace.x -= 0.2f;
-                            flip();
+                            stateScript.flip();
                             distance = transform.position.x - spawnPlace.x;
                             rightMoveRange = transform.position.x - spawnPlace.x;
                         }
@@ -91,10 +98,10 @@ public class NormalMovement: MonoBehaviour
                 rb2D.velocity = new Vector2(0f, jumpForce);
             }
         }
-        else if ((moveDistance >= rightMoveRange && !isFacingLeft) ||
-                (moveDistance <= leftMoveRange && isFacingLeft))    //If need to flip
+        else if ((moveDistance >= rightMoveRange && !stateScript.facingLeft) ||
+                (moveDistance <= leftMoveRange && stateScript.facingLeft))    //If need to flip
         {
-            flip();
+            stateScript.flip();
         }
         else
         {
@@ -105,7 +112,7 @@ public class NormalMovement: MonoBehaviour
 
     void moveHorizontal()
     {
-        if (isFacingLeft)
+        if (stateScript.facingLeft)
         {
             rb2D.velocity = new Vector2(-speed, rb2D.velocity.y);
         }
@@ -133,14 +140,6 @@ public class NormalMovement: MonoBehaviour
     /*********************************************************
      *
      *********************************************************/
-
-    void flip()
-    {
-        rb2D.velocity = new Vector2(-rb2D.velocity.x, rb2D.velocity.y);
-        isFacingLeft = !isFacingLeft;
-        rb2D.transform.Rotate(0f, 180f, 0f);
-        stateScript.flip();
-    }
 
     private void OnDrawGizmosSelected()
     {

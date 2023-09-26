@@ -14,4 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 10
   damage: 3
-  cooldown: 2
+  cooldown: 1
+  combatType: 1
+  distance: 0.5
+  range_coeff: 4
+  normalSpeed: 2
+  combatSpeed: 3
+  jumpForce: 11

@@ -4,12 +4,23 @@ using UnityEngine;
 
 public class EnemyCombat : MonoBehaviour
 {
+    //Reference
     [SerializeField] private Animator animator;
+    [SerializeField] private EnemyState stateScript;
     [SerializeField] private CombatStats statSO;
-    [SerializeField] EnemyState stateScript;
+
+    [Header("Attack setup")]
+    [SerializeField] private Transform attackPoint;
+    [SerializeField] private float attackRange;
+
+    //Basic stats
     private float health;
     private float damage;
     private float cooldown;
+
+    //Other stats
+    private float cooldownTimer;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -17,7 +28,34 @@ public class EnemyCombat : MonoBehaviour
         health = statSO.health;
         damage = statSO.damage;
         cooldown = statSO.cooldown;
+        //Set cooldown counter
+        cooldownTimer = Time.time;
     }
+
+    //Set attack
+
+    public void tryAttack()
+    {
+        //If ready to attack
+        if(Time.time - cooldownTimer >= cooldown)
+        {
+            animator.SetTrigger("attack");
+            cooldownTimer = Time.time;  //Reset cooldown timer
+        }
+    }
+
+    public void attack()
+    {
+        LayerMask layerMask = 1 << stateScript.targetColl.gameObject.layer;
+        Collider2D hostileColl = Physics2D.OverlapCircle(transform.position, attackRange, layerMask);
+        if (hostileColl != null)
+        {
+            KnightCombat knightCombatScript = stateScript.targetColl.GetComponent<KnightCombat>();
+            knightCombatScript.gotHurt(damage);
+        }
+    }
+
+    //...
 
     public void gotHit(float damage)
     {
@@ -33,5 +71,10 @@ public class EnemyCombat : MonoBehaviour
     private void destroyObject()
     {
         Destroy(gameObject);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 }

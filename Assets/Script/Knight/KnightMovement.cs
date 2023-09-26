@@ -76,10 +76,13 @@ public class KnightMovement : MonoBehaviour
     private void gotHurt()
     {
         combatScript.touchEnemy();
-        //Set fall back
+        setFallBack();
+    }
+
+    public void setFallBack()
+    {
         controlable = false;
         rigidBody.velocity = fallBackVector * fallBackForce;
-        animator.SetTrigger("gotHurt");
     }
 
     private void flip() //Flip knight heading direction

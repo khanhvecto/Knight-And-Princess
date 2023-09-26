@@ -54,7 +54,13 @@ public class KnightCombat : MonoBehaviour
 
     public void touchEnemy()
     {
-        health -= touchDamage;
+        gotHurt(touchDamage);
+    }
+
+    public void gotHurt(float damage)
+    {
+        health -= damage;
+        animator.SetTrigger("gotHurt");
     }
 
     private void OnDrawGizmosSelected() //Visualize attackRange on editor

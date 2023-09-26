@@ -15,5 +15,9 @@ MonoBehaviour:
   health: 20
   damage: 5
   cooldown: 1.5
-  controlRange: 0
-  combatType: 1
+  combatType: 2
+  distance: 0
+  range_coeff: 4
+  normalSpeed: 0
+  combatSpeed: 0
+  jumpForce: 0

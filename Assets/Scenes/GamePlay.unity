@@ -203,6 +203,7 @@ MonoBehaviour:
   touchPoint: {fileID: 1665695734}
   animator: {fileID: 1711019130}
   stateScript: {fileID: 1711019131}
+  statSO: {fileID: 11400000, guid: a3861882df72836479bc30906e78f653, type: 2}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -222,6 +223,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateScript: {fileID: 1711019131}
+  statSO: {fileID: 11400000, guid: a3861882df72836479bc30906e78f653, type: 2}
+  rb2D: {fileID: 1711019126}
+  animator: {fileID: 1711019130}
+  attackReady: 0
 --- !u!1 &344526870
 GameObject:
   m_ObjectHideFlags: 0
@@ -377,7 +382,7 @@ Transform:
   m_GameObject: {fileID: 344526870}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.69, y: -4.33, z: 0.06871431}
+  m_LocalPosition: {x: 5.79, y: -4.28, z: 0.06871431}
   m_LocalScale: {x: 0.6249, y: 0.8764, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -974,6 +979,37 @@ Transform:
   - {fileID: 1748735974}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1481049571
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1481049572}
+  m_Layer: 8
+  m_Name: AttackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1481049572
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1481049571}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.341, y: 0.16, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1711019129}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1518760321
 GameObject:
   m_ObjectHideFlags: 0
@@ -1085,8 +1121,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1711019130}
-  statSO: {fileID: 11400000, guid: a3861882df72836479bc30906e78f653, type: 2}
   stateScript: {fileID: 1711019131}
+  statSO: {fileID: 11400000, guid: a3861882df72836479bc30906e78f653, type: 2}
+  attackPoint: {fileID: 1481049572}
+  attackRange: 0.67
 --- !u!61 &1711019125
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1124,7 +1162,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1, y: 1}
-    newSize: {x: 0.2, y: 0.2}
+    newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -1205,7 +1243,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.2, y: 0.2}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1220,12 +1258,13 @@ Transform:
   m_GameObject: {fileID: 1711019123}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.76, y: -4.18, z: 0}
+  m_LocalPosition: {x: 3.059, y: -3.348, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1665695734}
   - {fileID: 336764337}
+  - {fileID: 1481049572}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1711019130
@@ -1265,9 +1304,13 @@ MonoBehaviour:
   knightLayer:
     serializedVersion: 2
     m_Bits: 128
-  combatRangeSize: {x: 2.45, y: 0.5}
-  combatRangeOffset: {x: -0.93, y: 0.01}
+  statSO: {fileID: 11400000, guid: a3861882df72836479bc30906e78f653, type: 2}
+  combatRangeSize: {x: 2.45, y: 1.68}
+  combatRangeOffset: {x: -0.93, y: 0.52}
   targetColl: {fileID: 0}
+  attacking: 0
+  rb2D: {fileID: 1711019126}
+  facingLeft: 1
 --- !u!1 &1748735973
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,11 +9,18 @@ public class CombatStats : ScriptableObject
     public float health;
     public float damage;
     public float cooldown;
-    public Vector2 controlRange;
     public combatTypeList combatType;
+    public float distance;
+
+    [Header("Movement stats")]
+    public float range_coeff;    //Coefficient of combat sensor range and normal sensor range
+    public float normalSpeed;
+    public float combatSpeed;
+    public float jumpForce;
 }
 
 public enum combatTypeList
 {
-    Melee, Ranged
+    Melee = 1, 
+    Ranged = 2
 }
