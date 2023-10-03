@@ -94,7 +94,8 @@ public class NormalMovement: MonoBehaviour
             }
             else    //If stuck by some other reasons
             {
-                //Jump once
+                //Flip and jump
+                stateScript.flip();
                 rb2D.velocity = new Vector2(0f, jumpForce);
             }
         }

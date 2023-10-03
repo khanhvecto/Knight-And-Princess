@@ -5,102 +5,94 @@ using UnityEngine;
 
 public class KnightMovement : MonoBehaviour
 {
-    [SerializeField] private Rigidbody2D rigidBody;
+    private static KnightMovement instance;
+    public static KnightMovement Instance { get => instance; }
+
+    [Header("Reference")]
     [SerializeField] private LayerMask layerGround;
     [SerializeField] private Vector2 boxGroundSize;
     [SerializeField] private float castBoxDistance;
-    [SerializeField] private Animator animator;
-    [SerializeField] private KnightCombat combatScript;
-    private float speed = 8f;
-    private float horizontal;
-    private float jumpForce = 15f;
-    private bool isFacingRight = true;
-    private bool isGround;
-    private bool controlable= true;
 
-    [Header("Touch enemy fallback")]
-    [SerializeField] private Vector2 fallBackVector;
-    [SerializeField] private float fallBackForce;
-    
+    private Rigidbody2D rigidBody;
+    private Animator animator;
+
+    [Header("Stats")]
+    [SerializeField] private float speed = 8f;
+    public float Speed { get => speed; }
+    [SerializeField] private float jumpForce = 15f;
+
+    private float horizontal;
+    private bool isGround;
+
+    private void Awake()
+    {
+        //Design pattern
+        if (KnightMovement.instance != null) Debug.LogError("Only 1 KnightMovement allow to exist!");
+        instance = this;
+
+        rigidBody = gameObject.GetComponent<Rigidbody2D>();
+        animator = gameObject.GetComponent<Animator>();
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (controlable)
+        if (KnightState.Instance.controlable)
         {
             checkGround();
             horizontal = Input.GetAxisRaw("Horizontal");
             //Flip 
-            if ((horizontal < 0 && isFacingRight) || (horizontal > 0 && !isFacingRight)) flip();
+            if ((horizontal < 0 && KnightState.Instance.facingRight) || (horizontal > 0 && !KnightState.Instance.facingRight)) KnightState.Instance.flip();
             //Implement jump action
-            if (Input.GetButtonDown("Jump") && isGround)
-            {
-                rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpForce);
-            }
-            else if (Input.GetButtonUp("Jump") && rigidBody.velocity.y > 0)
-                rigidBody.velocity = new Vector2(rigidBody.velocity.x, rigidBody.velocity.y * 0.5f);
-            else if (Input.GetButton("Jump") && isGround)
-            {
-                rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpForce);
-            }
+            checkJump();
 
             //Set parameters for animation
-            if (horizontal != 0 && isGround) animator.SetBool("isRunning", true);
-            else animator.SetBool("isRunning", false);
-            if (!isGround && rigidBody.velocity.y > 0) animator.SetBool("isJumping", true);
-            else animator.SetBool("isJumping", false);
-            if (!isGround && rigidBody.velocity.y < 0) animator.SetBool("isFalling", true);
-            else animator.SetBool("isFalling", false);
-        }
-        else if(rigidBody.velocity.y == 0)
-        {
-            controlable = true;
+            this.SetAnimation();
         }
     }
 
     private void FixedUpdate()
     {
-        if (controlable)
+        if (KnightState.Instance.controlable)
         {
             rigidBody.velocity = new Vector2(horizontal * speed, rigidBody.velocity.y);
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void checkJump()
     {
-        if (collision.gameObject.layer == 8)    //Layer of enemy
+        if (Input.GetButtonDown("Jump") && isGround)
         {
-            gotHurt();
+            rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpForce);
+        }
+        else if (Input.GetButtonUp("Jump") && rigidBody.velocity.y > 0)
+            rigidBody.velocity = new Vector2(rigidBody.velocity.x, rigidBody.velocity.y * 0.3f);
+        else if (Input.GetButton("Jump") && isGround)
+        {
+            rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpForce);
         }
     }
 
-    private void gotHurt()
+    private void SetAnimation()
     {
-        combatScript.touchEnemy();
-        setFallBack();
-    }
-
-    public void setFallBack()
-    {
-        controlable = false;
-        rigidBody.velocity = fallBackVector * fallBackForce;
-    }
-
-    private void flip() //Flip knight heading direction
-    {
-        isFacingRight = !isFacingRight;
-        transform.Rotate(0f, 180f, 0f);
-        fallBackVector.x = -fallBackVector.x;
+        if (horizontal != 0 && isGround) animator.SetBool("isRunning", true);
+        else animator.SetBool("isRunning", false);
+        if (!isGround && rigidBody.velocity.y > 0) animator.SetBool("isJumping", true);
+        else animator.SetBool("isJumping", false);
+        if (!isGround && rigidBody.velocity.y <= 0) animator.SetBool("isFalling", true);
+        else animator.SetBool("isFalling", false);
     }
 
     private void checkGround()
     {
+        //isGround = Physics2D.BoxCast(transform.position, boxGroundSize, 0f, Vector2.down, castBoxDistance, layerGround) &&
+        //            rigidBody.velocity.y == 0;
         isGround = Physics2D.BoxCast(transform.position, boxGroundSize, 0f, Vector2.down, castBoxDistance, layerGround);
     }
 
     private void OnDrawGizmosSelected() //To show groundCheckBox
     {
+        //Draw checkground box
         Gizmos.DrawWireCube((Vector2) transform.position + Vector2.down * castBoxDistance , boxGroundSize);
-        //Fall backward vector
-        Gizmos.DrawLine((Vector2) transform.position, (Vector2) transform.position + fallBackVector);
     }
 }
