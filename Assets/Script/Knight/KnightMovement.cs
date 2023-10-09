@@ -22,7 +22,9 @@ public class KnightMovement : MonoBehaviour
     [SerializeField] private float jumpForce = 15f;
 
     private float horizontal;
+    public float Horizontal { get => horizontal; }
     private bool isGround;
+    public bool IsGround { get => isGround; }
 
     private void Awake()
     {
@@ -66,7 +68,7 @@ public class KnightMovement : MonoBehaviour
             rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpForce);
         }
         else if (Input.GetButtonUp("Jump") && rigidBody.velocity.y > 0)
-            rigidBody.velocity = new Vector2(rigidBody.velocity.x, rigidBody.velocity.y * 0.3f);
+            rigidBody.velocity = new Vector2(rigidBody.velocity.x, rigidBody.velocity.y * 0.2f);
         else if (Input.GetButton("Jump") && isGround)
         {
             rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpForce);
@@ -88,6 +90,16 @@ public class KnightMovement : MonoBehaviour
         //isGround = Physics2D.BoxCast(transform.position, boxGroundSize, 0f, Vector2.down, castBoxDistance, layerGround) &&
         //            rigidBody.velocity.y == 0;
         isGround = Physics2D.BoxCast(transform.position, boxGroundSize, 0f, Vector2.down, castBoxDistance, layerGround);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        //If touch enemy
+        if (collision.gameObject.layer == 8)
+        {
+            Debug.Log("Touch");
+            KnightHurt.Instance.TakeDamage(KnightState.Instance.touchDamage, collision.transform);
+        }
     }
 
     private void OnDrawGizmosSelected() //To show groundCheckBox

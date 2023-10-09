@@ -24,9 +24,10 @@ public class KnightState : MonoBehaviour, HpBarInterface
     [SerializeField] public float touchDamage;
 
     //Block enemy attack
-    [HideInInspector] public bool vulnerable = true;
+    [HideInInspector] public bool blocking = false;
+    [HideInInspector] public bool rightBlocking;    //Direction of blocking
 
-    //Other
+    //Control state
     [HideInInspector] public bool facingRight = true;
     [HideInInspector] public bool controlable = true;
 
@@ -52,7 +53,7 @@ public class KnightState : MonoBehaviour, HpBarInterface
 
     public void setFallBack()
     {
-        animator.SetTrigger("gotHurt");
+        this.controlable = false;
         rb2D.velocity = fallBackVector * fallBackForce;
     }
 
@@ -70,13 +71,12 @@ public class KnightState : MonoBehaviour, HpBarInterface
     {
         animator.SetBool("alive", false);
 
+        //Set state
+        this.controlable = false;
         gameObject.layer = 9;   //Dead layer
+
         //Stop motion
         rb2D.velocity = Vector2.zero;
-
-        //Unable functions
-        gameObject.GetComponent<KnightCombat>().enabled = false;
-        gameObject.GetComponent<KnightMovement>().enabled = false;
 
         UIFunction.Instance.ShowDeadScreen(true);
     }
@@ -87,14 +87,13 @@ public class KnightState : MonoBehaviour, HpBarInterface
         this.controlable = true;
         gameObject.layer = 7;   //Knight layer
 
-        //Re-able functions
-        gameObject.GetComponent<KnightCombat>().enabled = true;
-        gameObject.GetComponent<KnightMovement>().enabled = true;
-
         //Reset stats
         this.health = this.maxHealth;
 
         UIFunction.Instance.ShowDeadScreen(false);
+
+        //Reset camera
+        CameraMovement.Instance.ResetDeadzone();
     }
 
     //Hp bar interface

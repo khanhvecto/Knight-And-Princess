@@ -77,7 +77,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
-    functionName: checkDead
+    functionName: CheckDead
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -91,7 +91,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.27272728
-    functionName: SetControlable
+    functionName: ResetControllable
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

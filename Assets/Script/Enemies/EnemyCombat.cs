@@ -51,8 +51,7 @@ public class EnemyCombat : MonoBehaviour
         Collider2D hostileColl = Physics2D.OverlapCircle(transform.position, attackRange, layerMask);
         if (hostileColl != null)
         {
-            KnightCombat knightCombatScript = stateScript.targetColl.GetComponent<KnightCombat>();
-            knightCombatScript.gotHurt(damage, transform);
+            KnightHurt.Instance.GotAttack(damage, attackPoint);
         }
     }
 

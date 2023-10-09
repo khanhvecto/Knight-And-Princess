@@ -16,7 +16,7 @@ public class HoleTrigger : MonoBehaviour
         {
             GamePlayLogic.Instance.TeleportKnight(respawnPlace);
             //Player take fall damage;
-            KnightCombat.Instance.gotHurt(fallDamage);
+            KnightHurt.Instance.TakeDamage(fallDamage);
         }
     }
 }
