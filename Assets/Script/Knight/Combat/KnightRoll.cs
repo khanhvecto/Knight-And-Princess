@@ -58,10 +58,10 @@ public class KnightRoll : MonoBehaviour
     {
         this.rollable = false;
         this.rolling = true;
-        KnightState.Instance.blocking = false;
+        KnightState.Instance.vulnerable = false;
         Physics2D.IgnoreLayerCollision(7, 8, true);   //Ignore collide of Knight and Enemy
         //Push body toward
-        KnightState.Instance.StopControlable();
+        KnightState.Instance.controlable = false;
         KnightState.Instance.rb2D.gravityScale = 0f;
         if (KnightState.Instance.facingRight)
         {
@@ -75,9 +75,9 @@ public class KnightRoll : MonoBehaviour
     public void EndRoll()
     {
         this.rolling = false;
-        KnightState.Instance.blocking = true;
+        KnightState.Instance.vulnerable = true;
         Physics2D.IgnoreLayerCollision(7, 8, false); //Reset collide of Knight and Enemy
-        KnightState.Instance.SetControlable();
+        KnightState.Instance.controlable = true;
         KnightState.Instance.rb2D.gravityScale = 5f;
     }
 }

@@ -16,8 +16,9 @@ MonoBehaviour:
   damage: 3
   cooldown: 1
   combatType: 1
-  distance: 0.5
-  range_coeff: 4
+  distance: 0.64
+  enduranceDecrement: 10
+  range_coeff: 3.5
   normalSpeed: 2
   combatSpeed: 3
   jumpForce: 11

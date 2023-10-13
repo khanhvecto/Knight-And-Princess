@@ -38,7 +38,11 @@ public class KnightBlock : MonoBehaviour
         {
             this.StartBlock();
         }
-        else if (KnightState.Instance.blocking && InputManager.Instance.GetBlockKeyUp())
+        else if (KnightState.Instance.blocking && InputManager.Instance.GetBlockKey())
+        {
+            this.HoldingBlock();
+        }
+        else if (KnightState.Instance.blocking && !InputManager.Instance.GetBlockKey())
         {
             this.EndBlock();
         }
@@ -51,16 +55,17 @@ public class KnightBlock : MonoBehaviour
         animator.SetBool("blocking", true);
         //Set blocking state
         KnightState.Instance.blocking = true;
-        if(KnightState.Instance.facingRight)
-        {
-            KnightState.Instance.rightBlocking = true;
-        }
-        else
-        {
-            KnightState.Instance.rightBlocking = false;
-        }
+        //Set blocking direction
+        this.SetBlockDirection();
         //Endurance
         KnightStats.Instance.restoringEndurance = false;
+    }
+    private void HoldingBlock()
+    {
+        if(KnightState.Instance.controlable)
+        {
+            this.SetBlockDirection();
+        }
     }
     private void EndBlock()
     {
@@ -69,5 +74,17 @@ public class KnightBlock : MonoBehaviour
         KnightState.Instance.blocking = false;
         //Endurance
         KnightStats.Instance.restoringEndurance = true;
+    }
+
+    private void SetBlockDirection()
+    {
+        if (KnightState.Instance.facingRight)
+        {
+            KnightState.Instance.rightBlocking = true;
+        }
+        else
+        {
+            KnightState.Instance.rightBlocking = false;
+        }
     }
 }

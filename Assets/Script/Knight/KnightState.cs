@@ -2,44 +2,51 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KnightState : MonoBehaviour, HpBarInterface
+public class KnightState : MonoBehaviour
 {
     private static KnightState instance;
     public static KnightState Instance { get => instance; }
 
     [Header("Reference")]
-    [SerializeField] private LayerMask enemyLayer;
+    [SerializeField] private LayerMask enemyLayer = 1<<8;   //Combat layer
     public Rigidbody2D rb2D;
     private Animator animator;
 
     [Header("Fall back")]
-    [SerializeField] public Vector2 fallBackVector;
-    [SerializeField] public float fallBackForce;
+    [SerializeField] public Vector2 fallBackVector = new Vector2(-0.77f, 1.26f);
+    [SerializeField] public float fallBackForce = 6.15f;
 
-    [Header("Combat stat")]
-    [SerializeField] public float maxHealth;
-    [SerializeField] public float health;
-    [SerializeField] public float damage;
-    [SerializeField] public float cooldown;
-    [SerializeField] public float touchDamage;
+    [Header("Block attack")]
+    [SerializeField] public bool vulnerable = true;
+    [SerializeField] public bool blocking = false;
+    [SerializeField] public bool rightBlocking;    //Direction of blocking
 
-    //Block enemy attack
-    [HideInInspector] public bool blocking = false;
-    [HideInInspector] public bool rightBlocking;    //Direction of blocking
-
-    //Control state
-    [HideInInspector] public bool facingRight = true;
-    [HideInInspector] public bool controlable = true;
+    [Header("Control state")]
+    [SerializeField] public bool facingRight = true;
+    [SerializeField] public bool controlable = true;
+    [SerializeField] public bool alive = true;
 
     private void Awake()
     {
         //Design pattern
         if (KnightState.instance != null) Debug.LogError("Only 1 KnightState allow to exist!");
         instance = this;
+    }
 
-        rb2D = gameObject.GetComponent<Rigidbody2D>();
-        animator = gameObject.GetComponent<Animator>();
+    private void Start()
+    {
+        this.LoadReferences();
+
         animator.SetBool("alive", true);
+    }
+    private void LoadReferences()   //Check if any reference null
+    {
+        //Rigidbody 2D
+        rb2D = gameObject.GetComponent<Rigidbody2D>();
+        if (this.rb2D == null) Debug.LogError("Can't find RigidBody2D for KnightState");
+        //Animator
+        animator = gameObject.GetComponent<Animator>();
+        if (this.animator == null) Debug.LogError("Can't find animator for KnightState");
     }
 
     public void flip() //Flip knight heading direction
@@ -50,29 +57,20 @@ public class KnightState : MonoBehaviour, HpBarInterface
     }
 
     //Hurt state
-
     public void setFallBack()
     {
         this.controlable = false;
         rb2D.velocity = fallBackVector * fallBackForce;
     }
 
-    public void StopControlable()
-    {
-        this.controlable = false;
-    }
-
-    public void SetControlable()
-    {
-        this.controlable = true;
-    }
-
+    //Dead or alive state
     public void setDead()
     {
         animator.SetBool("alive", false);
 
         //Set state
         this.controlable = false;
+        this.alive = false;
         gameObject.layer = 9;   //Dead layer
 
         //Stop motion
@@ -85,10 +83,13 @@ public class KnightState : MonoBehaviour, HpBarInterface
     {
         animator.SetBool("alive", true);
         this.controlable = true;
+        this.alive = true;
         gameObject.layer = 7;   //Knight layer
 
         //Reset stats
-        this.health = this.maxHealth;
+        KnightStats.Instance.health = KnightStats.Instance.maxHealth;
+        KnightStats.Instance.endurance = KnightStats.Instance.maxEndurance;
+        KnightStats.Instance.restoringEndurance = true;
 
         UIFunction.Instance.ShowDeadScreen(false);
 
@@ -96,20 +97,7 @@ public class KnightState : MonoBehaviour, HpBarInterface
         CameraMovement.Instance.ResetDeadzone();
     }
 
-    //Hp bar interface
-
-    public float GetHp()
-    {
-        return this.health;
-    }
-
-    public float GetMaxHp()
-    {
-        return this.maxHealth;
-    }
-
     //Draw on gizmos
-
     private void OnDrawGizmosSelected()
     {
         //Fall backward vector

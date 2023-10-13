@@ -131,7 +131,7 @@ TextureImporter:
         width: 111
         height: 6
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -139,6 +139,48 @@ TextureImporter:
       bones: []
       spriteID: d387f69867a42b048af11c6cf80bf77c
       internalID: -240529792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: redblue (1)_1
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 64
+        width: 111
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 38be61c8da34cfe48b02170309f13365
+      internalID: -519492203
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: redblue (1)_2
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 57
+        width: 111
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 94b218a4a21ea684ab304f9e395b4b75
+      internalID: -1045571194
       vertices: []
       indices: 
       edges: []
@@ -156,6 +198,7 @@ TextureImporter:
     nameFileIdTable:
       redblue (1)_0: -240529792
       redblue (1)_1: -519492203
+      redblue (1)_2: -1045571194
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

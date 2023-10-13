@@ -17,7 +17,7 @@ public class CombatMovement : MonoBehaviour
     //Tracker
     private Collider2D hostileColl;
 
-    //
+    //State
     public bool attackReady = false;
 
     private void Start()
@@ -47,7 +47,6 @@ public class CombatMovement : MonoBehaviour
             stop();
             attackReady = true;
         }
-        
     }
 
     //Check if need to move to hostile

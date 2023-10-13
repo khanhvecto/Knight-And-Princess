@@ -11,6 +11,7 @@ public class CombatStats : ScriptableObject
     public float cooldown;
     public combatTypeList combatType;
     public float distance;
+    public float enduranceDecrement;
 
     [Header("Movement stats")]
     public float range_coeff;    //Coefficient of combat sensor range and normal sensor range

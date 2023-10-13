@@ -62,7 +62,7 @@ public class KnightAttack : MonoBehaviour
     private void SetCooldown()
     {
         this.cooldownTimer += Time.deltaTime;
-        if (this.cooldownTimer >= KnightState.Instance.cooldown)
+        if (this.cooldownTimer >= KnightStats.Instance.cooldown)
         {
             this.cooldownTimer = 0f;
             this.attackable = true;
@@ -79,7 +79,7 @@ public class KnightAttack : MonoBehaviour
             EnemyCombat enemy = enemyHit.gameObject.GetComponent<EnemyCombat>();
             if (enemy != null)
             {
-                enemy.gotHit(KnightState.Instance.damage);
+                enemy.gotHit(KnightStats.Instance.damage);
             }
         }
     }

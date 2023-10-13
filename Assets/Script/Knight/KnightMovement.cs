@@ -97,8 +97,7 @@ public class KnightMovement : MonoBehaviour
         //If touch enemy
         if (collision.gameObject.layer == 8)
         {
-            Debug.Log("Touch");
-            KnightHurt.Instance.TakeDamage(KnightState.Instance.touchDamage, collision.transform);
+            KnightHurt.Instance.TakeDamage(KnightStats.Instance.touchDamage, collision.transform);
         }
     }
 

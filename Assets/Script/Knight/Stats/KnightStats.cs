@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class KnightStats : MonoBehaviour
+public class KnightStats : MonoBehaviour, HpBarInterface, EnduranceBarInterface
 {
     //Design pattern
     private static KnightStats instance;
@@ -16,9 +16,16 @@ public class KnightStats : MonoBehaviour
     public float endurance = 100f;
         //Chaning speed
     public float enduranceLooseSpeed = 8f;
-    public float enduranceRestoreSpeed = 8f;
+    public float enduranceRestoreSpeed = 16f;
         //Stage
     public bool restoringEndurance = true;
+
+    [Header("Combat stat")]
+    [SerializeField] public float maxHealth = 30f;
+    [SerializeField] public float health = 30f;
+    [SerializeField] public float damage = 5f;
+    [SerializeField] public float cooldown = 1f;
+    [SerializeField] public float touchDamage = 3f;
 
     private void Awake()
     {
@@ -68,5 +75,33 @@ public class KnightStats : MonoBehaviour
         {
             this.endurance = this.maxEndurance;
         }
+    }
+    public void DecreaseEndurance(float value)
+    {
+        this.endurance -= value;
+        if (this.endurance < this.minEndurance)  //Limit: endurance can not smaller than min value
+        {
+            this.endurance = this.minEndurance;
+        }
+    }
+
+    //Slide bar
+        //Health
+    public float GetHp()
+    {
+        return this.health;
+    }
+    public float GetMaxHp()
+    {
+        return this.maxHealth;
+    }
+        //Endurance
+    public float GetEndurance()
+    {
+        return this.endurance;
+    }
+    public float GetMaxEndurance()
+    {
+        return this.maxEndurance;
     }
 }

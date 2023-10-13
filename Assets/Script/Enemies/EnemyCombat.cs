@@ -4,43 +4,45 @@ using UnityEngine;
 
 public class EnemyCombat : MonoBehaviour
 {
-    //Reference
+    [Header("References")]
     [SerializeField] private Animator animator;
     [SerializeField] private EnemyState stateScript;
-    [SerializeField] private CombatStats statSO;
+    [SerializeField] private EnemyStats statScript;
 
     [Header("Attack setup")]
     [SerializeField] private Transform attackPoint;
     [SerializeField] private float attackRange;
 
-    //Basic stats
-    private float health;
-    private float damage;
-    private float cooldown;
-
-    //Other stats
+    //Cooldown
     private float cooldownTimer;
 
-    // Start is called before the first frame update
     private void Start()
     {
-        //Get stats
-        health = statSO.health;
-        damage = statSO.damage;
-        cooldown = statSO.cooldown;
+        this.LoadReferences();
         //Set cooldown counter
-        cooldownTimer = Time.time;
+        this.cooldownTimer = Time.time;
+    }
+    private void LoadReferences()   //Check if any reference not found
+    {
+        //EnemyStats
+        this.statScript = transform.Find("Stats").GetComponent<EnemyStats>();
+        if (this.statScript == null) Debug.LogError("Can't find EnemyStats for EnemyCombat of " + gameObject.name);
+        //Animator
+        this.animator = transform.GetComponent<Animator>();
+        if (this.animator == null) Debug.LogError("Can't find Animator for EnemyCombat of " + gameObject.name);
+        //EnemyState
+        this.stateScript = transform.GetComponent<EnemyState>();
+        if (this.stateScript == null) Debug.LogError("Can't find EnemyState for EnemyCombat of " + gameObject.name);
     }
 
     //Set attack
-
     public void tryAttack()
     {
         //If ready to attack
-        if(Time.time - cooldownTimer >= cooldown)
+        if(Time.time - this.cooldownTimer >= this.statScript.cooldown)
         {
             animator.SetTrigger("attack");
-            cooldownTimer = Time.time;  //Reset cooldown timer
+            this.cooldownTimer = Time.time;  //Reset cooldown timer
         }
     }
 
@@ -48,33 +50,28 @@ public class EnemyCombat : MonoBehaviour
     {
         if(stateScript.targetColl == null) { return; }
         LayerMask layerMask = 1 << stateScript.targetColl.gameObject.layer;
-        Collider2D hostileColl = Physics2D.OverlapCircle(transform.position, attackRange, layerMask);
+        Collider2D hostileColl = Physics2D.OverlapCircle(this.attackPoint.position, this.attackRange, layerMask);
         if (hostileColl != null)
         {
-            KnightHurt.Instance.GotAttack(damage, attackPoint);
+            KnightHurt.Instance.GotAttack(this.statScript.damage, this.attackPoint, this.statScript.enduranceDecrement);
         }
     }
 
-    //...
-
+    //Got hurt
     public void gotHit(float damage)
     {
         animator.SetTrigger("gotHit");
         stateScript.setAttackState(true);
-        health -= damage;
-        if (health <= 0)
+        this.statScript.health -= damage;
+        if (this.statScript.health <= 0)
         {
             gameObject.layer = 9; //Dead layer
             animator.SetBool("isDead", true);
         }
     }
-    private void destroyObject()
-    {
-        Destroy(gameObject);
-    }
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+        Gizmos.DrawWireSphere(this.attackPoint.position, this.attackRange);
     }
 }

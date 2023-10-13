@@ -26,44 +26,58 @@ public class KnightHurt : MonoBehaviour
         if (this.animator == null) Debug.LogError("Can't find animator for KnightHurt");
     }
 
-    public void GotAttack(float damage, Transform attackPos)
+    public void GotAttack(float damage, Transform attackPos, float enduranceDecrement)
     {
-        //If not blocking
-        if (!KnightState.Instance.blocking)
+        if (KnightState.Instance.vulnerable)
         {
-            TakeDamage(damage, attackPos);
-        }
-        //If blocking
-        else
-        {
-            //If bloking right and attacked left
-            if (KnightState.Instance.rightBlocking && this.CheckLeftAttack(attackPos))
+            //If not blocking
+            if (!KnightState.Instance.blocking)
             {
-                KnightState.Instance.flip();
-                this.TakeDamage(damage);
+                TakeDamage(damage, attackPos);
             }
-            //If blocking left and attacked right
-            else if(!KnightState.Instance.rightBlocking && !this.CheckLeftAttack(attackPos))
+            //If blocking
+            else
             {
-                KnightState.Instance.flip();
-                this.TakeDamage(damage);
+                //If bloking right and attacked left
+                if (KnightState.Instance.rightBlocking && this.CheckLeftAttack(attackPos))
+                {
+                    KnightState.Instance.flip();
+                    this.TakeDamage(damage);
+                }
+                //If blocking left and attacked right
+                else if (!KnightState.Instance.rightBlocking && !this.CheckLeftAttack(attackPos))
+                {
+                    KnightState.Instance.flip();
+                    this.TakeDamage(damage);
+                }
+                //If blocking toward enemy
+                else
+                {
+                    //Decrease endurance
+                    KnightStats.Instance.DecreaseEndurance(enduranceDecrement);
+                    //Check if exhausted
+                    if(KnightStats.Instance.endurance == KnightStats.Instance.minEndurance)
+                    {
+                        this.TakeDamage(damage);
+                    }
+                }
             }
         }
     }
 
-    public void TakeDamage(float damage)
-        //Dont flip
+    public void TakeDamage(float damage)    //Dont flip
     {
         //Animator
         this.animator.SetTrigger("gotHurt");
         KnightState.Instance.setFallBack();
-        //Decrease health
-        KnightState.Instance.health -= damage;
+
+        //Change stats
+        KnightStats.Instance.health -= damage;
+
         //Set state
         KnightState.Instance.controlable = false;
     }
-    public void TakeDamage(float damage, Transform attackPos)
-        //Can flip if not facing attackPos
+    public void TakeDamage(float damage, Transform attackPos)   //Can flip if not facing attackPos
     {
         //Check flip
         if(KnightState.Instance.facingRight && this.CheckLeftAttack(attackPos))
@@ -74,18 +88,21 @@ public class KnightHurt : MonoBehaviour
         {
             KnightState.Instance.flip();
         }
+
         //Animator
         this.animator.SetTrigger("gotHurt");
         KnightState.Instance.setFallBack();
-        //Decrease health
-        KnightState.Instance.health -= damage;
+
+        //Change stats
+        KnightStats.Instance.health -= damage;
+
         //Set state
         KnightState.Instance.controlable = false;
     }
 
     public void CheckDead()
     {
-        if (KnightState.Instance.health == 0)
+        if (KnightStats.Instance.health == 0)
         {
             KnightState.Instance.setDead();
         }
