@@ -20,6 +20,7 @@ public class KnightMovement : MonoBehaviour
     [SerializeField] private float speed = 8f;
     public float Speed { get => speed; }
     [SerializeField] private float jumpForce = 15f;
+    public bool falling = false;
 
     private float horizontal;
     public float Horizontal { get => horizontal; }
@@ -69,10 +70,10 @@ public class KnightMovement : MonoBehaviour
         }
         else if (Input.GetButtonUp("Jump") && rigidBody.velocity.y > 0)
             rigidBody.velocity = new Vector2(rigidBody.velocity.x, rigidBody.velocity.y * 0.2f);
-        else if (Input.GetButton("Jump") && isGround)
-        {
-            rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpForce);
-        }
+        //else if (Input.GetButton("Jump") && isGround)
+        //{
+        //    rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpForce);
+        //}
     }
 
     private void SetAnimation()
@@ -81,8 +82,16 @@ public class KnightMovement : MonoBehaviour
         else animator.SetBool("isRunning", false);
         if (!isGround && rigidBody.velocity.y > 0) animator.SetBool("isJumping", true);
         else animator.SetBool("isJumping", false);
-        if (!isGround && rigidBody.velocity.y <= 0) animator.SetBool("isFalling", true);
-        else animator.SetBool("isFalling", false);
+        if (!isGround && rigidBody.velocity.y <= 0)
+        {
+            animator.SetBool("isFalling", true);
+            this.falling = true;
+        }
+        else
+        {
+            animator.SetBool("isFalling", false);
+            this.falling = false;
+        }
     }
 
     private void checkGround()

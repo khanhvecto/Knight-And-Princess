@@ -13,7 +13,7 @@ public class CameraMovement : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform knightPos;
     [Header("Speed")]
-    [SerializeField] private float followSpeed = 3f;  //Speed when player running stable
+    [SerializeField] private float followSpeed = 4f;  //Speed when player running stable
     [SerializeField] private float localSpeed = 1f;   //Speed when in deadzone
     [Header("Offset")]
     [SerializeField] private float heightOffset = 1f;
@@ -43,7 +43,10 @@ public class CameraMovement : MonoBehaviour
         //Design pattern
         if (instance != null) Debug.LogError("Only 1 CameraMovement allow to exist!");
         instance = this;
+    }
 
+    private void Start()
+    {
         //Start position
         this.ResetToKnightPos();
 
@@ -212,7 +215,7 @@ public class CameraMovement : MonoBehaviour
         transform.position = Vector3.Slerp(transform.position, newPosition, (this.followSpeed) * Time.deltaTime);
 
         //Check if standing
-        if (KnightMovement.Instance.Horizontal == 0f)
+        if (KnightMovement.Instance.Horizontal == 0f && !KnightMovement.Instance.falling)
         {
             this.ResetDeadzone();
         }
