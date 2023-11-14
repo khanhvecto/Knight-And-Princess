@@ -20,11 +20,16 @@ public class KnightState : MonoBehaviour
     [SerializeField] public bool vulnerable = true;
     [SerializeField] public bool blocking = false;
     [SerializeField] public bool rightBlocking;    //Direction of blocking
+    public bool restoringEndurance = true;
 
     [Header("Control state")]
     [SerializeField] public bool facingRight = true;
     [SerializeField] public bool controlable = true;
     [SerializeField] public bool alive = true;
+
+    [Header("Buffs")]
+    public bool invincible = false;    //Invincible buffs
+    public bool indefatigable = false;  //Shield buffs
 
     private void Awake()
     {
@@ -60,6 +65,7 @@ public class KnightState : MonoBehaviour
     public void setFallBack()
     {
         this.controlable = false;
+        this.vulnerable = false;
         rb2D.velocity = fallBackVector * fallBackForce;
     }
 
@@ -83,13 +89,14 @@ public class KnightState : MonoBehaviour
     {
         animator.SetBool("alive", true);
         this.controlable = true;
+        this.vulnerable = true;
         this.alive = true;
         gameObject.layer = 7;   //Knight layer
 
         //Reset stats
         KnightStats.Instance.health = KnightStats.Instance.maxHealth;
         KnightStats.Instance.endurance = KnightStats.Instance.maxEndurance;
-        KnightStats.Instance.restoringEndurance = true;
+        KnightState.Instance.restoringEndurance = true;
 
         UIFunction.Instance.ShowDeadScreen(false);
 

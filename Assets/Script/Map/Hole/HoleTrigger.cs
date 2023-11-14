@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class HoleTrigger : MonoBehaviour
 {
-    [HideInInspector] public Transform respawnPlace;
-    [SerializeField] private float fallDamage;
+    public Transform respawnPlace;
+    [SerializeField] private float fallDamage = 3f;
     private void Awake()
     {
         respawnPlace = transform.Find("Left Ground").transform;

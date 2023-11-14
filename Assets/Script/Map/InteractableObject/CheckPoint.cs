@@ -9,31 +9,36 @@ public class CheckPoint : InteractableObject
     protected override void Update()
     {
         base.Update();
-        if (base.interacted && !settedCheckPoint)
-        {
-            this.SetCheckPoint();
-            this.settedCheckPoint = true;
-        }
+        if (!base.interactable) return;
+        if (!base.interacted) return;
+        if (settedCheckPoint) return;
+
+        this.SetCheckPoint();
+
     }
 
     protected virtual void SetCheckPoint()
     {
-        Debug.Log("Set respawn");
+        //Setting
         GamePlayLogic.Instance.SetCheckPoint(gameObject.transform);
+        this.settedCheckPoint = true;
+
+        //Show in navigator
+        NavigatorManager.Instance.ShowNavigator("Check point\nsetted!");
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == 7 && !base.interacted && GamePlayLogic.Instance.checkPoint != transform)
+        if (collision.gameObject.layer == 7 && GamePlayLogic.Instance.checkPoint != transform)
         {
             base.interactable = true;
             if (base.activeState) base.SetPopUpShowing(true);
         }
     }
 
-    public virtual new void ResetObject()
+    public virtual void ResetObject()
     {
-        base.ResetObject();
+        base.ResetInteract();
         this.settedCheckPoint=false;
     }
 }

@@ -14,6 +14,7 @@ public class KnightMovement : MonoBehaviour
     [SerializeField] private float castBoxDistance;
 
     private Rigidbody2D rigidBody;
+    public Rigidbody2D RigidBody => rigidBody;
     private Animator animator;
 
     [Header("Stats")]
@@ -23,7 +24,7 @@ public class KnightMovement : MonoBehaviour
     public bool falling = false;
 
     private float horizontal;
-    public float Horizontal { get => horizontal; }
+    public float Horizontal { get => horizontal; set => horizontal = value; }
     private bool isGround;
     public bool IsGround { get => isGround; }
 
@@ -48,10 +49,9 @@ public class KnightMovement : MonoBehaviour
             if ((horizontal < 0 && KnightState.Instance.facingRight) || (horizontal > 0 && !KnightState.Instance.facingRight)) KnightState.Instance.flip();
             //Implement jump action
             checkJump();
-
-            //Set parameters for animation
-            this.SetAnimation();
         }
+        //Set parameters for animation
+        this.SetAnimation();
     }
 
     private void FixedUpdate()
@@ -96,8 +96,6 @@ public class KnightMovement : MonoBehaviour
 
     private void checkGround()
     {
-        //isGround = Physics2D.BoxCast(transform.position, boxGroundSize, 0f, Vector2.down, castBoxDistance, layerGround) &&
-        //            rigidBody.velocity.y == 0;
         isGround = Physics2D.BoxCast(transform.position, boxGroundSize, 0f, Vector2.down, castBoxDistance, layerGround);
     }
 

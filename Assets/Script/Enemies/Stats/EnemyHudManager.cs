@@ -15,6 +15,7 @@ public class EnemyHudManager : HudManager
 
     protected override void Start()
     {
+        base.Start();
         this.LoadReferences();
     }
     private void LoadReferences()

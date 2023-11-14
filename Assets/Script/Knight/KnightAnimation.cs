@@ -41,5 +41,6 @@ public class KnightAnimation : MonoBehaviour
     public void ResetControllable()
     {
         KnightState.Instance.controlable = true;
+        KnightState.Instance.vulnerable = true;
     }
 }

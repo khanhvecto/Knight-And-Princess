@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &9041839750800848615
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 160778947636666126, guid: e02613657dc7aa241814cbb707682f4e, type: 3}
+      propertyPath: type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 160778947636666126, guid: e02613657dc7aa241814cbb707682f4e, type: 3}
+      propertyPath: buffType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 466204738800442242, guid: e02613657dc7aa241814cbb707682f4e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 91dd1404fcd39384a90e4d0e448f4e13, type: 3}
+    - target: {fileID: 1191952574899604607, guid: e02613657dc7aa241814cbb707682f4e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1191952574899604607, guid: e02613657dc7aa241814cbb707682f4e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1191952574899604607, guid: e02613657dc7aa241814cbb707682f4e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1191952574899604607, guid: e02613657dc7aa241814cbb707682f4e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1191952574899604607, guid: e02613657dc7aa241814cbb707682f4e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1191952574899604607, guid: e02613657dc7aa241814cbb707682f4e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1191952574899604607, guid: e02613657dc7aa241814cbb707682f4e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1191952574899604607, guid: e02613657dc7aa241814cbb707682f4e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1191952574899604607, guid: e02613657dc7aa241814cbb707682f4e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1191952574899604607, guid: e02613657dc7aa241814cbb707682f4e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5277918618515839674, guid: e02613657dc7aa241814cbb707682f4e, type: 3}
+      propertyPath: m_Name
+      value: ShieldOrb
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e02613657dc7aa241814cbb707682f4e, type: 3}

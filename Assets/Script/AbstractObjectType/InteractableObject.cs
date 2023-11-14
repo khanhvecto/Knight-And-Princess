@@ -19,25 +19,25 @@ public abstract class InteractableObject : PopupAppear
         }
     }
 
-    protected virtual void OnTriggerEnter2D(Collider2D collision)
+    protected override void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == 7 && !this.interacted)
+        if (collision.gameObject.layer == 7)
         {
             this.interactable = true;
             if (base.activeState) base.SetPopUpShowing(true);
         }
     }
 
-    protected virtual void OnTriggerExit2D(Collider2D collision)
+    protected override void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == 7 && !this.interacted)
+        if (collision.gameObject.layer == 7)
         {
             this.interactable = false;
             if (base.activeState) base.SetPopUpShowing(false);
         }
     }
 
-    protected virtual void ResetObject()    //Make Objectable can interact again like a new one
+    protected virtual void ResetInteract()    //Make Objectable can interact again like a new one
     {
         this.interacted = false;
         base.activeState = true;

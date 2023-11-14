@@ -28,6 +28,9 @@ public class KnightHurt : MonoBehaviour
 
     public void GotAttack(float damage, Transform attackPos, float enduranceDecrement)
     {
+        //If using buff invincible 
+        if (KnightState.Instance.invincible) return;
+
         if (KnightState.Instance.vulnerable)
         {
             //If not blocking
@@ -72,7 +75,10 @@ public class KnightHurt : MonoBehaviour
         KnightState.Instance.setFallBack();
 
         //Change stats
-        KnightStats.Instance.health -= damage;
+        if(!KnightState.Instance.invincible)
+        {
+            KnightStats.Instance.health -= damage;
+        }
 
         //Set state
         KnightState.Instance.controlable = false;
@@ -89,20 +95,13 @@ public class KnightHurt : MonoBehaviour
             KnightState.Instance.flip();
         }
 
-        //Animator
-        this.animator.SetTrigger("gotHurt");
-        KnightState.Instance.setFallBack();
-
-        //Change stats
-        KnightStats.Instance.health -= damage;
-
-        //Set state
-        KnightState.Instance.controlable = false;
+        //Take damage
+        this.TakeDamage(damage);
     }
 
     public void CheckDead()
     {
-        if (KnightStats.Instance.health == 0)
+        if (KnightStats.Instance.health <= 0)
         {
             KnightState.Instance.setDead();
         }

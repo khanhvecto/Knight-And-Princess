@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GamePlayLogic : MonoBehaviour
 {
+    //Singleton
     private static GamePlayLogic instance;
     public static GamePlayLogic Instance { get => instance;}
 
@@ -14,7 +17,7 @@ public class GamePlayLogic : MonoBehaviour
 
     private void Awake()
     {
-        //Design pattern
+        //Singleton
         if (GamePlayLogic.instance != null) Debug.LogError("Only 1 GamePlayLogic allow to exist!");
         GamePlayLogic.instance = this;
 
@@ -26,6 +29,7 @@ public class GamePlayLogic : MonoBehaviour
         //Reset old checkPoint
         this.checkPoint.TryGetComponent<CheckPoint>(out CheckPoint oldCheckPointScript);
         if (oldCheckPointScript != null) oldCheckPointScript.ResetObject();
+
         //Set new checkPoint
         this.checkPoint = pos;
     }
@@ -42,5 +46,6 @@ public class GamePlayLogic : MonoBehaviour
     public void TeleportKnight(Transform newPlace)
     {
         knightObj.transform.position = newPlace.position;
+        CameraMovement.Instance.ResetToKnightPos();
     }
 }

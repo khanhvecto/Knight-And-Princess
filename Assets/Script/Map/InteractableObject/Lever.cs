@@ -1,39 +1,60 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Lever : InteractableObject
+public class Lever : InteractableObject, SignalSourceInterface
 {
     [Header("References")]
     [SerializeField] protected Animator animator;
+        //Signal receiver
+    [SerializeField] protected Transform signalReceiverObj;
+    protected SignalReceiverInterface signalReceiverInterface;
 
     //State
     protected bool turnedOn = false;
+    protected bool sendingSignal = false;
 
-    protected override void Start()
+    protected override void LoadReferences()
     {
-        base.Start();
-
-        this.LoadReferences();
-    }
-    protected virtual void LoadReferences()
-    {
+        base.LoadReferences();
         //Animator
         this.animator = transform.GetComponent<Animator>();
         if (this.animator == null) Debug.LogError("Can't find animtor for Lever of " + transform.name);
+        //SignalReceiver
+        this.signalReceiverInterface = this.signalReceiverObj.GetComponent<SignalReceiverInterface>();
+        if (this.signalReceiverInterface == null) Debug.LogError("Can't find signal receiver interface for lever");
     }
+
     protected override void Update()
     {
         base.Update();
+        if (!base.interactable) return;
+        if (!base.interacted) return;
 
-        if (base.interacted)
+        if (!this.sendingSignal)
         {
-            this.turnedOn = !this.turnedOn;
-            this.animator.SetBool("turnOn", this.turnedOn);
-
-            //ResetObject after that to make lever can be push again
-            base.ResetObject();
-            base.SetPopUpShowing(true);
+            this.sendingSignal = true;
+            this.turnedOn = !this.turnedOn; //Change state
+            StartCoroutine(SendSignal());   //Send signal
         }
+    }
+
+    //SignalSourceInterface
+    public IEnumerator SendSignal()
+    {
+        //Lever animation
+        this.animator.SetBool("turnOn", this.turnedOn);
+        float waitTime = this.animator.GetCurrentAnimatorClipInfo(0).Length;
+        yield return new WaitForSeconds(waitTime);
+
+        //Focus camera to signal receiver obj
+        yield return StartCoroutine(CameraMovement.Instance.FocusToObject(this.signalReceiverObj.transform.position));
+        //Send signal and back to knight
+        this.signalReceiverInterface.ReceiveSignal(this.turnedOn);
+        yield return StartCoroutine(CameraMovement.Instance.FocusToKnight());
+
+        //Reset state
+        base.ResetInteract();
+        if(base.interactable) base.SetPopUpShowing(true);
+        this.sendingSignal = false;
     }
 }

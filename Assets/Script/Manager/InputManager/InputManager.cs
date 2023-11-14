@@ -23,6 +23,12 @@ public class InputManager : MonoBehaviour
     //Roll
     private KeyCode rollKey = KeyCode.LeftShift;
 
+    //Buffs
+    private KeyCode healthBuffKey = KeyCode.Alpha1;
+    private KeyCode shieldBuffKey = KeyCode.Alpha2;
+    private KeyCode damageBuffKey = KeyCode.Alpha3;
+    private KeyCode invincibleBuffKey = KeyCode.Alpha4;
+
     //Interactable Object
     private KeyCode interactKey = KeyCode.F;
 
@@ -85,6 +91,29 @@ public class InputManager : MonoBehaviour
         if(Input.GetKeyDown(this.rollKey)) return true;
         return false;
     }
+
+    //Buffs
+    public bool GetHealthBuffKeyDown()
+    {
+        if (Input.GetKeyDown(this.healthBuffKey)) return true;
+        return false;
+    }
+    public bool GetShieldBuffKeyDown()
+    {
+        if (Input.GetKeyDown(this.shieldBuffKey)) return true;
+        return false;
+    }
+    public bool GetDamageBuffKeyDown()
+    {
+        if (Input.GetKeyDown(this.damageBuffKey)) return true;
+        return false;
+    }
+    public bool GetInvincibleBuffKeyDown()
+    {
+        if (Input.GetKeyDown(this.invincibleBuffKey)) return true;
+        return false;
+    }
+
 
     //Interactable Object
     public bool GetInteractKeyDown()

@@ -1,20 +1,37 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class PopupAppear : MonoBehaviour
 {
-    protected GameObject popupTextObj;
+    protected GameObject popupObj;
     protected bool activeState = true;
-
-    protected virtual void Start()
+    
+    protected virtual void Awake()
     {
-        popupTextObj = transform.Find("Popup").gameObject;
-        if (popupTextObj == null) Debug.LogWarning("Can't find popup for " + gameObject.name);
+        this.LoadReferences();
+    }
+    protected virtual void LoadReferences()
+    {
+        popupObj = transform.Find("Popup").gameObject;
+        if (popupObj == null) Debug.LogWarning("Can't find popup for " + gameObject.name);
     }
 
     protected virtual void SetPopUpShowing(bool state)
     {
-        this.popupTextObj.SetActive(state);
+        this.popupObj.SetActive(state);
+    }
+
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == 7)
+        {
+            if (this.activeState) this.SetPopUpShowing(true);
+        }
+    }
+    protected virtual void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == 7)
+        {
+            if (this.activeState) this.SetPopUpShowing(false);
+        }
     }
 }

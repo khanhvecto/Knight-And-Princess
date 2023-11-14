@@ -1,4 +1,8 @@
+using System.Collections;
+using Unity.VisualScripting;
+using UnityEngine;
+
 public interface SignalSourceInterface
 {
-    bool SourceState();
+    IEnumerator SendSignal();   //Need to move camera cinematiclly
 }

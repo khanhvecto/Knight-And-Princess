@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class KnightStats : MonoBehaviour, HpBarInterface, EnduranceBarInterface
@@ -17,8 +14,6 @@ public class KnightStats : MonoBehaviour, HpBarInterface, EnduranceBarInterface
         //Chaning speed
     public float enduranceLooseSpeed = 8f;
     public float enduranceRestoreSpeed = 16f;
-        //Stage
-    public bool restoringEndurance = true;
 
     [Header("Combat stat")]
     [SerializeField] public float maxHealth = 30f;
@@ -34,48 +29,9 @@ public class KnightStats : MonoBehaviour, HpBarInterface, EnduranceBarInterface
         instance = this;
     }
 
-    private void Update()
-    {
-        //Endurance
-        this.SetEndurance();
-    }
-
+    //
     //Endurance
-    private void SetEndurance()
-    {
-        //Restoring
-        if(this.restoringEndurance)
-        {
-            if (this.endurance < this.maxEndurance)
-            {
-                this.RestoringEndurance(this.enduranceRestoreSpeed);
-            }
-        }
-        //Loosing
-        else
-        {
-            if (this.endurance > this.minEndurance)
-            {
-                this.DecreasingEndurance(this.enduranceLooseSpeed);
-            }
-        }
-    }
-    private void DecreasingEndurance(float value)
-    {
-        this.endurance -= value * Time.deltaTime;
-        if (this.endurance < this.minEndurance)  //Limit: endurance can not smaller than min value
-        {
-            this.endurance = this.minEndurance;
-        }
-    }
-    private void RestoringEndurance(float value)
-    {
-        this.endurance += value * Time.deltaTime;
-        if (this.endurance > this.maxEndurance)  //Limit: endurance can not exceed max value
-        {
-            this.endurance = this.maxEndurance;
-        }
-    }
+    //
     public void DecreaseEndurance(float value)
     {
         this.endurance -= value;
@@ -85,7 +41,18 @@ public class KnightStats : MonoBehaviour, HpBarInterface, EnduranceBarInterface
         }
     }
 
+    //
+    //Health
+    //
+    public void Heal(float value)
+    {
+        this.health += value;
+        if (this.health > this.maxHealth) this.health = maxHealth;  //Make sure health doesn't exceed max health
+    }
+
+    //
     //Slide bar
+    //
         //Health
     public float GetHp()
     {

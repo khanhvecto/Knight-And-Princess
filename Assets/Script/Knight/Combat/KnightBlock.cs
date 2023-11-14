@@ -30,6 +30,8 @@ public class KnightBlock : MonoBehaviour
         {
             this.SetBlock();
         }
+
+        this.SetEndurance();
     }
 
     private void SetBlock()
@@ -48,7 +50,9 @@ public class KnightBlock : MonoBehaviour
         }
     }
 
+    //
     //Block
+    //
     private void StartBlock()
     {
         animator.SetTrigger("block");
@@ -58,7 +62,7 @@ public class KnightBlock : MonoBehaviour
         //Set blocking direction
         this.SetBlockDirection();
         //Endurance
-        KnightStats.Instance.restoringEndurance = false;
+        KnightState.Instance.restoringEndurance = false;
     }
     private void HoldingBlock()
     {
@@ -73,7 +77,7 @@ public class KnightBlock : MonoBehaviour
         //Blocking state
         KnightState.Instance.blocking = false;
         //Endurance
-        KnightStats.Instance.restoringEndurance = true;
+        KnightState.Instance.restoringEndurance = true;
     }
 
     private void SetBlockDirection()
@@ -85,6 +89,47 @@ public class KnightBlock : MonoBehaviour
         else
         {
             KnightState.Instance.rightBlocking = false;
+        }
+    }
+
+    //
+    //Endurance
+    //
+    protected void SetEndurance()
+    {
+        //When using buff
+        if (KnightState.Instance.indefatigable) return;
+
+        //If not using buff
+        if (KnightState.Instance.restoringEndurance)    //Restoring
+        {
+            if (KnightStats.Instance.endurance < KnightStats.Instance.maxEndurance)
+            {
+                this.RestoringEndurance(KnightStats.Instance.enduranceRestoreSpeed);
+            }
+        }
+        else    //Loosing
+        {
+            if (KnightStats.Instance.endurance > KnightStats.Instance.minEndurance)
+            {
+                this.DecreasingEndurance(KnightStats.Instance.enduranceLooseSpeed);
+            }
+        }
+    }
+    protected void DecreasingEndurance(float value)
+    {
+        KnightStats.Instance.endurance -= value * Time.deltaTime;
+        if (KnightStats.Instance.endurance < KnightStats.Instance.minEndurance)  //Limit: endurance can not smaller than min value
+        {
+            KnightStats.Instance.endurance = KnightStats.Instance.minEndurance;
+        }
+    }
+    public void RestoringEndurance(float value)
+    {
+        KnightStats.Instance.endurance += value * Time.deltaTime;
+        if (KnightStats.Instance.endurance > KnightStats.Instance.maxEndurance)  //Limit: endurance can not exceed max value
+        {
+            KnightStats.Instance.endurance = KnightStats.Instance.maxEndurance;
         }
     }
 }

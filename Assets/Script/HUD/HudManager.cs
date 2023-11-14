@@ -7,14 +7,17 @@ public abstract class HudManager: MonoBehaviour
     [Header("References")]
     [SerializeField] protected Transform hudObj;
 
-    protected abstract void Start();    //TODO: check references
+    protected virtual void Start()
+    {
+        if (this.hudObj == null) Debug.LogError("Can't find HUD Object for Knight's HudManager");
+    }
 
     protected virtual void Display(string nameItem, bool state)
     {
         Transform item = hudObj.Find(nameItem);
         if (item == null)
         {
-            Debug.LogError("Can't find " + nameItem + " for Knight's HudManager");
+            Debug.LogError("Can't find " + nameItem + " for HudManager");
             return;
         }
 
