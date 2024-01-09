@@ -14,10 +14,8 @@ public class Elevator : InstructionAppearObj, SignalReceiverInterface
     protected string signalRequiredInstruction = "SignalRequired";
 
     [Header("Position")]
-    [SerializeField] protected Vector3 firstPos;
-    [SerializeField] protected Vector3 secondPos;
-    protected string firstPosName = "FirstPos";
-    protected string secondPosName = "SecondPos";
+    [SerializeField] protected Transform firstPos;
+    [SerializeField] protected Transform secondPos;
 
     //Stats
     protected float speed = 4f;
@@ -29,10 +27,10 @@ public class Elevator : InstructionAppearObj, SignalReceiverInterface
         this.animator = GetComponent<Animator>();
         if (this.animator == null) Debug.LogError("Can't find animator for Elevator of " + transform.name);
         //First position
-        this.firstPos = transform.Find(this.firstPosName).position;
+        this.firstPos = transform.parent.Find("Position").Find("FirstPos");
         if (this.firstPos == null) Debug.LogError("Can't find first position for Elevator of " + transform.name);
         //Second position
-        this.secondPos = transform.Find(this.secondPosName).position;
+        this.secondPos = transform.parent.Find("Position").Find("SecondPos");
         if (this.secondPos == null) Debug.LogError("Can't find second position for Elevator of " + transform.name);
     }
 
@@ -63,13 +61,13 @@ public class Elevator : InstructionAppearObj, SignalReceiverInterface
     {
         //Find newPos
         Vector3 newPos;
-        if (transform.position == this.firstPos)
+        if (transform.position == this.firstPos.position)
         {
-            newPos = this.secondPos;
+            newPos = this.secondPos.position;
         }
         else
         {
-            newPos = this.firstPos;
+            newPos = this.firstPos.position;
         }
 
         //Move

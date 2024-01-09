@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class KnightMovement : MonoBehaviour
@@ -23,10 +21,28 @@ public class KnightMovement : MonoBehaviour
     [SerializeField] private float jumpForce = 15f;
     public bool falling = false;
 
+    // State
+    public bool moveable = true;
+
+    // Parameter
     private float horizontal;
     public float Horizontal { get => horizontal; set => horizontal = value; }
     private bool isGround;
     public bool IsGround { get => isGround; }
+        // Gravity
+    public float defaultGravity = 3f;
+    public float rollGravity = 0f;
+
+    [Header("Jump")]
+        // Jump buffer
+    [SerializeField] private float jumpBuffer = 0.2f;
+    private float lastJumpPressedTime = -3; // Set to -3 to advoid auto jump when game just start
+        // Coyote time
+    [SerializeField] protected float coyoteTime = 0.2f;
+    protected float leftGroundTime;
+
+    // Falling
+    protected bool isFallingFaster = false;
 
     private void Awake()
     {
@@ -41,14 +57,14 @@ public class KnightMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (KnightState.Instance.controlable)
+        if (KnightState.Instance.controlable && this.moveable)
         {
             checkGround();
             horizontal = Input.GetAxisRaw("Horizontal");
             //Flip 
             if ((horizontal < 0 && KnightState.Instance.facingRight) || (horizontal > 0 && !KnightState.Instance.facingRight)) KnightState.Instance.flip();
             //Implement jump action
-            checkJump();
+            CheckJump();
         }
         //Set parameters for animation
         this.SetAnimation();
@@ -56,24 +72,54 @@ public class KnightMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (KnightState.Instance.controlable)
-        {
-            rigidBody.velocity = new Vector2(horizontal * speed, rigidBody.velocity.y);
-        }
+        if (!KnightState.Instance.controlable) return;
+        if (!this.moveable) return;
+
+        rigidBody.velocity = new Vector2(horizontal * speed, rigidBody.velocity.y);
     }
 
-    private void checkJump()
+    private void CheckJump()
     {
-        if (Input.GetButtonDown("Jump") && isGround)
+        if (this.isGround)
         {
-            rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpForce);
+            if (Input.GetButtonDown("Jump"))
+            {
+                this.Jump();
+            }
+            else if (this.lastJumpPressedTime + this.jumpBuffer >= Time.time)
+            {
+                this.Jump();
+            }
         }
-        else if (Input.GetButtonUp("Jump") && rigidBody.velocity.y > 0)
-            rigidBody.velocity = new Vector2(rigidBody.velocity.x, rigidBody.velocity.y * 0.2f);
-        //else if (Input.GetButton("Jump") && isGround)
-        //{
-        //    rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpForce);
-        //}
+        else
+        {
+            // Jump shorter caused released jump button
+            if (Input.GetButtonUp("Jump") && rigidBody.velocity.y > 0)
+            {
+                rigidBody.velocity = new Vector2(rigidBody.velocity.x, rigidBody.velocity.y * 0.2f);
+            }
+
+            // Jump at edge
+            if (Input.GetButtonDown("Jump"))
+            {
+                this.lastJumpPressedTime = Time.time;
+                if(this.coyoteTime + this.leftGroundTime >= Time.time)
+                {
+                    this.Jump();
+                }
+            }
+
+            // Falling faster
+            if(rigidBody.velocity.y < 0 && !this.isFallingFaster) 
+            {
+                StartCoroutine(FallingFaster());
+            }
+        }
+    }
+    protected void Jump()
+    {
+        rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpForce);
+        this.lastJumpPressedTime = Time.time;
     }
 
     private void SetAnimation()
@@ -94,9 +140,26 @@ public class KnightMovement : MonoBehaviour
         }
     }
 
+    protected IEnumerator FallingFaster()
+    {
+        this.isFallingFaster = true;
+        this.rigidBody.gravityScale += 1.5f;
+
+        while(rigidBody.velocity.y < 0 || KnightRoll.Instance.rolling) yield return null;
+        this.isFallingFaster = false;
+        this.rigidBody.gravityScale = this.defaultGravity;
+        yield return null;
+    }
+
     private void checkGround()
     {
+        // Set up coyote time
+        bool wasOnGround = false;
+        if (isGround) wasOnGround = true;
+
         isGround = Physics2D.BoxCast(transform.position, boxGroundSize, 0f, Vector2.down, castBoxDistance, layerGround);
+        
+        if(!isGround && wasOnGround) this.leftGroundTime = Time.time;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

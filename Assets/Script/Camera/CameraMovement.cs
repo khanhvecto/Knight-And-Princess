@@ -1,7 +1,4 @@
-using JetBrains.Annotations;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
@@ -16,26 +13,27 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] protected CanvasGroup fadeScreenCanvas;
 
     [Header("State")]
-    [SerializeField] protected bool followingKnight = true;
+    [SerializeField] public bool followingKnight = true;
 
     [Header("Speed")]
-    [SerializeField] private float followSpeed = 4f;  //Speed when player running stable
+    [SerializeField] protected float focusSpeed = 8f;
+    [SerializeField] private float followSpeed = 2f;  //Speed when player running stable
     [SerializeField] private float localSpeed = 1f;   //Speed when in deadzone
 
-    //Vertical level
-    protected float verticalLevel;
-    protected bool verticalMoveHard;
+    [Header("Vertical level")]
+    public float verticalLevel;
+    protected bool freezing;
     protected Vector3 relativePos;  //When player move too fast, the camera will be "freeze"
 
     [Header("Offset")]
-    [SerializeField] private float heightOffset = 2f;
+    public float heightOffset = 2f;
     [SerializeField] private float widthOffset = 5f;
     private float widthRange;
-    private float zAxisPosition = -10f;
+    [SerializeField]private float zAxisPosition = -10f;
 
     [Header("Dead zone")]
     [SerializeField] private float deadZoneHorizontal = 3f;
-    [SerializeField] private float deadZoneVertical = 2f;
+    [SerializeField] private float deadZoneVertical = 3f;
     private bool inDeadZone = true;
         //Deadzone facing counter
     private float deadZoneMoveTimer = 0f;
@@ -85,11 +83,10 @@ public class CameraMovement : MonoBehaviour
 
     private void MoveCamera()
     {
-        //Find vertical level
         this.FindVerticalLevel();
 
         //Set move
-        if(!this.verticalMoveHard)
+        if(!this.freezing)
         {
             if (this.inDeadZone)
             {
@@ -107,9 +104,9 @@ public class CameraMovement : MonoBehaviour
         }
     }
 
-    /// <summary>
+    ///
     /// Move when in deadzone
-    /// </summary>
+    ///
     private void DeadZoneMove()
     {
         if (!this.SetLookFurther()) //If not looking further, then move to steady state
@@ -256,24 +253,27 @@ public class CameraMovement : MonoBehaviour
         }
     }
 
-    /// <summary>
+    /// 
     /// Other
-    /// </summary>
-    protected virtual void FindVerticalLevel()
+    /// 
+    protected virtual void FindVerticalLevel()  //Change state of vertical state (freezing) and veritcal level
     {
         if (KnightMovement.Instance.IsGround)
         {
+            this.freezing = false;
+
+            if (Mathf.Abs(this.knightPos.position.y - this.verticalLevel) < 1 ) return;
+
             this.verticalLevel = this.knightPos.position.y;
-            this.verticalMoveHard = false;
+            return;
         }
-        else if(!this.verticalMoveHard)
+
+        if (this.freezing) return; 
+
+        if(this.knightPos.position.y >= this.verticalLevel + this.deadZoneVertical || this.knightPos.position.y <= this.verticalLevel - this.deadZoneVertical/2)
         {
-            if (this.knightPos.position.y >= this.verticalLevel + this.deadZoneVertical || this.knightPos.position.y <= this.verticalLevel - this.deadZoneVertical)
-            {
-                this.verticalMoveHard = true;
-                //Setup freeze position
-                this.relativePos = transform.position - this.knightPos.position;
-            }
+            this.freezing = true;
+            this.relativePos = transform.position - this.knightPos.position;
         }
     }
     private void CheckHeading()
@@ -290,17 +290,21 @@ public class CameraMovement : MonoBehaviour
     public void ResetToKnightPos()
     {
         transform.position = new Vector3(this.knightPos.position.x, this.knightPos.position.y + this.heightOffset, this.zAxisPosition);
+        this.ResetDeadzoneStats();
+    }
+    public void ResetDeadzoneStats() //Can be call when camera is deazone
+    {
+        this.followingKnight = true;
+        this.freezing = false;
     }
 
     //
     // Cinematic movement
     //
-    public IEnumerator FocusToObject(Vector3 position)
+    public IEnumerator FocusToObject(Vector3 position)  //Focus to a specific position like a cutscene
     {
         //Set stats
-            //Camera
-        this.followingKnight = false;
-        //Knight
+            //Set knight stays steady
         KnightMovement.Instance.Horizontal = 0f;
         KnightMovement.Instance.RigidBody.velocity = new Vector2(0f, KnightMovement.Instance.RigidBody.velocity.y);
         KnightState.Instance.controlable = false;
@@ -308,18 +312,11 @@ public class CameraMovement : MonoBehaviour
         this.UIObj.SetActive(false);
             
         //Move to object position
-        Vector3 newPos = new Vector3(position.x, position.y, this.zAxisPosition);
-        while(Vector3.Distance(transform.position, newPos) > 0.1f)
-        {
-            transform.position = Vector3.Slerp(transform.position, newPos, this.followSpeed * Time.deltaTime);
-            yield return null;
-        }
+        yield return StartCoroutine(this.MoveToPos(position));
     }
+
     public IEnumerator FocusToKnight()
     {
-        //Wait 1s
-        yield return new WaitForSeconds(1f);
-
         //Fade in screen
         yield return StartCoroutine(this.FadeScreen(1, 1));
 
@@ -330,10 +327,24 @@ public class CameraMovement : MonoBehaviour
         yield return StartCoroutine(this.FadeScreen(0, 1));
 
         //Set stats
-        this.followingKnight = true;    //Camera
         KnightState.Instance.controlable = true;    //Knight
         this.UIObj.SetActive(true); //UI
     }
+
+    public IEnumerator MoveToPos(Vector3 pos)
+    {
+        //Camera state
+        this.followingKnight = false;
+
+        //Moving
+        Vector3 newPos = new Vector3(pos.x, pos.y, this.zAxisPosition);
+        while (Vector3.Distance(transform.position, newPos) > 0.2f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, newPos, this.focusSpeed * Time.deltaTime);
+            yield return null;
+        }
+    }
+
     protected IEnumerator FadeScreen(float targetValue, float duration) //Fade screen to target value in a duration
     {
         float startValue = this.fadeScreenCanvas.alpha;

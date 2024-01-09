@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class KnightBlock : MonoBehaviour
@@ -58,6 +56,8 @@ public class KnightBlock : MonoBehaviour
         animator.SetTrigger("block");
         animator.SetBool("blocking", true);
         //Set blocking state
+        KnightState.Instance.rb2D.velocity = Vector2.zero;
+        KnightMovement.Instance.moveable = false;
         KnightState.Instance.blocking = true;
         //Set blocking direction
         this.SetBlockDirection();
@@ -75,6 +75,7 @@ public class KnightBlock : MonoBehaviour
     {
         animator.SetBool("blocking", false);
         //Blocking state
+        KnightMovement.Instance.moveable = true;
         KnightState.Instance.blocking = false;
         //Endurance
         KnightState.Instance.restoringEndurance = true;

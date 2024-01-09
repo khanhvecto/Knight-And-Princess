@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class KnightAnimation : MonoBehaviour
@@ -32,15 +30,8 @@ public class KnightAnimation : MonoBehaviour
     }
 
     //Hurt
-    public void CheckDead()
-    {
-        KnightHurt.Instance.CheckDead();
-    }
-
-    //Controll
-    public void ResetControllable()
+    public void ResetControl()
     {
         KnightState.Instance.controlable = true;
-        KnightState.Instance.vulnerable = true;
     }
 }

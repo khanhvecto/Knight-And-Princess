@@ -55,12 +55,12 @@ TagManager:
   - name: Ground
     uniqueID: 3630921497
     locked: 0
-  - name: Instruction
-    uniqueID: 2611212471
-    locked: 0
   - name: Living creature
     uniqueID: 1271032851
     locked: 0
   - name: Front ground
     uniqueID: 1511767443
+    locked: 0
+  - name: Instruction
+    uniqueID: 2611212471
     locked: 0

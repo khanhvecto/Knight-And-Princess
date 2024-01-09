@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class KnightRoll : MonoBehaviour
@@ -14,7 +12,7 @@ public class KnightRoll : MonoBehaviour
     [Header("Stats")]
     [SerializeField] private float rollForce = 13f;
     private bool rollable = true;
-    private bool rolling = false;
+    public bool rolling = false;
 
     private void Awake()
     {
@@ -62,7 +60,7 @@ public class KnightRoll : MonoBehaviour
         Physics2D.IgnoreLayerCollision(7, 8, true);   //Ignore collide of Knight and Enemy
         //Push body toward
         KnightState.Instance.controlable = false;
-        KnightState.Instance.rb2D.gravityScale = 0f;
+        KnightState.Instance.rb2D.gravityScale = KnightMovement.Instance.rollGravity;
         if (KnightState.Instance.facingRight)
         {
             KnightState.Instance.rb2D.velocity = Vector2.right * rollForce;
@@ -78,6 +76,10 @@ public class KnightRoll : MonoBehaviour
         KnightState.Instance.vulnerable = true;
         Physics2D.IgnoreLayerCollision(7, 8, false); //Reset collide of Knight and Enemy
         KnightState.Instance.controlable = true;
-        KnightState.Instance.rb2D.gravityScale = 5f;
+        if (KnightState.Instance.blocking)
+        {
+            KnightState.Instance.rb2D.velocity = Vector2.zero;
+        }
+        KnightState.Instance.rb2D.gravityScale = KnightMovement.Instance.defaultGravity;
     }
 }

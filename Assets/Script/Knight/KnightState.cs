@@ -61,19 +61,9 @@ public class KnightState : MonoBehaviour
         fallBackVector.x = -fallBackVector.x;
     }
 
-    //Hurt state
-    public void setFallBack()
-    {
-        this.controlable = false;
-        this.vulnerable = false;
-        rb2D.velocity = fallBackVector * fallBackForce;
-    }
-
     //Dead or alive state
     public void setDead()
     {
-        animator.SetBool("alive", false);
-
         //Set state
         this.controlable = false;
         this.alive = false;
@@ -81,6 +71,9 @@ public class KnightState : MonoBehaviour
 
         //Stop motion
         rb2D.velocity = Vector2.zero;
+
+        animator.SetBool("alive", false);
+        animator.SetTrigger("dead");
 
         UIFunction.Instance.ShowDeadScreen(true);
     }

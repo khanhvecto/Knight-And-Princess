@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class KnightHurt : MonoBehaviour
@@ -12,6 +8,7 @@ public class KnightHurt : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private Animator animator;
+    public Animator Animator { get => animator; }
 
     private void Awake()
     {
@@ -70,18 +67,15 @@ public class KnightHurt : MonoBehaviour
 
     public void TakeDamage(float damage)    //Dont flip
     {
-        //Animator
         this.animator.SetTrigger("gotHurt");
-        KnightState.Instance.setFallBack();
-
-        //Change stats
+        
         if(!KnightState.Instance.invincible)
         {
             KnightStats.Instance.health -= damage;
         }
 
-        //Set state
         KnightState.Instance.controlable = false;
+        this.CheckDead();
     }
     public void TakeDamage(float damage, Transform attackPos)   //Can flip if not facing attackPos
     {
@@ -101,6 +95,8 @@ public class KnightHurt : MonoBehaviour
 
     public void CheckDead()
     {
+        if (!KnightState.Instance.alive) return;
+
         if (KnightStats.Instance.health <= 0)
         {
             KnightState.Instance.setDead();

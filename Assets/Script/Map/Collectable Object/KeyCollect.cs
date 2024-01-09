@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class KeyCollect : CollectableObj, SignalSourceInterface
@@ -23,16 +22,20 @@ public class KeyCollect : CollectableObj, SignalSourceInterface
     protected override IEnumerator CollectObj()
     {
         if (this.signalReceiverInterface == null) yield break;
+        NavigatorManager.Instance.ShowNavigator("Something opened!");
         yield return StartCoroutine(this.SendSignal());
     }
 
     //Signal source interface
     public IEnumerator SendSignal()
     {
-        //Focus camera to signal receiver obj
+        yield return new WaitForSeconds(1);
+
         yield return StartCoroutine(CameraMovement.Instance.FocusToObject(this.signalReceiver.transform.position));
-        //Send signal and back to knight
+
         this.signalReceiverInterface.ReceiveSignal(true);
+
+        yield return new WaitForSeconds(1);
         yield return StartCoroutine(CameraMovement.Instance.FocusToKnight());
     }
 }

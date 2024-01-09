@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
 public class KnightAttack : MonoBehaviour
@@ -14,7 +11,6 @@ public class KnightAttack : MonoBehaviour
     [SerializeField] private LayerMask enemyLayer;
 
     //Cooldown
-    private float cooldownTimer = 0f;
     private bool attackable = true;
 
     [Header("Attack Range")]
@@ -41,31 +37,16 @@ public class KnightAttack : MonoBehaviour
         {
             if (this.attackable)
             {
-                this.SetAttack();
-            }
-            else
-            {
-                this.SetCooldown();
+                this.CheckAttack();
             }
         }
     }
 
-    private void SetAttack()
+    private void CheckAttack()
     {
         if (InputManager.Instance.GetAttackKeyDown())    //If player press attack key
         {
-            animator.SetTrigger("attacking");
-            this.attackable = false;
-        }
-    }
-
-    private void SetCooldown()
-    {
-        this.cooldownTimer += Time.deltaTime;
-        if (this.cooldownTimer >= KnightStats.Instance.cooldown)
-        {
-            this.cooldownTimer = 0f;
-            this.attackable = true;
+            animator.SetTrigger("attack");
         }
     }
 
@@ -76,10 +57,10 @@ public class KnightAttack : MonoBehaviour
         Collider2D enemyHit = Physics2D.OverlapCircle(this.attackPoint.position, this.range, this.enemyLayer);
         if (enemyHit != null)
         {
-            EnemyCombat enemy = enemyHit.gameObject.GetComponent<EnemyCombat>();
+            SlimeCombat enemy = enemyHit.gameObject.GetComponent<SlimeCombat>();
             if (enemy != null)
             {
-                enemy.gotHit(KnightStats.Instance.damage);
+                enemy.GotHit(KnightStats.Instance.damage);
             }
         }
     }

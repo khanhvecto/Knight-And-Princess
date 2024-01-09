@@ -44,7 +44,6 @@ public class NavigatorManager : MonoBehaviour
 
     public void ShowNavigator(string text)
     {
-        //Get navigator from pool
         GameObject navigator = this.pool.Get();
 
         //Set stats
@@ -52,7 +51,6 @@ public class NavigatorManager : MonoBehaviour
         navigator.transform.position = this.defaultPos.position;    //position
         navigator.transform.SetAsLastSibling(); //Make sure new navigator is display above old navigator
 
-        //Move navigator
         StartCoroutine(this.MoveNavigator(navigator));
     }
 

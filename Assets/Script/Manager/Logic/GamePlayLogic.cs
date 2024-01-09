@@ -1,9 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class GamePlayLogic : MonoBehaviour
 {
@@ -46,6 +41,5 @@ public class GamePlayLogic : MonoBehaviour
     public void TeleportKnight(Transform newPlace)
     {
         knightObj.transform.position = newPlace.position;
-        CameraMovement.Instance.ResetToKnightPos();
     }
 }
