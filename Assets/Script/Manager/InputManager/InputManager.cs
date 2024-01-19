@@ -2,42 +2,22 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    //Design pattern
+    // singleton
     private static InputManager instance;
     public static InputManager Instance { get => instance; }
 
-    //Camera
-    private KeyCode lookDownKey = KeyCode.DownArrow;
-    private KeyCode lookUpKey = KeyCode.UpArrow;
-    private KeyCode lookRightKey = KeyCode.RightArrow;
-    private KeyCode lookLeftKey = KeyCode.LeftArrow;
-
-    //Attack
-    private KeyCode attackKey = KeyCode.Mouse0;
-
-    //Block
-    private KeyCode blockKey = KeyCode.Mouse1;
-
-    //Roll
-    private KeyCode rollKey = KeyCode.LeftShift;
-
-    //Buffs
-    private KeyCode healthBuffKey = KeyCode.Alpha1;
-    private KeyCode shieldBuffKey = KeyCode.Alpha2;
-    private KeyCode damageBuffKey = KeyCode.Alpha3;
-    private KeyCode invincibleBuffKey = KeyCode.Alpha4;
-
-    //Interactable Object
-    private KeyCode interactKey = KeyCode.F;
-
     private void Start()
     {
-        //Design pattern
+        // singleton
         if (instance != null) Debug.LogError("Only 1 InputManager allows to exist!");
         instance = this;
     }
 
-    //Camera
+    #region Camera
+    private KeyCode lookDownKey = KeyCode.DownArrow;
+    private KeyCode lookUpKey = KeyCode.UpArrow;
+    private KeyCode lookRightKey = KeyCode.RightArrow;
+    private KeyCode lookLeftKey = KeyCode.LeftArrow;
     public bool GetLookDownKey()
     {
         if (Input.GetKey(this.lookDownKey)) return true;
@@ -58,15 +38,68 @@ public class InputManager : MonoBehaviour
         if (Input.GetKey(this.lookLeftKey)) return true;
         return false;
     }
+    #endregion
 
-    //Knight attack
+    #region Player movement
+
+    // Jump
+    public KeyCode jumpKey = KeyCode.Space;
+    public bool GetJumpKeyDown()
+    {
+        if (Input.GetKeyDown(this.jumpKey)) return true;
+        return false;
+    }
+    public bool GetJumpKey()
+    {
+        if (Input.GetKey(this.jumpKey)) return true;
+        return false;
+    }
+    public bool GetJumpKeyUp()
+    {
+        if (Input.GetKeyUp(this.jumpKey)) return true;
+        return false;
+    }
+
+    // roll
+    private KeyCode rollKey = KeyCode.LeftShift;
+    public bool GetRollKeyDown()
+    {
+        if (Input.GetKeyDown(this.rollKey)) return true;
+        return false;
+    }
+
+    // Sprint
+    public KeyCode sprintKey = KeyCode.LeftControl;
+    public bool GetSprintKeyDown()
+    {
+        if(Input.GetKeyDown(this.sprintKey)) return true;
+        return false;
+    }
+    public bool GetSprintKey()
+    {
+        if(Input.GetKey(this.sprintKey)) return true;
+        return false;
+    }
+    public bool GetSprintKeyUp()
+    {
+        if (Input.GetKeyUp(this.sprintKey)) return true;
+        return false;
+    }
+
+    #endregion
+
+    #region Player combat
+
+    //Attack
+    private KeyCode attackKey = KeyCode.Mouse0;
     public bool GetAttackKeyDown()
     {
         if (Input.GetKeyDown(this.attackKey)) return true;
         return false;
     }
 
-    //Knight block
+    //Block
+    private KeyCode blockKey = KeyCode.Mouse1;
     public bool GetBlockKeyDown()
     {
         if (Input.GetKeyDown(this.blockKey)) return true;
@@ -83,14 +116,11 @@ public class InputManager : MonoBehaviour
         return false;
     }
 
-    //Knight roll
-    public bool GetRollKeyDown()
-    {
-        if(Input.GetKeyDown(this.rollKey)) return true;
-        return false;
-    }
-
     //Buffs
+    private KeyCode healthBuffKey = KeyCode.Alpha1;
+    private KeyCode shieldBuffKey = KeyCode.Alpha2;
+    private KeyCode damageBuffKey = KeyCode.Alpha3;
+    private KeyCode invincibleBuffKey = KeyCode.Alpha4;
     public bool GetHealthBuffKeyDown()
     {
         if (Input.GetKeyDown(this.healthBuffKey)) return true;
@@ -111,12 +141,14 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(this.invincibleBuffKey)) return true;
         return false;
     }
+    #endregion
 
-
-    //Interactable Object
+    #region Interactable Object
+    private KeyCode interactKey = KeyCode.F;
     public bool GetInteractKeyDown()
     {
         if(Input.GetKeyDown(this.interactKey)) return true;
         return false;
     }
+    #endregion
 }

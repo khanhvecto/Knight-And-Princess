@@ -1,20 +1,33 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SlimeStats : MonoBehaviour, HpBarInterface
 {
     [Header("References")]
-    [SerializeField] private CombatStats statSO;
-    [SerializeField] private SlimeState stateScript;
+    [SerializeField] private EnemyStats statSO;
 
     [Header("Combat range")]
-    [SerializeField] public Vector2 combatRangeSize = new Vector2(2.45f, 1.68f);
-    [SerializeField] public Vector2 combatRangeOffset = new Vector2(-0.93f, 0.52f);
+    public Vector2 combatRangeSize = new Vector2(2.45f, 1.68f);
+    public Vector2 combatRangeOffset = new Vector2(-0.93f, 0.52f);
     public float RANGE_COEFF;
 
     [Header("Combat stats")]
-    [SerializeField] public float health;
-    [SerializeField] public float damage;
-    [SerializeField] public float enduranceDecrement;
+    public float health;
+    public float damage;
+    public float enduranceDecrement;
+    public float distance;
+    public int attackTypeNumber;
+    public int unharmedAttacksAmount;
+
+    [Header("Attacks")]
+    public float maxAttackDelayTime;
+    public float attackTime1;
+    public float attackTime2;
+
+    [Header("Movement stats")]
+    public float approachSpeed;
+    public float normalSpeed;
+    public movingType moveType;
 
     private void Start()
     {
@@ -25,9 +38,6 @@ public class SlimeStats : MonoBehaviour, HpBarInterface
     {
         //CombatStats
         if (this.statSO == null) Debug.LogError("Can't find CombatStats for EnemyStats of " + transform.parent.name);
-        //StateScript
-        this.stateScript = transform.parent.GetComponent<SlimeState>();
-        if (this.stateScript == null) Debug.LogError("Can't find stateScript for EnemyStats of " + transform.parent.name);
     }
     private void LoadStats()    //Load stats from SO
     {
@@ -35,6 +45,15 @@ public class SlimeStats : MonoBehaviour, HpBarInterface
         this.health = this.statSO.health;
         this.damage = this.statSO.damage;
         this.enduranceDecrement = this.statSO.enduranceDecrement;
+        this.normalSpeed = this.statSO.normalSpeed;
+        this.approachSpeed = this.statSO.combatSpeed;
+        this.distance = this.statSO.distance;
+        this.attackTime1 = this.statSO.attackTime1;
+        this.attackTime2 = this.statSO.attackTime2;
+        this.moveType = this.statSO.moveType;
+        this.maxAttackDelayTime = this.statSO.maxDelayAttackTime;
+        this.attackTypeNumber = this.statSO.choosableAttacksAmount;
+        this.unharmedAttacksAmount = this.statSO.unharmedAttacksAmount;
     }
 
     //HpBarInterface
@@ -46,18 +65,5 @@ public class SlimeStats : MonoBehaviour, HpBarInterface
     public float GetMaxHp()
     {
         return this.statSO.health;
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        //Draw combat range
-        if (this.stateScript.isCombating)
-        {
-            Gizmos.DrawWireCube((Vector2)transform.position + this.combatRangeOffset, this.combatRangeSize * this.RANGE_COEFF);
-        }
-        else
-        {
-            Gizmos.DrawWireCube((Vector2)transform.position + this.combatRangeOffset, this.combatRangeSize);
-        }
     }
 }

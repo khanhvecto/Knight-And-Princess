@@ -33,7 +33,7 @@ public class GamePlayLogic : MonoBehaviour
     {
         //Respawn knight body
         this.TeleportKnight(checkPoint);
-        KnightState.Instance.setRespawn();
+        KnightState.Instance.SetRespawn();
         //Reset camera
         CameraMovement.Instance.ResetToKnightPos();
     }

@@ -43,7 +43,7 @@ public class KnightRoll : MonoBehaviour
 
     private bool CheckRollable()
     {
-        if (KnightMovement.Instance.IsGround)   //If the player in standing on ground, he can roll again
+        if (KnightMovement.Instance.isGround)   //If the player in standing on ground, he can roll again
         {
             this.rollable = true;
             return true;

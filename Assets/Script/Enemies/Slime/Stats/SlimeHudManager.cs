@@ -21,7 +21,6 @@ public class SlimeHudManager : HudManager
         //HudObj for base
         if (base.hudObj == null) Debug.LogError("Can't find HUD Object for EnemyHudManager of " + transform.parent.name);
         //stateScript
-        this.stateScript = transform.parent.GetComponent<SlimeState>();
         if (this.stateScript == null) Debug.LogError("Can't find stateScript for EnemyHudManager of " + transform.parent.name);
     }
 

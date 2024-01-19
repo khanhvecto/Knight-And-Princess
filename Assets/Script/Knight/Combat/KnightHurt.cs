@@ -41,13 +41,13 @@ public class KnightHurt : MonoBehaviour
                 //If bloking right and attacked left
                 if (KnightState.Instance.rightBlocking && this.CheckLeftAttack(attackPos))
                 {
-                    KnightState.Instance.flip();
+                    KnightState.Instance.Flip();
                     this.TakeDamage(damage);
                 }
                 //If blocking left and attacked right
                 else if (!KnightState.Instance.rightBlocking && !this.CheckLeftAttack(attackPos))
                 {
-                    KnightState.Instance.flip();
+                    KnightState.Instance.Flip();
                     this.TakeDamage(damage);
                 }
                 //If blocking toward enemy
@@ -77,16 +77,17 @@ public class KnightHurt : MonoBehaviour
         KnightState.Instance.controlable = false;
         this.CheckDead();
     }
+
     public void TakeDamage(float damage, Transform attackPos)   //Can flip if not facing attackPos
     {
         //Check flip
         if(KnightState.Instance.facingRight && this.CheckLeftAttack(attackPos))
         {
-            KnightState.Instance.flip();
+            KnightState.Instance.Flip();
         }
         else if(!KnightState.Instance.facingRight && !this.CheckLeftAttack(attackPos))
         {
-            KnightState.Instance.flip();
+            KnightState.Instance.Flip();
         }
 
         //Take damage
@@ -99,13 +100,13 @@ public class KnightHurt : MonoBehaviour
 
         if (KnightStats.Instance.health <= 0)
         {
-            KnightState.Instance.setDead();
+            KnightState.Instance.SetDead();
         }
     }
 
     private bool CheckLeftAttack(Transform attackPos)
     {
-        if (attackPos.position.x < transform.parent.parent.position.x) return true;
+        if (attackPos.transform.position.x < transform.parent.parent.position.x) return true;
         return false;
     }
 }

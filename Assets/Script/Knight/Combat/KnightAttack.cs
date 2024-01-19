@@ -2,13 +2,16 @@ using UnityEngine;
 
 public class KnightAttack : MonoBehaviour
 {
-    //Design pattern
+    //Singleton
     private static KnightAttack instance;
     public static KnightAttack Instance { get => instance; }
 
     [Header("References")]
     [SerializeField] private Animator animator;
     [SerializeField] private LayerMask enemyLayer;
+        // Sound
+    [SerializeField] protected string attackSoundPoolTag;
+    protected ObjectPooling attackSoundPoolScript;
 
     //Cooldown
     private bool attackable = true;
@@ -19,7 +22,7 @@ public class KnightAttack : MonoBehaviour
 
     private void Awake()
     {
-        //Design pattern
+        //Singleton
         if (instance != null) Debug.LogError("Only 1 KnightAttack allow to exist!");
         instance = this;
     }
@@ -29,6 +32,10 @@ public class KnightAttack : MonoBehaviour
         //Check references
         if (this.animator == null) Debug.LogError("Can't find animator for KnightAttack");
         if (this.attackPoint == null) Debug.LogError("Can't find attackPoint for KnightAttack");
+        // attack sound pool
+        this.attackSoundPoolScript = GameObject.FindGameObjectWithTag(this.attackSoundPoolTag)?.GetComponent<ObjectPooling>();
+        if (this.attackSoundPoolScript == null)
+            Debug.LogError("Can't find attack sound pool script for KnightAttack of " + transform.parent.parent.name);
     }
 
     void Update()
@@ -44,28 +51,30 @@ public class KnightAttack : MonoBehaviour
 
     private void CheckAttack()
     {
-        if (InputManager.Instance.GetAttackKeyDown())    //If player press attack key
+        if (InputManager.Instance.GetAttackKeyDown())
         {
             animator.SetTrigger("attack");
+            this.attackSoundPoolScript.Get();   // Play sound on awake
         }
     }
 
-    //Animation functions
     public void TriggerAttack()
     {
         //Check if attack touch enemy
         Collider2D enemyHit = Physics2D.OverlapCircle(this.attackPoint.position, this.range, this.enemyLayer);
-        if (enemyHit != null)
+        if (enemyHit == null) return;
+
+        SlimeDamageReceiver enemy = enemyHit.gameObject.GetComponent<SlimeDamageReceiver>();
+        if (enemy == null)
         {
-            SlimeCombat enemy = enemyHit.gameObject.GetComponent<SlimeCombat>();
-            if (enemy != null)
-            {
-                enemy.GotHit(KnightStats.Instance.damage);
-            }
+            enemy = enemyHit.gameObject.GetComponentInChildren<SlimeDamageReceiver>();
         }
+
+        if (enemy == null) return;
+
+        enemy.GotHit(KnightStats.Instance.damage, transform.parent.parent, 0);
     }
 
-    //Visualize attack range
     private void OnDrawGizmosSelected()
     {
         if (this.attackPoint != null)

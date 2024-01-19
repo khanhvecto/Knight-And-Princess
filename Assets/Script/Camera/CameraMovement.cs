@@ -247,7 +247,7 @@ public class CameraMovement : MonoBehaviour
         transform.position = new Vector3(tmpPos.x, tmpPos.y, this.zAxisPosition);
 
         //Check if standing
-        if (KnightMovement.Instance.Horizontal == 0f && !KnightMovement.Instance.falling)
+        if (KnightMovement.Instance.horizontal == 0f && !KnightMovement.Instance.falling)
         {
             this.ResetDeadzone();
         }
@@ -258,7 +258,7 @@ public class CameraMovement : MonoBehaviour
     /// 
     protected virtual void FindVerticalLevel()  //Change state of vertical state (freezing) and veritcal level
     {
-        if (KnightMovement.Instance.IsGround)
+        if (KnightMovement.Instance.isGround)
         {
             this.freezing = false;
 
@@ -305,7 +305,7 @@ public class CameraMovement : MonoBehaviour
     {
         //Set stats
             //Set knight stays steady
-        KnightMovement.Instance.Horizontal = 0f;
+        KnightMovement.Instance.horizontal = 0f;
         KnightMovement.Instance.RigidBody.velocity = new Vector2(0f, KnightMovement.Instance.RigidBody.velocity.y);
         KnightState.Instance.controlable = false;
             //UI

@@ -12,6 +12,8 @@ TagManager:
   - PoolArrow
   - PoolBrick
   - PoolNavigator
+  - BloodSplashSoundPool
+  - SwordSlashSoundPool
   layers:
   - Default
   - TransparentFX

@@ -4,7 +4,7 @@ public class SlimeEventAnimation : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private SlimeState stateScript;
-    [SerializeField] private SlimeCombat combatScript;
+    [SerializeField] private SlimeDamageSender combatScript;
 
     private void Start()
     {
@@ -13,10 +13,8 @@ public class SlimeEventAnimation : MonoBehaviour
     private void LoadReferences()
     {
         //EnemyState
-        this.stateScript = gameObject.GetComponent<SlimeState>();
         if (this.stateScript == null) Debug.LogError("Can't find EnemyState for EnemyEventAnimation of " + gameObject.name);
         //EnemyCombat
-        this.combatScript = gameObject.GetComponent<SlimeCombat>();
         if (this.combatScript == null) Debug.LogError("Can't find EnemyCombat for EnemyEventAnimation of " + gameObject.name);
     }
 

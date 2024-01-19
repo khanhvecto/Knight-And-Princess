@@ -1,33 +1,33 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class SlimeNormalMove: MonoBehaviour
 {
     //Reference
-    [SerializeField] private Rigidbody2D rb2D;
-    [SerializeField] private Animator animator;
-    [SerializeField] private SlimeState stateScript;
-    [SerializeField] private CombatStats statSO;
+    [SerializeField] protected Rigidbody2D rb2D;
+    [SerializeField] protected Animator animator;
+    [SerializeField] protected SlimeState stateScript;
+    [SerializeField] protected EnemyStats statSO;
 
     [Header("Layer")]
-    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] protected LayerMask groundLayer;
 
     [Header("Basic stats")]
-    [SerializeField] private float speed;
-    [SerializeField] private float defaultMoveRange = 1.5f;
-    private float moveRange;
-    private Vector2 spawnPlace;
+    [SerializeField] protected float speed;
+    [SerializeField] protected float defaultHorizontalMoveRange;
+    protected float horizontalMoveRange;
+    protected Vector2 spawnPlace;
 
     [Header("Check wall stuck")]
     protected Vector2 capturedPos;
     protected float capturedTime = 0f;
 
-    private void Start()
+    protected virtual void Start()
     {
         speed = statSO.normalSpeed;
+        this.defaultHorizontalMoveRange = this.statSO.horizontalMoveRange;
     }
 
-    public void Move()
+    public virtual void Move()
     {
         float moveDistance = transform.position.x - spawnPlace.x;
 
@@ -38,28 +38,28 @@ public class SlimeNormalMove: MonoBehaviour
             //Reset spawnPoint
             if (moveDistance < 0)
             {
-                this.spawnPlace = ((Vector2) transform.position + this.spawnPlace + Vector2.right*this.moveRange) / 2;
-                this.moveRange = this.spawnPlace.x - transform.position.x;
+                this.spawnPlace = ((Vector2) transform.position + this.spawnPlace + Vector2.right*this.horizontalMoveRange) / 2;
+                this.horizontalMoveRange = this.spawnPlace.x - transform.position.x;
             }
             else
             {
-                this.spawnPlace = ((Vector2)transform.position + this.spawnPlace - Vector2.right * this.moveRange) / 2;
-                this.moveRange = transform.position.x - this.spawnPlace.x;
+                this.spawnPlace = ((Vector2)transform.position + this.spawnPlace - Vector2.right * this.horizontalMoveRange) / 2;
+                this.horizontalMoveRange = transform.position.x - this.spawnPlace.x;
             }
         }
         //If need to turn around
-        else if ((moveDistance >= moveRange && !stateScript.facingLeft) ||
-                (moveDistance <= -moveRange && stateScript.facingLeft))
+        else if ((moveDistance >= horizontalMoveRange && !stateScript.facingLeft) ||
+                (moveDistance <= -horizontalMoveRange && stateScript.facingLeft))
         {
             stateScript.Flip();
         }
         else
         {
-            MoveHorizontal();
+            SetMove();
         }
     }
 
-    void MoveHorizontal()
+    protected virtual void SetMove()
     {
         if (stateScript.facingLeft)
         {
@@ -88,6 +88,6 @@ public class SlimeNormalMove: MonoBehaviour
     public void ResetNormalMoveRange()
     {
         this.spawnPlace = (Vector2)transform.position;
-        this.moveRange = this.defaultMoveRange;
+        this.horizontalMoveRange = this.defaultHorizontalMoveRange;
     }
 }

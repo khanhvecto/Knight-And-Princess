@@ -3,74 +3,75 @@ using UnityEngine;
 public class SlimeAttackMove : MonoBehaviour
 {
     //Reference
-    [SerializeField] SlimeState stateScript;
-    [SerializeField] SlimeCombat combatScript;
-    [SerializeField] CombatStats statSO;
-    [SerializeField] Rigidbody2D rb2D;
-    [SerializeField] Animator animator;
+    [SerializeField] protected SlimeState stateScript;
+    [SerializeField] protected SlimeStats statsScript;
+    [SerializeField] protected SlimeDamageSender combatScript;
+    [SerializeField] protected Rigidbody2D rb2D;
+    [SerializeField] protected Animator animator;
 
-    //Basic Movement
-    private float distance; //Distance with human
-    private float speed;
-
-    //Tracker
-    private Collider2D hostileColl;
-
-    private void Start()
+    public void ApproachEnemy()
     {
-        distance = statSO.distance;
-        speed = statSO.combatSpeed;
-    }
-
-    public void Move()
-    {
-        //Re-update hostile object
-        hostileColl = stateScript.targetColl;
-
         if(NeedToFlip())
         {
             stateScript.Flip();
         }
         
         //Check for move
-        if(FarAwayHostile())
+        if(FarAwayEnemy(1f))
         {
-            MoveToHostile();
+            MoveToEnemy();
         }
         else
         {
             Stop();
-            combatScript.TryAttack();
+            this.ActionWhenCloseEnemy();
         }
     }
 
     //Check if need to move to hostile
 
-    private bool FarAwayHostile()
+    protected bool FarAwayEnemy(float multiplier)
     {
-        return Mathf.Abs(transform.position.x - hostileColl.transform.position.x) > distance;
+        if (this.stateScript.targetColl == null) return true;
+        float distance = Vector2.Distance(transform.position, this.stateScript.targetColl.transform.position);
+        return distance > this.statsScript.distance * multiplier;
     }
-    private void MoveToHostile()
+
+    protected virtual void MoveToEnemy()
     {
-        if (stateScript.facingLeft)
+        if (this.stateScript.targetColl == null) return;
+
+        if(this.statsScript.moveType == movingType.walk)
         {
-            rb2D.velocity = new Vector2(-speed, rb2D.velocity.y);
+            if (this.stateScript.facingLeft)
+                this.rb2D.velocity = new Vector2(-this.statsScript.approachSpeed, this.rb2D.velocity.y);
+            else 
+                this.rb2D.velocity = new Vector2(this.statsScript.approachSpeed, this.rb2D.velocity.y);
         }
         else
-        {
-            rb2D.velocity = new Vector2(speed, rb2D.velocity.y);
+        { 
+            var direction = this.stateScript.targetColl.transform.position - transform.position;
+            direction.Normalize();
+            this.rb2D.velocity = direction * this.statsScript.approachSpeed;
         }
     }
-    private void Stop()
+
+    protected void Stop()
     {
-        rb2D.velocity = new Vector2(0, rb2D.velocity.y);
+        rb2D.velocity = new Vector2(0, 0);
+    }
+
+    protected virtual void ActionWhenCloseEnemy()
+    {
+        combatScript.TryAttack();
     }
 
     //Check if need to flip
 
-    private bool NeedToFlip()
+    protected virtual bool NeedToFlip()
     {
-        return (stateScript.facingLeft && transform.position.x < hostileColl.transform.position.x) ||
-            (!stateScript.facingLeft && transform.position.x > hostileColl.transform.position.x);
+        if (this.stateScript.targetColl == null) return false;
+        return (stateScript.facingLeft && transform.position.x < this.stateScript.targetColl.transform.position.x) ||
+            (!stateScript.facingLeft && transform.position.x > this.stateScript.targetColl.transform.position.x);
     }
 }

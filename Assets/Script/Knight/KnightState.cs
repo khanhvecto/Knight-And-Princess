@@ -54,7 +54,7 @@ public class KnightState : MonoBehaviour
         if (this.animator == null) Debug.LogError("Can't find animator for KnightState");
     }
 
-    public void flip() //Flip knight heading direction
+    public void Flip() //Flip knight heading direction
     {
         facingRight = !facingRight;
         transform.Rotate(0f, 180f, 0f);
@@ -62,7 +62,7 @@ public class KnightState : MonoBehaviour
     }
 
     //Dead or alive state
-    public void setDead()
+    public void SetDead()
     {
         //Set state
         this.controlable = false;
@@ -78,7 +78,7 @@ public class KnightState : MonoBehaviour
         UIFunction.Instance.ShowDeadScreen(true);
     }
 
-    public void setRespawn()
+    public void SetRespawn()
     {
         animator.SetBool("alive", true);
         this.controlable = true;
