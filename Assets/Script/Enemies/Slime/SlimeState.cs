@@ -43,7 +43,7 @@ public class SlimeState : MonoBehaviour
     public void Flip()  //Flip slime
     {
         rb2D.velocity = new Vector2(-rb2D.velocity.x, rb2D.velocity.y);
-        transform.Rotate(0f, 180f, 0f);
+        transform.parent.Rotate(0f, 180f, 0f);
         this.hudObj.transform.Rotate(0f, 180f, 0f);
         facingLeft = !facingLeft;
         this.statScript.combatRangeOffset.x = -this.statScript.combatRangeOffset.x;

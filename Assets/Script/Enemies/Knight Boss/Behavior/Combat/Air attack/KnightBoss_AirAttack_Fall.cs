@@ -31,7 +31,7 @@ public class KnightBoss_AirAttack_Fall : StateMachineBehaviour
     protected void LoadReferences(Animator animator)
     {
         // state script
-        this.stateScript = animator.GetComponent<SlimeState>();
+        this.stateScript = animator.GetComponentInChildren<SlimeState>();
         if (this.stateScript == null) Debug.LogError("Can't find state script for KnightBoss_AirAttack_Jump of " + animator.name);
         // foot position
         this.footPosition = animator.transform.Find("Movement").Find("Foot position");

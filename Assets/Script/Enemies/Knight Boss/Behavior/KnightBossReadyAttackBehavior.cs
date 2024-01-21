@@ -8,7 +8,7 @@ public class KnightBossReadyAttackBehavior : StateMachineBehaviour
     {
         this.LoadReferences(animator);
         this.movementScript.ResetReadyTimer();
-        this.movementScript.Stop();
+        this.movementScript.StopMoving();
     }
 
     protected void LoadReferences(Animator animator)

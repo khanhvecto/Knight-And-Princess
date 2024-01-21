@@ -29,7 +29,7 @@ public class KnightBossMove: MonoBehaviour
             Debug.LogError("Can't find conbat script for KnightBossMove of " + transform.parent.name);
     }
 
-    public void Stop()
+    public void StopMoving()
     {
         this.stateScript.rb2D.velocity = Vector2.zero;
     }

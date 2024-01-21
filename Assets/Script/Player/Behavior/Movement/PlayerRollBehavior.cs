@@ -6,6 +6,7 @@ public class PlayerRollBehavior : StateMachineBehaviour
     protected PlayerMovement movementScript;
     protected PlayerStats statsScript;
     protected Animator animator;
+    protected PlayerSounds soundsScript;
 
     [Header("States")]
     protected bool isLoadedReferences = false;
@@ -31,6 +32,10 @@ public class PlayerRollBehavior : StateMachineBehaviour
         this.statsScript = animator.GetComponentInChildren<PlayerStats>();
         if (this.statsScript == null)
             Debug.LogError("Can't find stats script for PlayerIdleBehavior of " + name);
+        // Sounds script
+        this.soundsScript = animator.GetComponentInChildren<PlayerSounds>();
+        if (this.soundsScript == null)
+            Debug.LogError("Can't find sounds script for PlayerIdleBehavior of " + name);
         // animator
         this.animator = animator;
 
@@ -45,6 +50,7 @@ public class PlayerRollBehavior : StateMachineBehaviour
         this.statsScript.rb2D.gravityScale = 0;
         this.statsScript.hurtable = false;
         Physics2D.IgnoreLayerCollision(this.animator.gameObject.layer, this.statsScript.enemyLayer, true);
+        this.soundsScript.PlayRandomRollSound();
     }
 
     protected void PushForward()

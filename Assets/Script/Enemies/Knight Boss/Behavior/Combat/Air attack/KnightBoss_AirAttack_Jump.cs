@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class KnightBoss_AirAttack_Jump : StateMachineBehaviour
@@ -7,7 +6,7 @@ public class KnightBoss_AirAttack_Jump : StateMachineBehaviour
     protected SlimeState stateScript;
 
     // Stats
-    protected float jumpHeight = 5f;
+    protected float jumpHeight = 10f;
     protected float newPosHeight;
     protected float jumpSpeed = 3f;
     protected float oldGravity;
@@ -25,7 +24,7 @@ public class KnightBoss_AirAttack_Jump : StateMachineBehaviour
 
     private void LoadReferences(Animator animator)
     {
-        this.stateScript = animator.GetComponent<SlimeState>();
+        this.stateScript = animator.GetComponentInChildren<SlimeState>();
         if (this.stateScript == null) Debug.LogError("Can't find state script for KnightBoss_AirAttack_Jump of " + animator.name);
     }
 

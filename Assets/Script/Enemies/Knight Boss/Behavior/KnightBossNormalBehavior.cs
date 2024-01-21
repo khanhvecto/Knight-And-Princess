@@ -10,7 +10,7 @@ public class KnightBossNormalBehavior: StateMachineBehaviour
         moveScript = animator.GetComponentInChildren<KnightBossMove>();
         if (this.moveScript == null) Debug.Log("Can't find KnightBossMove Script for KnightBossNormalBehavior in " + animator.name);
 
-        if (this.moveScript != null) this.moveScript.Stop();
+        if (this.moveScript != null) this.moveScript.StopMoving();
     }
 
     //OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

@@ -75,7 +75,7 @@ public class KnightState : MonoBehaviour
         animator.SetBool("alive", false);
         animator.SetTrigger("dead");
 
-        UIFunction.Instance.ShowDeadScreen(true);
+        //UIFunction.Instance.ShowDeadScreen(true);
     }
 
     public void SetRespawn()
@@ -91,7 +91,7 @@ public class KnightState : MonoBehaviour
         KnightStats.Instance.endurance = KnightStats.Instance.maxEndurance;
         KnightState.Instance.restoringEndurance = true;
 
-        UIFunction.Instance.ShowDeadScreen(false);
+        //UIFunction.Instance.ShowDeadScreen(false);
 
         //Reset camera
         CameraMovement.Instance.ResetDeadzone();

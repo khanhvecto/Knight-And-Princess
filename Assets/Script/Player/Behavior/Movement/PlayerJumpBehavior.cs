@@ -6,6 +6,7 @@ public class PlayerJumpBehavior : StateMachineBehaviour
     protected PlayerMovement movementScript;
     protected PlayerStats statsScript;
     protected Animator animator;
+    protected PlayerSounds soundScript;
 
     [Header("States")]
     protected bool isLoadedReferences = false;
@@ -27,6 +28,10 @@ public class PlayerJumpBehavior : StateMachineBehaviour
         this.statsScript = animator.GetComponentInChildren<PlayerStats>();
         if (this.statsScript == null)
             Debug.LogError("Can't find stats script for PlayerIdleBehavior of " + name);
+        // Sound script
+        this.soundScript = animator.GetComponentInChildren<PlayerSounds>();
+        if (this.soundScript == null)
+            Debug.LogError("Can't find sound script for PlayerIdleBehavior of " + name);
         // animator
         this.animator = animator;
 
@@ -37,6 +42,7 @@ public class PlayerJumpBehavior : StateMachineBehaviour
     {
         this.movementScript.jumpTakenAmount++;
         this.statsScript.rb2D.velocity = new Vector2(this.statsScript.rb2D.velocity.x, this.statsScript.jumpForce);
+        this.soundScript.PlayRandomJumpSound();
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -62,6 +68,12 @@ public class PlayerJumpBehavior : StateMachineBehaviour
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.SetBool("isJumping", false);
+        this.ResetStats();
+    }
+
+    protected void ResetStats()
+    {
+        this.animator.SetBool("isJumping", false);
+        this.animator.ResetTrigger("endState");
     }
 }

@@ -17,7 +17,7 @@ public class KnightBossBlastGroundBehavior : StateMachineBehaviour
         if (!this.isLoadedReferences) 
             this.LoadReferences(animator);
 
-        this.movementScript.Stop();
+        this.movementScript.StopMoving();
         this.ResetStats();
         this.OnEnterState();
     }

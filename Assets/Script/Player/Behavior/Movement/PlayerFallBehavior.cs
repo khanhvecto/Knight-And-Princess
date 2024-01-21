@@ -6,6 +6,7 @@ public class PlayerFallBehavior : StateMachineBehaviour
     protected PlayerMovement movementScript;
     protected PlayerStats statsScript;
     protected Animator animator;
+    protected PlayerSounds soundsScript;
 
     [Header("States")]
     protected bool isLoadedReferences = false;
@@ -27,6 +28,10 @@ public class PlayerFallBehavior : StateMachineBehaviour
         this.statsScript = animator.GetComponentInChildren<PlayerStats>();
         if (this.statsScript == null)
             Debug.LogError("Can't find stats script for PlayerIdleBehavior of " + name);
+        // Sounds script
+        this.soundsScript = animator.GetComponentInChildren<PlayerSounds>();
+        if (this.soundsScript == null)
+            Debug.LogError("Can't find sounds script for PlayerIdleBehavior of " + name);
         // animator
         this.animator = animator;
 
@@ -65,7 +70,10 @@ public class PlayerFallBehavior : StateMachineBehaviour
     protected void CheckLanding()
     {
         if (this.statsScript.isOnGround || this.statsScript.rb2D.velocity.y == 0)
+        {
+            this.soundsScript.PlayRandomLandingSound();
             this.animator.SetTrigger("endState");
+        }
     }
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -77,5 +85,6 @@ public class PlayerFallBehavior : StateMachineBehaviour
     {
         this.statsScript.rb2D.gravityScale /= 1.5f;
         animator.SetBool("isFalling", false);
+        this.animator.ResetTrigger("endState");
     }
 }

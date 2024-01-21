@@ -4,7 +4,6 @@ public class KnightBossApproachBehavior : StateMachineBehaviour
 {
     private KnightBossMove movementScript;
 
-    // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         this.movementScript = animator.GetComponentInChildren<KnightBossMove>();
@@ -12,15 +11,23 @@ public class KnightBossApproachBehavior : StateMachineBehaviour
             Debug.LogError("Can't find movement script for KnightBossCombatBehavior of " + animator.name);
     }
 
-    //OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         movementScript.ApproachEnemy();
     }
 
-    // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    //protected void ApproachEnemy()
     //{
-    //    
+    //    if (!this.IsFarAwayEnemy(1f))
+    //    {
+    //        // Change behavior to ready attack
+    //        this.stateScript.animator.SetBool("ready", true);
+    //        return;
+    //    }
+
+    //    if (this.IsNeedToFlip())
+    //        this.stateScript.Flip();
+
+    //    this.MoveToEnemy();
     //}
 }

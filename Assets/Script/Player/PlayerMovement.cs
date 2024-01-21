@@ -1,4 +1,3 @@
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -202,6 +201,11 @@ public class PlayerMovement : MonoBehaviour
     {
         this.statsScript.isFacingRight = !this.statsScript.isFacingRight;
         transform.parent.Rotate(0f, 180f, 0f);
+    }
+
+    public void PushForward(float force)
+    {
+        this.statsScript.rb2D.AddForce(transform.right * force, ForceMode2D.Impulse);
     }
 
     #endregion

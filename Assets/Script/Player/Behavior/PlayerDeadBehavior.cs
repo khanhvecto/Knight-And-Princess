@@ -5,7 +5,10 @@ public class PlayerDeadBehavior : StateMachineBehaviour
     [Header("References")]
     protected PlayerMovement movementScript;
     protected PlayerStats statsScript;
+    protected PlayerCombat combatScript;
+    protected UIFunction _UIScript;
     protected Animator animator;
+    protected PlayerSounds deadSound;
 
     [Header("States")]
     protected bool isLoadedReferences = false;
@@ -30,6 +33,18 @@ public class PlayerDeadBehavior : StateMachineBehaviour
         this.statsScript = animator.GetComponentInChildren<PlayerStats>();
         if (this.statsScript == null)
             Debug.LogError("Can't find stats script for PlayerDeadBahavior of " + name);
+        // Combat script
+        this.combatScript = animator.GetComponentInChildren<PlayerCombat>();
+        if (this.combatScript == null)
+            Debug.LogError("Can't find combat script for PlayerDeadBehavior of " + name);
+        // UI script
+        this._UIScript = animator.GetComponentInChildren<UIFunction>();
+        if (this._UIScript == null)
+            Debug.LogError("Can't find UI script for PlayerDeadBehavior of " + name);
+        // Dead sound
+        this.deadSound = animator.GetComponentInChildren<PlayerSounds>();
+        if (this.deadSound == null)
+            Debug.LogError("Can't find dead sound for PlayerDeadBehavior of " + name);
         // animator
         this.animator = animator;
 
@@ -38,18 +53,20 @@ public class PlayerDeadBehavior : StateMachineBehaviour
 
     protected void SetStats()
     {
-        this.movementScript.StopMoving();
+        // States
         this.statsScript.controlable = false;
         this.statsScript.isDead = true;
         this.statsScript.hurtable = false;
+        this.statsScript.stunnedable = false;
+        this.movementScript.StopMoving();
+        // Layers
         this.oldLayer = animator.gameObject.layer;
         this.animator.gameObject.layer = this.statsScript.deadLayer;
-    }
+        // Effects
+        this._UIScript.ShowDeadScreen(true);
+        this.deadSound.PlayRandomDeadSound();
 
-    //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -58,9 +75,18 @@ public class PlayerDeadBehavior : StateMachineBehaviour
 
     protected void ResetStats()
     {
+        // States
         this.statsScript.controlable = true;
-        this.animator.gameObject.layer = this.oldLayer;
         this.statsScript.isDead = false;
         this.statsScript.hurtable = true;
+        this.statsScript.stunnedable = true;
+        // Layers
+        this.animator.gameObject.layer = this.oldLayer;
+        // Stats
+        this.statsScript.ResetCurrentStasts();
+        // Screens
+        this._UIScript.ShowDeadScreen(false);
+        // Animator trigger
+        this.animator.ResetTrigger("endState");
     }
 }

@@ -2,27 +2,40 @@ using UnityEngine;
 
 public class UIFunction : MonoBehaviour
 {
-    private static UIFunction instance;
-
     [Header("Screens")]
-    [SerializeField] private GameObject deadScreeen;
+    [SerializeField] protected PlayerManager managerScript;
+    [SerializeField] protected GameObject deadScreeen;
 
-    public static UIFunction Instance { get => instance;}
-
-    private void Awake()
+    protected void Start()
     {
-        //Design pattern
-        if (UIFunction.instance != null) Debug.LogError("Only 1 UIFunction allow to exist!");
-        UIFunction.instance = this;
+        this.CheckReferences();
     }
 
-    public void RestartButtonClicked()
+    protected void CheckReferences()
     {
-        GamePlayLogic.Instance.RespawnKnight();
+        // Manager script
+        if (this.managerScript == null)
+            Debug.LogError("Can't find manager script for UIFunction of " + transform.parent.name);
+        // Dead screen
+        if (this.deadScreeen == null)
+            Debug.LogError("Can't find dead screen for UIFunction of " + transform.parent.name);
     }
 
-    public void ShowDeadScreen(bool option)
+    #region Buttons
+
+    public void ReviveButtonClicked()
     {
-        deadScreeen.SetActive(option);
+        this.managerScript.RevivePlayer();
     }
+
+    #endregion
+
+    #region Screens
+
+    public void ShowDeadScreen(bool state)
+    {
+        deadScreeen.SetActive(state);
+    }
+
+    #endregion
 }
