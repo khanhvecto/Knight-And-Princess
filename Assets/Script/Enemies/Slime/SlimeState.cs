@@ -6,7 +6,7 @@ public class SlimeState : MonoBehaviour
     [Header("References")]
     [SerializeField] public Animator animator;
     [SerializeField] public LayerMask knightLayer;
-    [SerializeField] private SlimeStats statScript;
+    [SerializeField] private KnightBossStats statScript;
     [SerializeField] protected GameObject hudObj;
 
     [Header("Control state")]

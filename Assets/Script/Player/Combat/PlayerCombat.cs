@@ -5,6 +5,7 @@ public class PlayerCombat : MonoBehaviour, IDamageReceiver
     [Header("References")]
     [SerializeField] protected PlayerStats statsScript;
     [SerializeField] protected PlayerSounds soundsScript;
+    [SerializeField] protected PlayerMovement movementScript;
 
     [Header("Stats")]
     [SerializeField] protected float currentParryTime;
@@ -23,6 +24,9 @@ public class PlayerCombat : MonoBehaviour, IDamageReceiver
         // Sounds script
         if (this.soundsScript == null)
             Debug.LogError("Can't find parry sounds script for PlayerCombat of " + transform.parent.name);
+        // Movement script
+        if (this.movementScript == null)
+            Debug.LogError("Can't find movement script for PlayerCombat of " + transform.parent.name);
     }
 
     protected void Update()
@@ -156,9 +160,17 @@ public class PlayerCombat : MonoBehaviour, IDamageReceiver
             return;
 
         if (this.statsScript.isAttacking)
+        {
+            // Check if player want to flip
+            this.movementScript.horizontal = Input.GetAxisRaw("Horizontal");
+            this.movementScript.CheckFlip();
+
             this.statsScript.animator.SetTrigger("attackCombo");
+        }
         else
+        {
             this.statsScript.animator.SetTrigger("attack");
+        }
     }
 
     #endregion

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPooling : MonoBehaviour
+public abstract class ObjectPooling : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] protected GameObject objectPrefab;
@@ -9,9 +9,13 @@ public class ObjectPooling : MonoBehaviour
 
     protected void Awake()
     {
+        this.SetSingleton();
         this.CheckReferences();
     }
-    protected void CheckReferences()
+
+    protected abstract void SetSingleton();
+
+    protected virtual void CheckReferences()
     {
         //Prefab
         if (this.objectPrefab == null) Debug.LogError("Can't find prefab for ObjectPool");

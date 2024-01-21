@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 321657706522318628}
+  - component: {fileID: 8150359208874502134}
   - component: {fileID: 8691813467871554611}
-  - component: {fileID: 8343124037256410998}
   m_Layer: 0
   m_Name: Blood splash sound
   m_TagString: Untagged
@@ -33,6 +33,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8150359208874502134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8298553335813414000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f6692bec4908bc4cad346dfae8b77bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 8691813467871554611}
 --- !u!82 &8691813467871554611
 AudioSource:
   m_ObjectHideFlags: 0
@@ -129,17 +142,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &8343124037256410998
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8298553335813414000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ce7c96fe4a6c2f47a7b661959900782, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  poolTag: BloodSplashSoundPool
-  audioSource: {fileID: 8691813467871554611}

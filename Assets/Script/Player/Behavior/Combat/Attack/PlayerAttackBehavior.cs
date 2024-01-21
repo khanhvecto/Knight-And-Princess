@@ -13,6 +13,7 @@ public class PlayerAttackBehavior : StateMachineBehaviour
 
     [Header("Stats")]
     protected float pushTimer;
+    protected float oldGravity;
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -41,12 +42,17 @@ public class PlayerAttackBehavior : StateMachineBehaviour
 
     protected void SetStats()
     {
+        // States
         this.statsScript.isAttacking = true;
         this.statsScript.blockable = false;
         this.statsScript.movable = false;
+
         this.soundScript.PlayRandomSwordSlashSound();
-        this.movementScript.StopMoving();
+        
         // Push forward
+        this.movementScript.StopMoving();
+        this.oldGravity = this.statsScript.rb2D.gravityScale;
+        this.statsScript.rb2D.gravityScale = 0f;
         this.pushTimer = 0f;
         this.isPushing = true;
     }
@@ -68,6 +74,7 @@ public class PlayerAttackBehavior : StateMachineBehaviour
         {
             this.movementScript.StopMoving();
             this.isPushing = false;
+            //this.statsScript.rb2D.gravityScale = this.oldGravity;
         }
     }
 
@@ -82,5 +89,7 @@ public class PlayerAttackBehavior : StateMachineBehaviour
         this.statsScript.blockable = true;
         this.statsScript.movable = true;
         animator.ResetTrigger("attackCombo");
+
+        this.statsScript.rb2D.gravityScale = this.oldGravity;
     }
 }

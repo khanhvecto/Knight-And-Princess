@@ -22,12 +22,8 @@ public class KnightBoss_TakeHit_Behavior : StateMachineBehaviour
     {
         // combat script
         this.combatScript = animator.GetComponentInChildren<KnightBoss_Combat>();
-        if (this.combatScript == null)
-            Debug.LogError("Can't find combat script for KnightBoss_TakeHit_Behavior of " + animator.name);
         // Move script
         this.moveScript = animator.GetComponentInChildren<KnightBossMove>();
-        if (this.moveScript == null)
-            Debug.LogError("Can't find move script for KnightBoss_TakeHit_Behavior of " + animator.name);
 
         this.isLoadedReferences = true;
     }

@@ -90,7 +90,7 @@ public class PlayerMovement : MonoBehaviour
 
     #region Called every frame if controllable
 
-    protected void CheckFlip()
+    public void CheckFlip()
     {
         if ((horizontal < 0 && this.statsScript.isFacingRight) || (horizontal > 0 && !this.statsScript.isFacingRight))
             this.Flip();

@@ -3,70 +3,63 @@ using UnityEngine;
 public class KnightBossMove: MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] protected SlimeState stateScript;
-    [SerializeField] protected SlimeStats statScript;
+    [SerializeField] protected KnightBossStats statScript;
     [SerializeField] protected KnightBoss_Combat combatScript;
+    [SerializeField] protected Transform hudObj;
 
     [Header("Parameters")]
     protected float attackWaitTime;
     protected float startOfWaitTime;
 
-    protected void Start()
-    {
-        this.LoadReferences();
-    }
-
-    protected void LoadReferences()
-    {
-        // state script
-        if (this.stateScript == null)
-            Debug.LogError("Can't find state script for KnightBossMove of " + transform.parent.name);
-        // stat script
-        if (this.statScript == null) 
-            Debug.LogError("Can't find stat script for KnightBossMove of " + transform.parent.name);
-        // combat script
-        if (this.combatScript == null) 
-            Debug.LogError("Can't find conbat script for KnightBossMove of " + transform.parent.name);
-    }
-
     public void StopMoving()
     {
-        this.stateScript.rb2D.velocity = Vector2.zero;
+        this.statScript.rb2D.velocity = Vector2.zero;
     }
+
+    #region Approach behavior
 
     public void ApproachEnemy()
     {
         if(!this.IsFarAwayEnemy(1f))
         {
             // Change behavior to ready attack
-            this.stateScript.animator.SetBool("ready", true);
+            this.statScript.animator.SetBool("ready", true);
             return;
         }
 
-        if (this.IsNeedToFlip())
-            this.stateScript.Flip();
+        this.CheckFlip();
 
         this.MoveToEnemy();
     }
+    protected void MoveToEnemy()
+    {
+        // Move on ground
+        if (this.statScript.facingLeft)
+            this.statScript.rb2D.velocity = new Vector2(-this.statScript.approachSpeed, this.statScript.rb2D.velocity.y);
+        else
+            this.statScript.rb2D.velocity = new Vector2(this.statScript.approachSpeed, this.statScript.rb2D.velocity.y);
+    }
+
+    #endregion
+
+    #region Ready attack behavior
 
     public void ReadyAttack()
     {
         if(this.IsFarAwayEnemy(2f))
         {
             // Change behavior to approach
-            this.stateScript.animator.SetBool("ready", false);
+            this.statScript.animator.SetBool("ready", false);
             return;
         }
 
-        if(this.IsNeedToFlip())
-            this.stateScript.Flip();
+        this.CheckFlip();
 
         if (Time.time - this.startOfWaitTime >= this.attackWaitTime)
         {
             this.combatScript.ChooseAttack();
         }
     }
-
     public void ResetReadyTimer()
     {
         // Make Knight boss ready attack timer count again
@@ -74,26 +67,29 @@ public class KnightBossMove: MonoBehaviour
         this.startOfWaitTime = Time.time;
     }
 
-    protected virtual bool IsNeedToFlip()
+    #endregion
+
+    protected void CheckFlip()
     {
-        if (this.stateScript.targetColl == null) return false;
-        return (stateScript.facingLeft && transform.position.x < this.stateScript.targetColl.transform.position.x) ||
-            (!stateScript.facingLeft && transform.position.x > this.stateScript.targetColl.transform.position.x);
+        if (this.statScript.targetColl == null)
+            return;
+
+        if ((statScript.facingLeft && transform.position.x < this.statScript.targetColl.transform.position.x) 
+            || (!statScript.facingLeft && transform.position.x > this.statScript.targetColl.transform.position.x))
+        {
+            this.statScript.rb2D.velocity = new Vector2(-this.statScript.rb2D.velocity.x, this.statScript.rb2D.velocity.y);
+            transform.parent.Rotate(0f, 180f, 0f);
+            this.hudObj.Rotate(0f, 180f, 0f);
+            this.statScript.facingLeft = !this.statScript.facingLeft;
+            this.statScript.combatRangeOffset.x = -this.statScript.combatRangeOffset.x;
+        }
     }
 
     protected bool IsFarAwayEnemy(float multiplier)
     {
-        if (this.stateScript.targetColl == null) return true;
-        float distance = Vector2.Distance(transform.position, this.stateScript.targetColl.transform.position);
+        if (this.statScript.targetColl == null) return true;
+        float distance = Vector2.Distance(transform.position, this.statScript.targetColl.transform.position);
         return distance > this.statScript.distance * multiplier;
     }
 
-    protected void MoveToEnemy()
-    {
-        // Move on ground
-        if (this.stateScript.facingLeft)
-            this.stateScript.rb2D.velocity = new Vector2(-this.statScript.approachSpeed, this.stateScript.rb2D.velocity.y);
-        else
-            this.stateScript.rb2D.velocity = new Vector2(this.statScript.approachSpeed, this.stateScript.rb2D.velocity.y);
-    }
 }

@@ -2,22 +2,34 @@ using UnityEngine;
 
 public class KnightBossAnimationEvent : MonoBehaviour
 {
-    [Header("References")]
-    [SerializeField] private SlimeState stateScript;
+    [Header("--- REFERENCES ---")]
+    [Header("MeleeCombo")]
+    [SerializeField] protected KnightBossMeleeAttack attack1;
+    [SerializeField] protected KnightBossMeleeAttack attack2;
+    [SerializeField] protected KnightBossMeleeAttack attack3;
+    [SerializeField] protected KnightBossMeleeAttack attack4;
 
-    private void Start()
+    #region Melee combo
+
+    public void Attack1()
     {
-        this.LoadReferences();
+        this.attack1.Attack();
     }
-    private void LoadReferences()
+    
+    public void Attack2()
     {
-        //EnemyState
-        if (this.stateScript == null) Debug.LogError("Can't find EnemyState for KnightBossAnimationEvent of " + gameObject.name);
+        this.attack2.Attack();
+    }
+    
+    public void Attack3()
+    {
+        this.attack3.Attack();
+    }
+    
+    public void Attack4()
+    {
+        this.attack4.Attack();
     }
 
-    //Dead events
-    public void DesTroyEnemy()
-    {
-        this.stateScript.DestroyEnemy();
-    }
+    #endregion
 }

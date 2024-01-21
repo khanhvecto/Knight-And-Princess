@@ -1,14 +1,17 @@
 using UnityEngine;
 
-public class ReusableSound : ObjectFromPool
+public abstract class ReusableSound : ObjectFromPool
 {
     // References
     [SerializeField] protected AudioSource audioSource;
 
-    protected override void LoadReferences()
+    protected void Start()
     {
-        base.LoadReferences();
+        this.LoadReferences();
+    }
 
+    protected void LoadReferences()
+    {
         // audio source
         this.audioSource = this.GetComponent<AudioSource>();
         if (this.audioSource == null)
