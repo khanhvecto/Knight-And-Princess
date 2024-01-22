@@ -9,7 +9,7 @@ public class KnightBossMeleeComboStartBehavior : StateMachineBehaviour
     protected bool isLoadReferences = false;
 
     [Header("Stats")]
-    protected float dangerInformTime = 1;
+    protected float dangerInformTime = 0.3f;
     protected float dangerInformTimer;
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

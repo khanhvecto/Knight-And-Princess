@@ -13,17 +13,17 @@ MonoBehaviour:
   m_Name: Knight Boss
   m_EditorClassIdentifier: 
   moveType: 100
-  health: 10
+  health: 200
   damage: 10
   cooldown: 10
-  distance: 3
+  distance: 6
   enduranceDecrement: 20
   unharmedAttacksAmount: 5
   choosableAttacksAmount: 2
   maxDelayAttackTime: 2
   attackTime1: 1
   attackTime2: 1
-  range_coeff: 2
+  range_coeff: 10
   normalSpeed: 2
   combatSpeed: 3
   horizontalMoveRange: 0

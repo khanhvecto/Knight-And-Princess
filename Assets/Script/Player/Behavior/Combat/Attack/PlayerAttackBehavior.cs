@@ -74,7 +74,6 @@ public class PlayerAttackBehavior : StateMachineBehaviour
         {
             this.movementScript.StopMoving();
             this.isPushing = false;
-            //this.statsScript.rb2D.gravityScale = this.oldGravity;
         }
     }
 

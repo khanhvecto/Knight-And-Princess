@@ -5,16 +5,10 @@ public class KnightBossMove: MonoBehaviour
     [Header("References")]
     [SerializeField] protected KnightBossStats statScript;
     [SerializeField] protected KnightBoss_Combat combatScript;
-    [SerializeField] protected Transform hudObj;
 
     [Header("Parameters")]
     protected float attackWaitTime;
     protected float startOfWaitTime;
-
-    public void StopMoving()
-    {
-        this.statScript.rb2D.velocity = Vector2.zero;
-    }
 
     #region Approach behavior
 
@@ -69,7 +63,9 @@ public class KnightBossMove: MonoBehaviour
 
     #endregion
 
-    protected void CheckFlip()
+    #region Check state
+
+    public void CheckFlip()
     {
         if (this.statScript.targetColl == null)
             return;
@@ -79,7 +75,6 @@ public class KnightBossMove: MonoBehaviour
         {
             this.statScript.rb2D.velocity = new Vector2(-this.statScript.rb2D.velocity.x, this.statScript.rb2D.velocity.y);
             transform.parent.Rotate(0f, 180f, 0f);
-            this.hudObj.Rotate(0f, 180f, 0f);
             this.statScript.facingLeft = !this.statScript.facingLeft;
             this.statScript.combatRangeOffset.x = -this.statScript.combatRangeOffset.x;
         }
@@ -92,4 +87,19 @@ public class KnightBossMove: MonoBehaviour
         return distance > this.statScript.distance * multiplier;
     }
 
+    # endregion
+
+    #region Specific movement
+
+    public void StopMoving()
+    {
+        this.statScript.rb2D.velocity = Vector2.zero;
+    }
+
+    public void DashForward(Vector2 force)
+    {
+        this.statScript.rb2D.AddForce(force, ForceMode2D.Force);
+    }
+
+    #endregion
 }

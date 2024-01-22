@@ -2,19 +2,23 @@ using UnityEngine;
 
 public class KnightBoss_AirAttack_Fall : StateMachineBehaviour
 {
-    // References
+    [Header("References")]
     protected KnightBossStats statsScript;
+    protected KnightBossMove movementScript;
     protected Transform footPosition;
     protected LayerMask groundLayer;
     protected Animator animator;
     protected ParticleSystem blastEffect;
     protected MeleeAttack fallExplosion;
-
-    // Stats
     protected float fallTime;
-    protected float height;
 
-    // States
+    [Header("Stats")]
+    protected float height;
+    protected float oldGravity;
+    protected Vector2 velocity;
+    protected int oldLayer;
+
+    [Header("States")]
     protected bool isLoadedReferences = false;
     protected bool playedBlastEffect = false;
 
@@ -23,9 +27,7 @@ public class KnightBoss_AirAttack_Fall : StateMachineBehaviour
         if(!this.isLoadedReferences)
             this.LoadReferences(animator);
 
-        this.playedBlastEffect = false;
-
-        this.MakeFall();
+        this.SetStats();
     }
 
     protected void LoadReferences(Animator animator)
@@ -44,27 +46,28 @@ public class KnightBoss_AirAttack_Fall : StateMachineBehaviour
         if (this.blastEffect == null) Debug.LogError("Can't find blast effect for KnightBoss_AirAttack_Jump of " + animator.name);
         // fall explosion
         this.fallExplosion = animator.transform.Find("Combat").Find("Skills").Find("AirAttack").Find("FallExplosion").GetComponentInChildren<MeleeAttack>();
+        this.movementScript = animator.GetComponentInChildren<KnightBossMove>();
+        this.fallTime = (float) this.animator.GetCurrentAnimatorStateInfo(0).length / 2;
 
         this.isLoadedReferences = true;
     }
 
-    protected void FindHeight()
+    protected void SetStats()
     {
-        var hit = Physics2D.Raycast(this.footPosition.position, Vector2.down, 100, this.groundLayer.value);
-        if (!hit) return;
+        this.oldGravity = this.statsScript.rb2D.gravityScale;   // Gravity
+        this.statsScript.rb2D.gravityScale = 0f;
+        this.oldLayer = this.animator.gameObject.layer; // Layer
+        this.animator.gameObject.layer = 9; // Dead layer
+        this.playedBlastEffect = false; // Effect
 
-        this.height = hit.distance;
-    }
-
-    protected void MakeFall()
-    {
+        // Calculate velocity
         if (this.statsScript.targetColl == null) return;
 
         this.FindHeight();
 
-        this.fallTime = (float) this.animator.GetCurrentAnimatorStateInfo(0).length / 2;
-        var direction = new Vector2(this.statsScript.targetColl.transform.position.x - animator.transform.position.x, -this.height);
-        this.statsScript.rb2D.velocity = direction / fallTime;
+        var direction = this.statsScript.targetColl.transform.position - animator.transform.position;
+        Vector2 initialVelocity = 2 * (direction / this.fallTime);
+        this.velocity = this.statsScript.rb2D.mass * initialVelocity;
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -73,11 +76,36 @@ public class KnightBoss_AirAttack_Fall : StateMachineBehaviour
         if (this.playedBlastEffect) return;
 
         this.FindHeight();
+
         if (this.height <= 0.5)
         {
+            this.ResetStats();
             this.playedBlastEffect = true;
             this.blastEffect.Play();
             this.fallExplosion.Attack();
+            this.movementScript.StopMoving();
         }
+        else
+        {
+            this.movementScript.DashForward(this.velocity);
+        }
+    }
+    protected void FindHeight()
+    {
+        var hit = Physics2D.Raycast(this.footPosition.position, Vector2.down, 100, this.groundLayer.value);
+        if (!hit) return;
+
+        this.height = hit.distance;
+    }
+
+    public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        this.ResetStats();
+    }
+
+    protected void ResetStats()
+    {
+        this.statsScript.rb2D.gravityScale = this.oldGravity;
+        this.animator.gameObject.layer = this.oldLayer;
     }
 }

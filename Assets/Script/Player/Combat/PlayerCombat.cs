@@ -100,6 +100,7 @@ public class PlayerCombat : MonoBehaviour, IDamageReceiver
         }
         else
         {
+            this.lastBlockPressedTime -= this.statsScript.parryBuffer;  // Allows player parry right after if successful parry, don't need to wait buffer again
             this.soundsScript.PlayRandomParrySound();
             var newEndurance = this.statsScript.CurrentEndurance - enduranceDecrement;
             if (newEndurance <= 0)  // Make sure endurance can't fall to 0

@@ -6,8 +6,9 @@ public class KnightBoss_AirAttack_Jump : StateMachineBehaviour
     protected KnightBossStats statsScript;
 
     // Stats
-    protected float jumpHeight = 10f;
+    protected float jumpHeight = 7f;
     protected float newPosHeight;
+    protected float newPosHorizontal;
     protected float jumpSpeed = 3f;
     protected float oldGravity;
 
@@ -19,7 +20,7 @@ public class KnightBoss_AirAttack_Jump : StateMachineBehaviour
         if (!isLoadedReferences)
             this.LoadReferences(animator);
 
-        this.ResetStats();
+        this.ResetStats(animator);
     }
 
     private void LoadReferences(Animator animator)
@@ -27,13 +28,14 @@ public class KnightBoss_AirAttack_Jump : StateMachineBehaviour
         this.statsScript = animator.GetComponentInChildren<KnightBossStats>();
     }
 
-    private void ResetStats()
+    private void ResetStats(Animator animator)
     {
         // Gravity
         this.oldGravity = this.statsScript.rb2D.gravityScale;
         this.statsScript.rb2D.gravityScale = 0f;
 
         // Height
+        this.newPosHorizontal = (this.statsScript.targetColl.transform.position.x + animator.transform.position.x)/2;
         this.newPosHeight = this.statsScript.targetColl.transform.position.y + this.jumpHeight;
     }
 
@@ -46,7 +48,7 @@ public class KnightBoss_AirAttack_Jump : StateMachineBehaviour
         }
 
         // Jump to a height level and on top target in a time 
-        Vector2 newPos = new Vector2(this.statsScript.targetColl.transform.position.x, this.newPosHeight);
+        Vector2 newPos = new Vector2(this.newPosHorizontal, this.newPosHeight);
         animator.transform.position = Vector2.Lerp(animator.transform.position, newPos, this.jumpSpeed*Time.deltaTime);
 
         if (Mathf.Abs(animator.transform.position.y - this.newPosHeight) <= 0.2)

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerSounds : MonoBehaviour
 {
-    [Header("References")]
+    [Header("--- REFERENCES ---")]
     [SerializeField] protected Transform parrySoundContainerObj;
     [SerializeField] protected Transform hurtSoundContainerObj;
     [SerializeField] protected Transform blockSoundContainerObj;
@@ -16,7 +16,7 @@ public class PlayerSounds : MonoBehaviour
     [SerializeField] protected Transform runSoundContainerObj;
     [SerializeField] protected Transform sprintSoundContainerObj;
 
-    [Header("Sound lists")]
+    [Header("--- SOUND LISTS ---")]
     protected List<AudioSource> parrySoundList = new List<AudioSource>();
     protected List<AudioSource> hurtSoundList = new List<AudioSource>();
     protected List<AudioSource> blockSoundList = new List<AudioSource>();
@@ -29,11 +29,15 @@ public class PlayerSounds : MonoBehaviour
     protected List<AudioSource> runSoundList = new List<AudioSource>();
     protected List<AudioSource> sprintSoundList = new List<AudioSource>();
 
-    [Header("States")]
+    [Header("--- STATES ---")]
+    [Header("Running")]
     protected bool isPlayingRunSound = false;
     protected AudioSource runSoundPlaying;
+    [Header("Sprinting")]
     protected bool isPlayingSprintSound = false;
     protected AudioSource sprintSoundPlaying;
+    [Header("Hurt")]
+    protected AudioSource hurtSoundPlaying;
 
     protected void Start()
     {
@@ -156,8 +160,12 @@ public class PlayerSounds : MonoBehaviour
     
     public void PlayRandomHurtSound()
     {
+        if (this.hurtSoundPlaying != null && this.hurtSoundPlaying.isPlaying)
+            return;
+
         int rand = Random.Range(0, this.hurtSoundList.Count);
         this.hurtSoundList[rand].Play();
+        this.hurtSoundPlaying = this.hurtSoundList[rand];
     }
     
     public void PlayRandomBlockSound()
