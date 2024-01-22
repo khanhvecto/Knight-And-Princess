@@ -3,7 +3,7 @@ using UnityEngine;
 public class KnightBoss_Combat : MonoBehaviour, IDamageReceiver
 {
     [Header("References")]
-    [SerializeField] protected KnightBossStats statScript;
+    [SerializeField] protected KnightBossStats statsScript;
     [SerializeField] protected Transform bleedPos;
 
     [Header("Stats")]
@@ -12,29 +12,31 @@ public class KnightBoss_Combat : MonoBehaviour, IDamageReceiver
     public void ChooseAttack()
     {
         // Choose a random attack
-        int rand = Random.Range(1, this.statScript.attackTypeNumber + 1);
-        this.statScript.animator.SetTrigger("attack" + rand);
+        int rand = Random.Range(1, this.statsScript.attackTypeNumber + 1);
+        this.statsScript.animator.SetTrigger("attack" + rand);
     }
 
     #region Damage receiver
 
     public void GotHit(float damage, Transform attackPos, float enduranceDecrement)
     {
+        if (this.statsScript.isDead)
+            return;
+
         this.number_attacksTaken++;
-        this.statScript.SetHealthValue(this.statScript.Health - damage);
+        this.statsScript.SetHealthValue(this.statsScript.Health - damage);
         this.PlayBleedEffect();
         this.PlayBloodSplashSound();
-        this.statScript.SetAttackState(true);
+        this.statsScript.SetAttackState(true);
 
-        if (this.statScript.Health <= 0)
+        if (this.statsScript.Health <= 0)
         {
-            gameObject.layer = 9; //Dead layer
-            this.statScript.animator.SetTrigger("dead");
-            this.statScript.animator.SetBool("isDead", true);
+            this.statsScript.animator.SetTrigger("dead");
+            this.statsScript.animator.SetBool("isDead", true);
         }
-        else if (this.number_attacksTaken > this.statScript.unharmedAttacksAmount)
+        else if (this.number_attacksTaken > this.statsScript.unharmedAttacksAmount)
         {
-            this.statScript.animator.SetTrigger("gotHit");
+            this.statsScript.animator.SetTrigger("gotHit");
             this.number_attacksTaken = 0;   // Reset
         }
     }
@@ -53,10 +55,15 @@ public class KnightBoss_Combat : MonoBehaviour, IDamageReceiver
 
         // Put the effect at right position
         effect.transform.position = this.bleedPos.position;
-        if (this.statScript.facingLeft)
+        if (this.statsScript.facingLeft)
             effect.transform.Rotate(0f, 180f, 0f);
         effect.Play();
     }
 
     #endregion
+
+    public void Revive()
+    {
+        this.statsScript.animator.SetBool("isDead", false);
+    }
 }

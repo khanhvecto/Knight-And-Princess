@@ -4,10 +4,10 @@ public class KnightBossAnimationEvent : MonoBehaviour
 {
     [Header("--- REFERENCES ---")]
     [Header("MeleeCombo")]
-    [SerializeField] protected KnightBossMeleeAttack attack1;
-    [SerializeField] protected KnightBossMeleeAttack attack2;
-    [SerializeField] protected KnightBossMeleeAttack attack3;
-    [SerializeField] protected KnightBossMeleeAttack attack4;
+    [SerializeField] protected KnightBossMeleeAttackCircle attack1;
+    [SerializeField] protected KnightBossMeleeAttackCircle attack2;
+    [SerializeField] protected KnightBossMeleeAttackBox attack3;
+    [SerializeField] protected KnightBossMeleeAttackCircle attack4;
 
     #region Melee combo
 

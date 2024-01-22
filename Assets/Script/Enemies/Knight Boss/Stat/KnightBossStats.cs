@@ -32,6 +32,8 @@ public class KnightBossStats : MonoBehaviour
     public Collider2D targetColl;
 
     [Header("--- STATES ---")]
+    [Header("Dead")]
+    public bool isDead = false;
     [Header("Combat")]
     public bool isCombating = false;
     [Header("Movement")]

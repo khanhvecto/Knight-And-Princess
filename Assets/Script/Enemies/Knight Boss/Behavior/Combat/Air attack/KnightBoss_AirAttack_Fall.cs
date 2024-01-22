@@ -9,7 +9,7 @@ public class KnightBoss_AirAttack_Fall : StateMachineBehaviour
     protected LayerMask groundLayer;
     protected Animator animator;
     protected ParticleSystem blastEffect;
-    protected MeleeAttack fallExplosion;
+    protected MeleeAttackCircle fallExplosion;
     protected float fallTime;
 
     [Header("Stats")]
@@ -45,7 +45,7 @@ public class KnightBoss_AirAttack_Fall : StateMachineBehaviour
         this.blastEffect = animator.transform.Find("Effects").Find("Unique").Find("FallExplosion").GetComponent<ParticleSystem>();
         if (this.blastEffect == null) Debug.LogError("Can't find blast effect for KnightBoss_AirAttack_Jump of " + animator.name);
         // fall explosion
-        this.fallExplosion = animator.transform.Find("Combat").Find("Skills").Find("AirAttack").Find("FallExplosion").GetComponentInChildren<MeleeAttack>();
+        this.fallExplosion = animator.transform.Find("Combat").Find("Skills").Find("AirAttack").Find("FallExplosion").GetComponentInChildren<MeleeAttackCircle>();
         this.movementScript = animator.GetComponentInChildren<KnightBossMove>();
         this.fallTime = (float) this.animator.GetCurrentAnimatorStateInfo(0).length / 2;
 
@@ -63,6 +63,7 @@ public class KnightBoss_AirAttack_Fall : StateMachineBehaviour
         // Calculate velocity
         if (this.statsScript.targetColl == null) return;
 
+        this.movementScript.CheckFlip();
         this.FindHeight();
 
         var direction = this.statsScript.targetColl.transform.position - animator.transform.position;

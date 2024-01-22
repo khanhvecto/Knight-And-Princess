@@ -7,8 +7,7 @@ public class KnightBoss_AirAttack_Jump : StateMachineBehaviour
 
     // Stats
     protected float jumpHeight = 7f;
-    protected float newPosHeight;
-    protected float newPosHorizontal;
+    protected Vector2 newPos;
     protected float jumpSpeed = 3f;
     protected float oldGravity;
 
@@ -35,8 +34,9 @@ public class KnightBoss_AirAttack_Jump : StateMachineBehaviour
         this.statsScript.rb2D.gravityScale = 0f;
 
         // Height
-        this.newPosHorizontal = (this.statsScript.targetColl.transform.position.x + animator.transform.position.x)/2;
-        this.newPosHeight = this.statsScript.targetColl.transform.position.y + this.jumpHeight;
+        var newPosHorizontal = (this.statsScript.targetColl.transform.position.x + animator.transform.position.x)/2;
+        var newPosHeight = this.statsScript.targetColl.transform.position.y + this.jumpHeight;
+        this.newPos = new Vector2(newPosHorizontal, newPosHeight);
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -48,10 +48,9 @@ public class KnightBoss_AirAttack_Jump : StateMachineBehaviour
         }
 
         // Jump to a height level and on top target in a time 
-        Vector2 newPos = new Vector2(this.newPosHorizontal, this.newPosHeight);
-        animator.transform.position = Vector2.Lerp(animator.transform.position, newPos, this.jumpSpeed*Time.deltaTime);
+        animator.transform.position = Vector2.Lerp(animator.transform.position, this.newPos, this.jumpSpeed*Time.deltaTime);
 
-        if (Mathf.Abs(animator.transform.position.y - this.newPosHeight) <= 0.2)
+        if (Mathf.Abs(animator.transform.position.y - this.newPos.y) <= 0.2)
             animator.SetTrigger("endState");
     }
 

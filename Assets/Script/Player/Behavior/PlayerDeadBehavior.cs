@@ -75,11 +75,6 @@ public class PlayerDeadBehavior : StateMachineBehaviour
 
     protected void ResetStats()
     {
-        // States
-        this.statsScript.controlable = true;
-        this.statsScript.isDead = false;
-        this.statsScript.hurtable = true;
-        this.statsScript.stunnedable = true;
         // Layers
         this.animator.gameObject.layer = this.oldLayer;
         // Stats

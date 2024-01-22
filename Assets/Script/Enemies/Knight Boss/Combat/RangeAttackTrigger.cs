@@ -67,6 +67,6 @@ public class RangeAttackTrigger : MonoBehaviour
         if (collision.gameObject.layer != this.targetLayer) return;
 
         IDamageReceiver receiveDamageScript = collision.GetComponentInChildren<IDamageReceiver>();
-        receiveDamageScript?.GotHit(this.damage, transform.parent.parent.parent, this.enduranceDecrement);
+        receiveDamageScript?.GotHit(this.damage * Time.deltaTime, transform.parent.parent.parent, this.enduranceDecrement);
     }
 }

@@ -97,6 +97,7 @@ MonoBehaviour:
   maxAttackDelayTime: 0
   approachSpeed: 0
   targetColl: {fileID: 0}
+  isDead: 0
   isCombating: 0
   facingLeft: 0
 --- !u!114 &3059057131312685512
@@ -153,7 +154,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2721541518891389224}
-  - component: {fileID: 4017755441680765162}
+  - component: {fileID: 8078361324360201188}
   m_Layer: 8
   m_Name: FallExplosion
   m_TagString: Untagged
@@ -176,7 +177,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1308732114381702083}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4017755441680765162
+--- !u!114 &8078361324360201188
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -185,13 +186,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 605100597603313237}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4fccd52daaa6214c87e4bdd5f8753c0, type: 3}
+  m_Script: {fileID: 11500000, guid: 30998fec99f285246b6d049512b8e0c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetLayer:
     serializedVersion: 2
     m_Bits: 128
-  range: 1.75
+  range: 2.08
   skillScriptableObj: {fileID: 11400000, guid: d32dabc87403fd44699395fabe890972, type: 2}
 --- !u!1 &1070325665437589099
 GameObject:
@@ -303,7 +304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bdfb9bc8994b68488289c72864f782c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statScript: {fileID: 783014507621048312}
+  statsScript: {fileID: 783014507621048312}
   bleedPos: {fileID: 6858500501440165171}
 --- !u!1 &2535113609648266089
 GameObject:
@@ -332,7 +333,7 @@ Transform:
   m_GameObject: {fileID: 2535113609648266089}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.54, z: 0}
+  m_LocalPosition: {x: 0, y: 0.01, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -592,7 +593,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 2
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -10152,7 +10153,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4208282046128914215}
-  - component: {fileID: 2175629584160677232}
+  - component: {fileID: 5794842205808233763}
   m_Layer: 8
   m_Name: Attack1
   m_TagString: Untagged
@@ -10169,13 +10170,13 @@ Transform:
   m_GameObject: {fileID: 4115090057227466356}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.27, y: -0.31, z: 0}
+  m_LocalPosition: {x: 0.44, y: -0.23, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 9002196089150867060}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2175629584160677232
+--- !u!114 &5794842205808233763
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10184,13 +10185,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4115090057227466356}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4fccd52daaa6214c87e4bdd5f8753c0, type: 3}
+  m_Script: {fileID: 11500000, guid: 30998fec99f285246b6d049512b8e0c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetLayer:
     serializedVersion: 2
     m_Bits: 128
-  range: 0.73
+  range: 0.5
   skillScriptableObj: {fileID: 11400000, guid: f2da7ae6eeea4e2448048114b46c2577, type: 2}
 --- !u!1 &4420816667625659235
 GameObject:
@@ -10422,7 +10423,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 2000
+  m_Mass: 500
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 3
@@ -10515,10 +10516,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55a5dc3dc7ce95247a5dc8be58040816, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attack1: {fileID: 2175629584160677232}
-  attack2: {fileID: 696063038306691961}
-  attack3: {fileID: 6349270220902749156}
-  attack4: {fileID: 6445296280528920349}
+  attack1: {fileID: 5794842205808233763}
+  attack2: {fileID: 534388754541046865}
+  attack3: {fileID: 958235705338684004}
+  attack4: {fileID: 2689751783996663395}
 --- !u!1 &5622431005145636186
 GameObject:
   m_ObjectHideFlags: 0
@@ -10561,7 +10562,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7057483147718199470}
-  - component: {fileID: 6445296280528920349}
+  - component: {fileID: 2689751783996663395}
   m_Layer: 8
   m_Name: Attack4
   m_TagString: Untagged
@@ -10578,13 +10579,13 @@ Transform:
   m_GameObject: {fileID: 5722177765810118172}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.05, y: -0.33, z: 0}
+  m_LocalPosition: {x: 0.89, y: -0.31, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 9002196089150867060}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6445296280528920349
+--- !u!114 &2689751783996663395
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10593,13 +10594,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 5722177765810118172}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4fccd52daaa6214c87e4bdd5f8753c0, type: 3}
+  m_Script: {fileID: 11500000, guid: 30998fec99f285246b6d049512b8e0c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetLayer:
     serializedVersion: 2
     m_Bits: 128
-  range: 1.53
+  range: 0.57
   skillScriptableObj: {fileID: 11400000, guid: 8f639f78287465143808ad5192baa40f, type: 2}
 --- !u!1 &5824197736386379775
 GameObject:
@@ -10628,7 +10629,7 @@ Transform:
   m_GameObject: {fileID: 5824197736386379775}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.54, z: 0}
+  m_LocalPosition: {x: 0, y: -0.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10677,7 +10678,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 40, y: 0.59}
+  m_Size: {x: 40, y: 2}
   m_EdgeRadius: 0
 --- !u!114 &938648564246702789
 MonoBehaviour:
@@ -10704,7 +10705,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2712613797606757198}
-  - component: {fileID: 6349270220902749156}
+  - component: {fileID: 958235705338684004}
   m_Layer: 8
   m_Name: Attack3
   m_TagString: Untagged
@@ -10721,13 +10722,13 @@ Transform:
   m_GameObject: {fileID: 6593020982247430901}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.59, y: -0.29, z: 0}
+  m_LocalPosition: {x: 0.846, y: -0.19, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 9002196089150867060}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6349270220902749156
+--- !u!114 &958235705338684004
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10736,14 +10737,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 6593020982247430901}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4fccd52daaa6214c87e4bdd5f8753c0, type: 3}
+  m_Script: {fileID: 11500000, guid: 4493cba5eafa25f4ab8f581915402616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetLayer:
     serializedVersion: 2
     m_Bits: 128
-  range: 0.8
-  skillScriptableObj: {fileID: 11400000, guid: 74683a4785dfa674db0fef502169e2f2, type: 2}
+  range: {x: 1.04, y: 0.14}
+  skillScriptableObject: {fileID: 11400000, guid: 74683a4785dfa674db0fef502169e2f2, type: 2}
 --- !u!1 &7041321632413413847
 GameObject:
   m_ObjectHideFlags: 0
@@ -10786,7 +10787,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6523255758198064497}
-  - component: {fileID: 696063038306691961}
+  - component: {fileID: 534388754541046865}
   m_Layer: 8
   m_Name: Attack2
   m_TagString: Untagged
@@ -10803,13 +10804,13 @@ Transform:
   m_GameObject: {fileID: 7080148465174422828}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.14, y: -0.31, z: 0}
+  m_LocalPosition: {x: 0.42, y: -0.32, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 9002196089150867060}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &696063038306691961
+--- !u!114 &534388754541046865
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10818,13 +10819,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 7080148465174422828}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4fccd52daaa6214c87e4bdd5f8753c0, type: 3}
+  m_Script: {fileID: 11500000, guid: 30998fec99f285246b6d049512b8e0c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetLayer:
     serializedVersion: 2
     m_Bits: 128
-  range: 0.88
+  range: 0.56
   skillScriptableObj: {fileID: 11400000, guid: 1be426e3b4236bf44b06ca7895ad5449, type: 2}
 --- !u!1 &7809518641860211760
 GameObject:
@@ -10995,7 +10996,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 2
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -11696,7 +11697,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1000
+      scalar: 10000
       minScalar: 10
       maxCurve:
         serializedVersion: 2

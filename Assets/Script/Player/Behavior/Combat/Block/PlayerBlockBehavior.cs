@@ -7,7 +7,7 @@ public class PlayerBlockBehavior : StateMachineBehaviour
     protected PlayerCombat combatScript;
     protected PlayerMovement movementScript;
     protected Animator animator;
-    protected PlayerSounds soundsScript;
+    //protected PlayerSounds soundsScript;
 
     [Header("States")]
     protected bool isLoadedReferences = false;
@@ -21,23 +21,10 @@ public class PlayerBlockBehavior : StateMachineBehaviour
 
     protected void LoadReferences(Animator animator)
     {
-        // stats script
         this.statsScript = animator.GetComponentInChildren<PlayerStats>();
-        if (this.statsScript == null)
-            Debug.LogError("Can't find stats script for PlayerBlockBehavior of " + name);
-        // combat script
         this.combatScript = animator.GetComponentInChildren<PlayerCombat>();
-        if (this.combatScript == null)
-            Debug.LogError("Can't find combat script for PlayerBlockBehavior of " + name);
-        // movement script
         this.movementScript = animator.GetComponentInChildren<PlayerMovement>();
-        if (this.movementScript == null)
-            Debug.LogError("Can't find movement script for PlayerBlockBehavior of " + name);
-        // Sounds script
-        this.soundsScript = animator.GetComponentInChildren<PlayerSounds>();
-        if (this.soundsScript == null)
-            Debug.LogError("Can't find sounds script for PlayerBlockBehavior of " + name);
-        // Animator
+        //this.soundsScript = animator.GetComponentInChildren<PlayerSounds>();
         this.animator = animator;
 
         this.isLoadedReferences = true;
@@ -48,7 +35,7 @@ public class PlayerBlockBehavior : StateMachineBehaviour
         this.statsScript.isBlocking = true;
         this.statsScript.movable = false;
         this.movementScript.StopMoving();
-        this.soundsScript.PlayRandomShieldSwingSound();
+        //this.soundsScript.PlayRandomShieldSwingSound();
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

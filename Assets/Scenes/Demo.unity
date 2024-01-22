@@ -1217,10 +1217,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 182662703008206812, guid: 8f93ea6aa8efa8147b04437229d3609e, type: 3}
-      propertyPath: m_Mass
-      value: 500
-      objectReference: {fileID: 0}
     - target: {fileID: 3059057131312685512, guid: 8f93ea6aa8efa8147b04437229d3609e, type: 3}
       propertyPath: healthBar
       value: 

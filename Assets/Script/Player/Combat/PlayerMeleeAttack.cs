@@ -1,18 +1,11 @@
 using UnityEngine;
 
-public class PlayerMeleeAttack : MeleeAttack
+public class PlayerMeleeAttack : MeleeAttackCircle
 {
-    [Header("--- REFERENCES ---")]
+    [Header("References")]
     [SerializeField] protected PlayerStats statsScript;
 
-    protected override void LoadReferences()
-    {
-        // Stats script
-        if (this.statsScript == null)
-            Debug.LogError("Can't find stats script for PlayerMeleeAttack");
-    }
-
-    protected override void LoadStats()
+    protected override void LoadCombatStats()
     {
         base.damage = this.statsScript.damage;
     }
