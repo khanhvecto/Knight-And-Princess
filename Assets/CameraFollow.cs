@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
@@ -26,7 +25,8 @@ public class CameraFollow : MonoBehaviour
     protected float zAxisPos = -10f;
     [Header("Camera normal position")]
     public float xAxisOffset;
-    public float yAxisOffset;
+    public float yAxisOffsetDefault;
+    protected float yAxisOffset;
     [Header("Falling freeze")]
     public float fallOffset;
     public float moveTime;
@@ -35,10 +35,14 @@ public class CameraFollow : MonoBehaviour
     [Header("Player position")]
     public float groundCheckLimit;
     protected float playerVerticalLevel;
+    [Header("Look further")]
+    public float yAxisOffsetLookUp;
+    public float yAxisOffsetLookDown;
 
     protected void Start()
     {
         this.SetSingleton();
+        this.InitStats();
     }
 
     protected void SetSingleton()
@@ -49,6 +53,11 @@ public class CameraFollow : MonoBehaviour
             Destroy(gameObject);
         }
         instance = this;
+    }
+
+    protected void InitStats()
+    {
+        this.yAxisOffset = this.yAxisOffsetDefault;
     }
 
     protected void LateUpdate()
@@ -75,12 +84,10 @@ public class CameraFollow : MonoBehaviour
             RaycastHit2D groundHit = Physics2D.Raycast(this.playerTransform.position, Vector2.down, this.groundCheckLimit, this.groundLayerMask);
             if (groundHit)
             {
-                Debug.Log("hit");
                 return false;
             }
             else
             {
-                Debug.Log("no hit");    
                 this.isFallingFreeze = true;
                 return true;
             }
@@ -205,4 +212,24 @@ public class CameraFollow : MonoBehaviour
             this.xAxisOffset = -this.xAxisOffset;
         }
     }
+
+    #region Set look further
+
+    public void SetLookUp(bool set)
+    {
+        if (set)
+            this.yAxisOffset = this.yAxisOffsetLookUp;
+        else
+            this.yAxisOffset = this.yAxisOffsetDefault;
+    }
+
+    public void SetLookDown(bool set)
+    {
+        if (set)
+            this.yAxisOffset = this.yAxisOffsetLookDown;
+        else
+            this.yAxisOffset = this.yAxisOffsetDefault;
+    }
+
+    #endregion
 }

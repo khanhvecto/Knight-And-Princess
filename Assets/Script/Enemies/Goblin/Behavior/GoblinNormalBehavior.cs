@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class KnightBossReadyAttackBehavior : StateMachineBehaviour
+public class GoblinNormalBehavior : StateMachineBehaviour
 {
     [Header("References")]
     protected KnightBossMove movementScript;
@@ -10,10 +10,9 @@ public class KnightBossReadyAttackBehavior : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if(!this.isLoadedReferences)
+        if (!this.isLoadedReferences)
             this.LoadReferences(animator);
-        this.movementScript.ResetReadyTimer();
-        this.movementScript.StopMoving();
+        this.movementScript.ResetNormalMoveRange();
     }
 
     protected void LoadReferences(Animator animator)
@@ -25,6 +24,11 @@ public class KnightBossReadyAttackBehavior : StateMachineBehaviour
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        this.movementScript.ReadyAttack();
+        this.movementScript.NormalMove();
+    }
+
+    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        this.movementScript.StopMoving();
     }
 }

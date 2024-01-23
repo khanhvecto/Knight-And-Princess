@@ -45,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
             this.CheckFlip();
             if(this.statsScript.sprintable)
                 this.CheckSprint();
+            this.CheckLookFurther();
         }
         if (this.statsScript.rollable)
             this.WaitRollInput();
@@ -124,6 +125,30 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    protected void CheckLookFurther()
+    {
+        // If don't
+        if (this.statsScript.rb2D.velocity != Vector2.zero)
+        {
+            CameraFollow.Instance.SetLookUp(false);
+            CameraFollow.Instance.SetLookDown(false);
+        }
+        else if (!InputManager.Instance.GetLookDownKey() && !InputManager.Instance.GetLookUpKey())
+        {
+            CameraFollow.Instance.SetLookUp(false);
+            CameraFollow.Instance.SetLookDown(false);
+        }
+        // If look further
+        else if(InputManager.Instance.GetLookDownKey())
+        {
+            CameraFollow.Instance.SetLookDown(true);
+        }
+        else
+        {
+            CameraFollow.Instance.SetLookUp(true);
+        }
+    }
+
     protected void SetHorizontalMovement()
     {
         this.horizontal = Input.GetAxisRaw("Horizontal");
@@ -197,7 +222,7 @@ public class PlayerMovement : MonoBehaviour
         this.statsScript.rb2D.velocity = Vector2.zero;
     }
 
-    protected void Flip()
+    public void Flip()
     {
         this.statsScript.isFacingRight = !this.statsScript.isFacingRight;
         transform.parent.Rotate(0f, 180f, 0f);

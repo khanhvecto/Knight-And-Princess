@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4074283306150294584
+--- !u!1 &5825469468187991839
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,11 +8,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6913621403537934048}
-  - component: {fileID: 3681266334129789908}
-  - component: {fileID: 5090279957195689236}
-  - component: {fileID: 5694748387714390771}
-  - component: {fileID: 7693385067440626836}
+  - component: {fileID: 3430720296763856281}
+  - component: {fileID: 8453481213206427533}
+  - component: {fileID: 3541297006919029949}
+  - component: {fileID: 1067666902699025452}
+  - component: {fileID: 3556273696644703103}
   m_Layer: 7
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -20,28 +20,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6913621403537934048
+--- !u!4 &3430720296763856281
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4074283306150294584}
+  m_GameObject: {fileID: 5825469468187991839}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.5, y: -9.1, z: -10}
-  m_LocalScale: {x: 0.6249, y: 1, z: 1}
+  m_LocalPosition: {x: -13.1, y: 1.6, z: -10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!20 &3681266334129789908
+--- !u!20 &8453481213206427533
 Camera:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4074283306150294584}
+  m_GameObject: {fileID: 5825469468187991839}
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
@@ -86,49 +86,22 @@ Camera:
   m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &5090279957195689236
+--- !u!81 &3541297006919029949
 AudioListener:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4074283306150294584}
+  m_GameObject: {fileID: 5825469468187991839}
   m_Enabled: 1
---- !u!114 &5694748387714390771
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4074283306150294584}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2031ca0f8f873064790e43e7b3c985c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  knightPos: {fileID: 0}
-  UIObj: {fileID: 0}
-  fadeScreenCanvas: {fileID: 0}
-  followingKnight: 1
-  focusSpeed: 8
-  followSpeed: 1.2
-  localSpeed: 1
-  verticalLevel: 0
-  heightOffset: 2
-  widthOffset: 5
-  zAxisPosition: -10
-  deadZoneHorizontal: 3
-  deadZoneVertical: 3
-  lookHorizontalRange: 6
-  lookVerticalRange: 3
---- !u!95 &7693385067440626836
+--- !u!95 &1067666902699025452
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4074283306150294584}
+  m_GameObject: {fileID: 5825469468187991839}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 0}
@@ -142,3 +115,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3556273696644703103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5825469468187991839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16012bbac1d641b4ca6ade264d34cdba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStatsScript: {fileID: 0}
+  playerTransform: {fileID: 0}
+  groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  isFollowingPlayer: 1
+  xAxisOffset: 1
+  yAxisOffsetDefault: 3
+  fallOffset: -2
+  moveTime: 0.7
+  smoothSpeed: 0.015
+  groundCheckLimit: 1.8
+  yAxisOffsetLookUp: 4.9
+  yAxisOffsetLookDown: -3.2

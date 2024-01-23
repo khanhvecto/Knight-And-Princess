@@ -2,32 +2,27 @@ using UnityEngine;
 
 public class KnightBossApproachBehavior : StateMachineBehaviour
 {
+    [Header("References")]
     private KnightBossMove movementScript;
+
+    [Header("States")]
+    protected bool isLoadReferences = false;
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        if (!this.isLoadReferences)
+            this.LoadReferences(animator);
+    }
+
+    protected void LoadReferences(Animator animator)
+    {
         this.movementScript = animator.GetComponentInChildren<KnightBossMove>();
-        if (this.movementScript == null)
-            Debug.LogError("Can't find movement script for KnightBossCombatBehavior of " + animator.name);
+
+        this.isLoadReferences = true;
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         movementScript.ApproachEnemy();
     }
-
-    //protected void ApproachEnemy()
-    //{
-    //    if (!this.IsFarAwayEnemy(1f))
-    //    {
-    //        // Change behavior to ready attack
-    //        this.stateScript.animator.SetBool("ready", true);
-    //        return;
-    //    }
-
-    //    if (this.IsNeedToFlip())
-    //        this.stateScript.Flip();
-
-    //    this.MoveToEnemy();
-    //}
 }

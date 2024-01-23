@@ -16,7 +16,7 @@ MonoBehaviour:
   health: 200
   damage: 10
   cooldown: 10
-  distance: 6
+  approachDistance: 5
   enduranceDecrement: 20
   unharmedAttacksAmount: 5
   choosableAttacksAmount: 2

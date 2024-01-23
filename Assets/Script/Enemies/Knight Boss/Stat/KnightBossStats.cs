@@ -3,31 +3,33 @@ using UnityEngine;
 public class KnightBossStats : MonoBehaviour
 {
     [Header("--- REFERENCES ---")]
-    [SerializeField] private EnemyStats statSO;
+    [SerializeField] protected EnemyStats statSO;
     [SerializeField] protected KnightBossHUDBar _HUDBarScript;
     public Rigidbody2D rb2D;
     public Animator animator;
     public LayerMask knightLayer;
 
     [Header("--- STATS ---")]
-    [Header("Combat range")]
+    [Header("Targeting")]
     public Vector2 combatRangeSize;
     public Vector2 combatRangeOffset;
+    [Header("Normal range")]
+    public float defaultHorizontalMoveRange;
+    public float defaultVerticalMoveRange;
+    [Header("Combat range")]
+    public float approachDistance;
     public float RANGE_COEFF;
-    public float distance;
+    [Header("Speed")]
+    public float normalSpeed;
+    public float approachSpeed;
     [Header("Combat stats")]
     protected float health;
     public float Health { get => health; }
     public float maxHealth;
-    [Header("Damage")]
-    public float damage;
-    public float enduranceDecrement;
     [Header("Attack")]
     public int attackTypeNumber;
     public int unharmedAttacksAmount;
     public float maxAttackDelayTime;
-    [Header("Movement")]
-    public float approachSpeed;
     [Header("Target")]
     public Collider2D targetColl;
 
@@ -45,18 +47,19 @@ public class KnightBossStats : MonoBehaviour
         this.InitHealthBar();
     }
 
-    private void LoadStats()
+    protected virtual void LoadStats()
     {
         this.RANGE_COEFF = this.statSO.range_coeff;
         this.health = this.statSO.health;
         this.maxHealth = this.statSO.health;
-        this.damage = this.statSO.damage;
-        this.enduranceDecrement = this.statSO.enduranceDecrement;
         this.approachSpeed = this.statSO.combatSpeed;
-        this.distance = this.statSO.distance;
+        this.approachDistance = this.statSO.approachDistance;
         this.maxAttackDelayTime = this.statSO.maxDelayAttackTime;
         this.attackTypeNumber = this.statSO.choosableAttacksAmount;
         this.unharmedAttacksAmount = this.statSO.unharmedAttacksAmount;
+        this.normalSpeed = this.statSO.normalSpeed;
+        this.defaultHorizontalMoveRange = this.statSO.horizontalMoveRange;
+        this.defaultVerticalMoveRange = this.statSO.verticalMoveRange;
     }
 
     protected void InitHealthBar()

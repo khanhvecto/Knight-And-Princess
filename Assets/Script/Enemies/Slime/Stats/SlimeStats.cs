@@ -46,7 +46,7 @@ public class SlimeStats : MonoBehaviour, HpBarInterface
         this.enduranceDecrement = this.statSO.enduranceDecrement;
         this.normalSpeed = this.statSO.normalSpeed;
         this.approachSpeed = this.statSO.combatSpeed;
-        this.distance = this.statSO.distance;
+        this.distance = this.statSO.approachDistance;
         this.attackTime1 = this.statSO.attackTime1;
         this.attackTime2 = this.statSO.attackTime2;
         this.moveType = this.statSO.moveType;

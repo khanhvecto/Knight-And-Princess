@@ -87,15 +87,16 @@ MonoBehaviour:
     m_Bits: 128
   combatRangeSize: {x: 6.61, y: 5.28}
   combatRangeOffset: {x: 0.87, y: 0}
+  defaultHorizontalMoveRange: 0
+  defaultVerticalMoveRange: 0
+  approachDistance: 0
   RANGE_COEFF: 0
-  distance: 0
+  normalSpeed: 0
+  approachSpeed: 0
   maxHealth: 0
-  damage: 0
-  enduranceDecrement: 0
   attackTypeNumber: 0
   unharmedAttacksAmount: 0
   maxAttackDelayTime: 0
-  approachSpeed: 0
   targetColl: {fileID: 0}
   isDead: 0
   isCombating: 0
@@ -10238,7 +10239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8789157b2859674d94bc4d9213960c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statScript: {fileID: 783014507621048312}
+  statsScript: {fileID: 783014507621048312}
   combatScript: {fileID: 7138051119614656613}
 --- !u!1 &4549041034826231227
 GameObject:

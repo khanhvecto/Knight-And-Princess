@@ -82,53 +82,43 @@ public class PlayerCombat : MonoBehaviour, IDamageReceiver
         if (!this.statsScript.hurtable)
             return;
 
-        if(this.lastBlockPressedTime + this.currentParryTime >= Time.time)
-            this.ParryingAttack(damage, attackPos, enduranceDecrement);
-        else if (this.statsScript.isBlocking)   
-            this.BlockingAttack(damage, attackPos, enduranceDecrement);
-        else
+        if(this.IsHeadingWrongWay(attackPos))
+        {
+            this.movementScript.Flip();
             this.GotHurt(damage, enduranceDecrement);
+        }
+        else
+        {
+            if(this.lastBlockPressedTime + this.currentParryTime >= Time.time)
+                this.ParryingAttack(damage, attackPos, enduranceDecrement);
+            else if (this.statsScript.isBlocking)   
+                this.BlockingAttack(damage, attackPos, enduranceDecrement);
+            else
+                this.GotHurt(damage, enduranceDecrement);
+        }
     }
 
     protected void ParryingAttack(float damage, Transform attackPos, float enduranceDecrement)
     {
-        // Check if parry the wrong way
-        if ((this.statsScript.isFacingRight && attackPos.position.x < transform.parent.position.x)
-            || (!this.statsScript.isFacingRight && attackPos.position.x > transform.parent.position.x))
-        {
-            this.GotHurt(damage, enduranceDecrement);
-        }
-        else
-        {
-            this.lastBlockPressedTime -= this.statsScript.parryBuffer;  // Allows player parry right after if successful parry, don't need to wait buffer again
-            this.soundsScript.PlayRandomParrySound();
-            var newEndurance = this.statsScript.CurrentEndurance - enduranceDecrement;
-            if (newEndurance <= 0)  // Make sure endurance can't fall to 0
-                newEndurance = 1f;
-            this.statsScript.SetCurrentEnduranceValue(newEndurance);
-        }
+        this.lastBlockPressedTime -= this.statsScript.parryBuffer;  // Allows player parry right after if successful parry, don't need to wait buffer again
+        this.soundsScript.PlayRandomParrySound();
+        var newEndurance = this.statsScript.CurrentEndurance - enduranceDecrement;
+        if (newEndurance <= 0)  // Make sure endurance can't fall to 0
+            newEndurance = 1f;
+        this.statsScript.SetCurrentEnduranceValue(newEndurance);
     }
 
     protected void BlockingAttack(float damage, Transform attackPos, float enduranceDecrement)
     {
-        // Check if blocking the wrong way
-        if ((this.statsScript.isFacingRight && attackPos.position.x < transform.parent.position.x)
-            || (!this.statsScript.isFacingRight && attackPos.position.x > transform.parent.position.x))
+        var newEndurance = this.statsScript.CurrentEndurance - enduranceDecrement;
+        this.statsScript.SetCurrentEnduranceValue(newEndurance);
+        if (newEndurance <= this.statsScript.minEndurance && this.statsScript.stunnedable)
         {
-            this.GotHurt(damage, enduranceDecrement);
+            this.statsScript.animator.SetTrigger("stunned");
         }
         else
         {
-            var newEndurance = this.statsScript.CurrentEndurance - enduranceDecrement;
-            this.statsScript.SetCurrentEnduranceValue(newEndurance);
-            if (newEndurance <= this.statsScript.minEndurance && this.statsScript.stunnedable)
-            {
-                this.statsScript.animator.SetTrigger("stunned");
-            }
-            else
-            {
-                this.soundsScript.PlayRandomBlockSound();
-            }
+            this.soundsScript.PlayRandomBlockSound();
         }
     }
 
@@ -149,6 +139,15 @@ public class PlayerCombat : MonoBehaviour, IDamageReceiver
 
         this.statsScript.SetCurrentHealthValue(newHealth);
         this.statsScript.SetCurrentEnduranceValue(newEndurance);
+    }
+
+    protected bool IsHeadingWrongWay(Transform attackPos)
+    {
+        if ((this.statsScript.isFacingRight && attackPos.position.x < transform.parent.position.x)
+            || (!this.statsScript.isFacingRight && attackPos.position.x > transform.parent.position.x))
+        return true;
+        
+        return false;
     }
 
     #endregion

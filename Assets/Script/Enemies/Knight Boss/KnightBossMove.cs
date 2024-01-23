@@ -3,12 +3,88 @@ using UnityEngine;
 public class KnightBossMove: MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] protected KnightBossStats statScript;
+    [SerializeField] protected KnightBossStats statsScript;
     [SerializeField] protected KnightBoss_Combat combatScript;
 
-    [Header("Parameters")]
+    [Header("Wait attack")]
     protected float attackWaitTime;
     protected float startOfWaitTime;
+
+    [Header("Normal movement")]
+    protected float horizontalMoveRange;
+    protected Vector2 spawnPlace;
+    [Header("Check wall stuck")]
+    protected Vector2 capturedPos;
+    protected float capturedTime = 0f;
+
+    #region Normal Behavior
+
+    public void ResetNormalMoveRange()
+    {
+        this.spawnPlace = (Vector2)transform.position;
+        this.horizontalMoveRange = this.statsScript.defaultHorizontalMoveRange;
+    }
+
+    public void NormalMove()
+    {
+        float moveDistance = transform.position.x - spawnPlace.x;
+
+        if (IsStuck())
+        {
+            this.Flip();
+
+            //Reset spawnPoint
+            if (moveDistance < 0)
+            {
+                this.spawnPlace = ((Vector2)transform.position + this.spawnPlace + Vector2.right * this.horizontalMoveRange) / 2;
+                this.horizontalMoveRange = this.spawnPlace.x - transform.position.x;
+            }
+            else
+            {
+                this.spawnPlace = ((Vector2)transform.position + this.spawnPlace - Vector2.right * this.horizontalMoveRange) / 2;
+                this.horizontalMoveRange = transform.position.x - this.spawnPlace.x;
+            }
+        }
+        //If need to turn around
+        else if ((moveDistance >= horizontalMoveRange && !statsScript.facingLeft) ||
+                (moveDistance <= -horizontalMoveRange && statsScript.facingLeft))
+        {
+            this.Flip();
+        }
+        else
+        {
+            SetMove();
+        }
+    }
+
+    protected void SetMove()
+    {
+        if (this.statsScript.facingLeft)
+        {
+            this.statsScript.rb2D.velocity = new Vector2(- this.statsScript.normalSpeed, this.statsScript.rb2D.velocity.y);
+        }
+        else
+        {
+            this.statsScript.rb2D.velocity = new Vector2(this.statsScript.normalSpeed, this.statsScript.rb2D.velocity.y);
+        }
+    }
+
+    protected bool IsStuck()
+    {
+        // Check if Knight Boss freezed in a place for 2s
+        if (Time.time - this.capturedTime < 2) return false;
+
+        if (this.capturedPos == (Vector2)transform.position)
+        {
+            return true;
+        }
+
+        this.capturedPos = (Vector2)transform.position;
+        this.capturedTime = Time.time;
+        return false;
+    }
+
+    #endregion
 
     #region Approach behavior
 
@@ -17,7 +93,7 @@ public class KnightBossMove: MonoBehaviour
         if(!this.IsFarAwayEnemy(1f))
         {
             // Change behavior to ready attack
-            this.statScript.animator.SetBool("ready", true);
+            this.statsScript.animator.SetBool("ready", true);
             return;
         }
 
@@ -28,10 +104,10 @@ public class KnightBossMove: MonoBehaviour
     protected void MoveToEnemy()
     {
         // Move on ground
-        if (this.statScript.facingLeft)
-            this.statScript.rb2D.velocity = new Vector2(-this.statScript.approachSpeed, this.statScript.rb2D.velocity.y);
+        if (this.statsScript.facingLeft)
+            this.statsScript.rb2D.velocity = new Vector2(-this.statsScript.approachSpeed, this.statsScript.rb2D.velocity.y);
         else
-            this.statScript.rb2D.velocity = new Vector2(this.statScript.approachSpeed, this.statScript.rb2D.velocity.y);
+            this.statsScript.rb2D.velocity = new Vector2(this.statsScript.approachSpeed, this.statsScript.rb2D.velocity.y);
     }
 
     #endregion
@@ -43,7 +119,7 @@ public class KnightBossMove: MonoBehaviour
         if(this.IsFarAwayEnemy(2f))
         {
             // Change behavior to approach
-            this.statScript.animator.SetBool("ready", false);
+            this.statsScript.animator.SetBool("ready", false);
             return;
         }
 
@@ -57,7 +133,7 @@ public class KnightBossMove: MonoBehaviour
     public void ResetReadyTimer()
     {
         // Make Knight boss ready attack timer count again
-        this.attackWaitTime = Random.Range(0, this.statScript.maxAttackDelayTime);
+        this.attackWaitTime = Random.Range(0, this.statsScript.maxAttackDelayTime);
         this.startOfWaitTime = Time.time;
     }
 
@@ -65,40 +141,42 @@ public class KnightBossMove: MonoBehaviour
 
     #region Check state
 
-    public void CheckFlip()
-    {
-        if (this.statScript.targetColl == null)
-            return;
-
-        if ((statScript.facingLeft && transform.position.x < this.statScript.targetColl.transform.position.x) 
-            || (!statScript.facingLeft && transform.position.x > this.statScript.targetColl.transform.position.x))
-        {
-            this.statScript.rb2D.velocity = new Vector2(-this.statScript.rb2D.velocity.x, this.statScript.rb2D.velocity.y);
-            transform.parent.Rotate(0f, 180f, 0f);
-            this.statScript.facingLeft = !this.statScript.facingLeft;
-            this.statScript.combatRangeOffset.x = -this.statScript.combatRangeOffset.x;
-        }
-    }
-
     protected bool IsFarAwayEnemy(float multiplier)
     {
-        if (this.statScript.targetColl == null) return true;
-        float distance = Vector2.Distance(transform.position, this.statScript.targetColl.transform.position);
-        return distance > this.statScript.distance * multiplier;
+        if (this.statsScript.targetColl == null) return true;
+        float distance = Vector2.Distance(transform.position, this.statsScript.targetColl.transform.position);
+        return distance > this.statsScript.approachDistance * multiplier;
     }
 
     # endregion
 
     #region Specific movement
+    public void CheckFlip()
+    {
+        if (this.statsScript.targetColl == null)
+            return;
+
+        if ((statsScript.facingLeft && transform.position.x < this.statsScript.targetColl.transform.position.x)
+            || (!statsScript.facingLeft && transform.position.x > this.statsScript.targetColl.transform.position.x))
+            this.Flip();
+    }
+
+    protected void Flip()
+    {
+        this.statsScript.rb2D.velocity = new Vector2(-this.statsScript.rb2D.velocity.x, this.statsScript.rb2D.velocity.y);
+        transform.parent.Rotate(0f, 180f, 0f);
+        this.statsScript.facingLeft = !this.statsScript.facingLeft;
+        this.statsScript.combatRangeOffset.x = -this.statsScript.combatRangeOffset.x;
+    }
 
     public void StopMoving()
     {
-        this.statScript.rb2D.velocity = Vector2.zero;
+        this.statsScript.rb2D.velocity = Vector2.zero;
     }
 
     public void DashForward(Vector2 force)
     {
-        this.statScript.rb2D.AddForce(force, ForceMode2D.Force);
+        this.statsScript.rb2D.AddForce(force, ForceMode2D.Force);
     }
 
     #endregion

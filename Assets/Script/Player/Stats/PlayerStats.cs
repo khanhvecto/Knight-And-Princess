@@ -74,6 +74,7 @@ public class PlayerStats : MonoBehaviour
     [Header("Attack")]
     public bool attackable = true;
     public bool isAttacking = false;
+    [Header("Look further")]
 
     [Header("--- LAYERS ---")]
     public LayerMask groundLayerMask;

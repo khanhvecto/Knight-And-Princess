@@ -14,8 +14,8 @@ public class InputManager : MonoBehaviour
     }
 
     #region Camera
-    private KeyCode lookDownKey = KeyCode.DownArrow;
-    private KeyCode lookUpKey = KeyCode.UpArrow;
+    private KeyCode lookDownKey = KeyCode.S;
+    private KeyCode lookUpKey = KeyCode.W;
     private KeyCode lookRightKey = KeyCode.RightArrow;
     private KeyCode lookLeftKey = KeyCode.LeftArrow;
     public bool GetLookDownKey()
