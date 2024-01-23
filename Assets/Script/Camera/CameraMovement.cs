@@ -8,6 +8,8 @@ public class CameraMovement : MonoBehaviour
     public static CameraMovement Instance { get => instance; }
 
     [Header("References")]
+    [SerializeField] protected PlayerStats playerStatsScript;
+    [SerializeField] protected PlayerMovement playerMovementScript;
     [SerializeField] private Transform knightPos;
     [SerializeField] protected GameObject UIObj;
     [SerializeField] protected CanvasGroup fadeScreenCanvas;
@@ -22,7 +24,7 @@ public class CameraMovement : MonoBehaviour
 
     [Header("Vertical level")]
     public float verticalLevel;
-    protected bool freezing;
+    protected bool freezingMovement;
     protected Vector3 relativePos;  //When player move too fast, the camera will be "freeze"
 
     [Header("Offset")]
@@ -73,20 +75,20 @@ public class CameraMovement : MonoBehaviour
 
         //Dead zone
         this.SetDeadZoneRange();
-        this.oldFacingRight = KnightState.Instance.facingRight;
+        this.oldFacingRight = this.playerStatsScript.isFacingRight;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        if(this.followingKnight) this.MoveCamera();
+        if(this.followingKnight) this.MoveCameraFollow();
     }
 
-    private void MoveCamera()
+    private void MoveCameraFollow()
     {
         this.FindVerticalLevel();
 
         //Set move
-        if(!this.freezing)
+        if(!this.freezingMovement)
         {
             if (this.inDeadZone)
             {
@@ -104,18 +106,17 @@ public class CameraMovement : MonoBehaviour
         }
     }
 
-    ///
-    /// Move when in deadzone
-    ///
+    #region Move when in deadzone
     private void DeadZoneMove()
     {
         if (!this.SetLookFurther()) //If not looking further, then move to steady state
         {
             this.SetDeadZoneHeading();
             Vector3 newPos = new Vector3(this.deadZonePos.x + this.widthRange / 2, this.verticalLevel + this.heightOffset, this.zAxisPosition);
-            Vector3 tmpPos_1 = Vector3.Slerp(transform.position, newPos, this.localSpeed * Time.deltaTime);
-            Vector3 tmpPos_2 = Vector3.Slerp(transform.position, newPos, this.followSpeed * Time.deltaTime);
-            transform.position = new Vector3(tmpPos_1.x, tmpPos_2.y, this.zAxisPosition);
+            //Vector3 tmpPos_1 = Vector3.Slerp(transform.position, newPos, this.localSpeed * Time.deltaTime);
+            //Vector3 tmpPos_2 = Vector3.Slerp(transform.position, newPos, this.followSpeed * Time.deltaTime);
+            var smothedPos = Vector2.Lerp(transform.position, newPos, this.localSpeed * Time.deltaTime);
+            transform.position = new Vector3(smothedPos.x, smothedPos.y, this.zAxisPosition);
         }
 
         if (this.OutOfDeadZone())   //Check if out of deadzone
@@ -128,10 +129,10 @@ public class CameraMovement : MonoBehaviour
     private void SetDeadZoneHeading()
         //Set the head of deadzone that only change when in a heading state for amount of time
     {
-        if (this.oldFacingRight != KnightState.Instance.facingRight)
+        if (this.oldFacingRight != this.playerStatsScript.isFacingRight)
         {
             this.deadZoneMoveTimer = 0f;
-            this.oldFacingRight = KnightState.Instance.facingRight;
+            this.oldFacingRight = this.playerStatsScript.isFacingRight;
             this.deadZoneMoveFlag = false;
         }
         else if (this.deadZoneMoveFlag == false)
@@ -232,35 +233,37 @@ public class CameraMovement : MonoBehaviour
     {
         this.inDeadZone = true;
         this.SetDeadZoneRange();
-        this.oldFacingRight = KnightState.Instance.facingRight;
+        this.oldFacingRight = this.playerStatsScript.isFacingRight;
     }
 
-    /// <summary>
-    /// Move when running
-    /// </summary>
+    #endregion
+
+    #region Move when running
     private void RunningMove()
     {
         //Follow
         this.CheckHeading();
-        Vector3 newPos = new Vector3(knightPos.position.x + widthRange, this.verticalLevel + this.heightOffset, zAxisPosition);
-        Vector3 tmpPos = Vector3.Slerp(transform.position, newPos, this.followSpeed * Time.deltaTime);
-        transform.position = new Vector3(tmpPos.x, tmpPos.y, this.zAxisPosition);
+        //Vector3 newPos = new Vector3(knightPos.position.x + widthRange, this.verticalLevel + this.heightOffset, zAxisPosition);
+        //Vector3 tmpPos = Vector3.Slerp(transform.position, newPos, this.followSpeed * Time.deltaTime);
+        var newPos = new Vector2(this.knightPos.position.x + widthRange, this.verticalLevel + this.heightOffset);
+        var smoothedPos = Vector2.Lerp(transform.position, newPos, this.followSpeed * Time.fixedDeltaTime);
+        transform.position = new Vector3(smoothedPos.x, smoothedPos.y, this.zAxisPosition);
 
         //Check if standing
-        if (KnightMovement.Instance.horizontal == 0f && !KnightMovement.Instance.falling)
+        if (this.playerMovementScript.horizontal == 0f && this.playerStatsScript.isOnGround)
         {
             this.ResetDeadzone();
         }
     }
 
-    /// 
-    /// Other
-    /// 
+    #endregion
+
+    #region Others
     protected virtual void FindVerticalLevel()  //Change state of vertical state (freezing) and veritcal level
     {
-        if (KnightMovement.Instance.isGround)
+        if (this.playerStatsScript.isOnGround)
         {
-            this.freezing = false;
+            this.freezingMovement = false;
 
             if (Mathf.Abs(this.knightPos.position.y - this.verticalLevel) < 1 ) return;
 
@@ -268,17 +271,17 @@ public class CameraMovement : MonoBehaviour
             return;
         }
 
-        if (this.freezing) return; 
+        if (this.freezingMovement) return; 
 
         if(this.knightPos.position.y >= this.verticalLevel + this.deadZoneVertical || this.knightPos.position.y <= this.verticalLevel - this.deadZoneVertical/2)
         {
-            this.freezing = true;
+            this.freezingMovement = true;
             this.relativePos = transform.position - this.knightPos.position;
         }
     }
     private void CheckHeading()
     {
-        if (KnightState.Instance.facingRight)
+        if (this.playerStatsScript.isFacingRight)
         {
             this.widthRange = Mathf.Abs(this.widthOffset);
         }
@@ -295,19 +298,22 @@ public class CameraMovement : MonoBehaviour
     public void ResetDeadzoneStats() //Can be call when camera is deazone
     {
         this.followingKnight = true;
-        this.freezing = false;
+        this.freezingMovement = false;
     }
 
-    //
-    // Cinematic movement
-    //
+    #endregion
+
+    #region Cinematic movement
+
     public IEnumerator FocusToObject(Vector3 position)  //Focus to a specific position like a cutscene
     {
         //Set stats
             //Set knight stays steady
-        KnightMovement.Instance.horizontal = 0f;
-        KnightMovement.Instance.RigidBody.velocity = new Vector2(0f, KnightMovement.Instance.RigidBody.velocity.y);
-        KnightState.Instance.controlable = false;
+        //KnightMovement.Instance.horizontal = 0f;
+        //KnightMovement.Instance.RigidBody.velocity = new Vector2(0f, KnightMovement.Instance.RigidBody.velocity.y);
+        this.playerMovementScript.StopMoving();
+        //KnightState.Instance.controlable = false;
+        this.playerStatsScript.controlable = false;
             //UI
         this.UIObj.SetActive(false);
             
@@ -327,7 +333,8 @@ public class CameraMovement : MonoBehaviour
         yield return StartCoroutine(this.FadeScreen(0, 1));
 
         //Set stats
-        KnightState.Instance.controlable = true;    //Knight
+        //KnightState.Instance.controlable = true;    //Knight
+        this.playerStatsScript.controlable = true;
         this.UIObj.SetActive(true); //UI
     }
 
@@ -357,4 +364,6 @@ public class CameraMovement : MonoBehaviour
         }
         this.fadeScreenCanvas.alpha = targetValue;
     }
+
+    #endregion
 }

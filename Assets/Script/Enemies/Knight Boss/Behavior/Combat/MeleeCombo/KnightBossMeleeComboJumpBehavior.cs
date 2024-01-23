@@ -43,17 +43,17 @@ public class KnightBossMeleeComboJumpBehavior : StateMachineBehaviour
         if(this.statsScript.targetColl != null)
         {
             var newPosVertical = this.statsScript.targetColl.transform.position.y + this.statsScript.rb2D.GetComponent<BoxCollider2D>().size.y;
+            var newPosVerticalOffset = newPosVertical - animator.transform.position.y;
 
             // Find new horizontal position
-            RaycastHit2D hit = Physics2D.Raycast(animator.transform.position, new Vector2(-1,1), 10, this.groundLayerMask);   // Check if hit wall
+            RaycastHit2D hit = Physics2D.Raycast(animator.transform.position, new Vector2(-1,1), newPosVerticalOffset*Mathf.Sqrt(2f), this.groundLayerMask);   // Check if hit wall
             float newPosHorizontal;
             if (hit)
-            { 
-                Debug.Log("hit");
-                newPosHorizontal = animator.transform.position.x + (newPosVertical - animator.transform.position.y);
+            {
+                newPosHorizontal = animator.transform.position.x + newPosVerticalOffset;
             }
             else
-                newPosHorizontal = animator.transform.position.x - (newPosVertical - animator.transform.position.y);
+                newPosHorizontal = animator.transform.position.x - newPosVerticalOffset;
 
             this.newPos = new Vector2(newPosHorizontal, newPosVertical);
         }
