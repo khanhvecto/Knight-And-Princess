@@ -53,6 +53,8 @@ public class KnightBossMeleeCombo1Behavior : StateMachineBehaviour
             var direction = this.statsScript.targetColl.transform.position - animator.transform.position;
             Vector2 initialVelocity = 2 * (direction / this.dashTime);
             this.dashForce = this.statsScript.rb2D.mass * initialVelocity;
+
+            this.movementScript.DashForward(this.dashForce);
         }
     }
 
@@ -77,10 +79,6 @@ public class KnightBossMeleeCombo1Behavior : StateMachineBehaviour
         {
             this.movementScript.StopMoving();
             this.isDashing = false;
-        }
-        else
-        {
-            this.movementScript.DashForward(this.dashForce);
         }
     }
 

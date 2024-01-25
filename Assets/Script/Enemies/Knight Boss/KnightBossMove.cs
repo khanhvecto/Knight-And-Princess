@@ -210,7 +210,7 @@ public class KnightBossMove: MonoBehaviour
 
     public void DashForward(Vector2 force)
     {
-        this.statsScript.rb2D.AddForce(force, ForceMode2D.Force);
+        this.statsScript.rb2D.AddForce(force, ForceMode2D.Impulse);
     }
 
     #endregion

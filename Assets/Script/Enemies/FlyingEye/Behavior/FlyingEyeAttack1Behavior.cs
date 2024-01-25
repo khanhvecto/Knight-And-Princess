@@ -21,7 +21,7 @@ public class FlyingEyeAttack1Behavior : StateMachineBehaviour
         if (!this.isLoadedReferences)
             this.LoadReferences(animator);
         this.SetStats();
-        this.CalculateDashForce(animator);
+        this.SetDash(animator);
     }
 
     protected void LoadReferences(Animator animator)
@@ -41,7 +41,7 @@ public class FlyingEyeAttack1Behavior : StateMachineBehaviour
         this.statsScript.rb2D.gravityScale = 0f;
     }
 
-    protected void CalculateDashForce(Animator animator)
+    protected void SetDash(Animator animator)
     {
         if (this.statsScript.targetColl == null)
             return;
@@ -49,25 +49,23 @@ public class FlyingEyeAttack1Behavior : StateMachineBehaviour
         var direction = this.statsScript.targetColl.transform.position - animator.transform.position;
         Vector2 initialVelocity = 2 * (direction / this.dashTime);
         this.momentum = this.statsScript.rb2D.mass * initialVelocity;
+
+        this.movementScript.DashForward(this.momentum);
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         if (this.isDashing)
-            this.Dash(animator);
+            this.CountDashTime(animator);
     }
 
-    protected void Dash(Animator animator)
+    protected void CountDashTime(Animator animator)
     {
         this.dashTimer += Time.deltaTime;
         if (this.dashTimer >= this.dashTime)
         {
             this.movementScript.StopMoving();
             this.isDashing = false;
-        }
-        else
-        {
-            this.movementScript.DashForward(this.momentum);
         }
     }
 

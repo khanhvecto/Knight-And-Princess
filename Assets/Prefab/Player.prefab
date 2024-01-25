@@ -5087,6 +5087,7 @@ MonoBehaviour:
   animator: {fileID: 2951419464569415098}
   HUDBarScript: {fileID: 8314882932673435788}
   speed: 4
+  defaultSpeed: 4
   sprintCoef: 1.5
   jumpBuffer: 0.3
   coyoteTime: 0.2
@@ -6518,7 +6519,6 @@ GameObject:
   - component: {fileID: 2266770058029721467}
   - component: {fileID: 1166217049326922095}
   - component: {fileID: 764299428898642384}
-  - component: {fileID: 1166049912776691340}
   - component: {fileID: 7572625238213860707}
   m_Layer: 7
   m_Name: Manager
@@ -6570,19 +6570,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   managerScript: {fileID: 7572625238213860707}
   deadScreeen: {fileID: 0}
---- !u!114 &1166049912776691340
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3212063519035262694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87cd456e4911c4241831117b48d4e710, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  checkPoint: {fileID: 0}
 --- !u!114 &7572625238213860707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6596,6 +6583,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statsScript: {fileID: 2892841597020179650}
+  checkPoint: {fileID: 0}
 --- !u!1 &3835793021524912191
 GameObject:
   m_ObjectHideFlags: 0

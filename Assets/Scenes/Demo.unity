@@ -145,6 +145,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!225 &210624799 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 6338114783353031303, guid: beb418ec15bf187468e6dc687070bd77, type: 3}
+  m_PrefabInstance: {fileID: 8317445199231019590}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &276043183
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,6 +285,11 @@ Transform:
   - {fileID: 466384865}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &403885850 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5987733613582510214, guid: beb418ec15bf187468e6dc687070bd77, type: 3}
+  m_PrefabInstance: {fileID: 8317445199231019590}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &466384864
 GameObject:
   m_ObjectHideFlags: 0
@@ -410,6 +420,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &558355139 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 895374378341102198, guid: 0c7ea1a28646a5743b7c6e1b3fc8342b, type: 3}
+  m_PrefabInstance: {fileID: 3163846360846143356}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed0c167dd50046445983bb8e7ceee9a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &762790556 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 371956519115701813, guid: beb418ec15bf187468e6dc687070bd77, type: 3}
@@ -538,7 +559,7 @@ Transform:
   m_GameObject: {fileID: 1188869711}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.06, y: -0.52, z: 0}
+  m_LocalPosition: {x: -14.55, y: -0.33, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -717,7 +738,7 @@ Transform:
   m_GameObject: {fileID: 1494804846}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.876, y: -3.16, z: 0}
+  m_LocalPosition: {x: -2.019, y: -5, z: 0}
   m_LocalScale: {x: 0.8058341, y: 3.688491, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1002,6 +1023,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flying Eye
       objectReference: {fileID: 0}
+    - target: {fileID: 6324121960454778516, guid: 14abc270ddeea824a8d3c8b9d552c8be, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1252,13 +1277,25 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3556273696644703103, guid: 028d1bf1a46ecfa48bed1b2c11b5e049, type: 3}
+      propertyPath: playerHUDObj
+      value: 
+      objectReference: {fileID: 403885850}
+    - target: {fileID: 3556273696644703103, guid: 028d1bf1a46ecfa48bed1b2c11b5e049, type: 3}
       propertyPath: playerTransform
       value: 
       objectReference: {fileID: 861820388186757343}
     - target: {fileID: 3556273696644703103, guid: 028d1bf1a46ecfa48bed1b2c11b5e049, type: 3}
+      propertyPath: fadeScreenCanvas
+      value: 
+      objectReference: {fileID: 210624799}
+    - target: {fileID: 3556273696644703103, guid: 028d1bf1a46ecfa48bed1b2c11b5e049, type: 3}
       propertyPath: playerStatsScript
       value: 
       objectReference: {fileID: 1368747172}
+    - target: {fileID: 3556273696644703103, guid: 028d1bf1a46ecfa48bed1b2c11b5e049, type: 3}
+      propertyPath: playerMovementScript
+      value: 
+      objectReference: {fileID: 558355139}
     - target: {fileID: 5825469468187991839, guid: 028d1bf1a46ecfa48bed1b2c11b5e049, type: 3}
       propertyPath: m_Name
       value: Main Camera
@@ -1280,10 +1317,6 @@ PrefabInstance:
       propertyPath: deadScreeen
       value: 
       objectReference: {fileID: 1193546225}
-    - target: {fileID: 1166049912776691340, guid: 0c7ea1a28646a5743b7c6e1b3fc8342b, type: 3}
-      propertyPath: checkPoint
-      value: 
-      objectReference: {fileID: 1188869712}
     - target: {fileID: 3640351912876377988, guid: 0c7ea1a28646a5743b7c6e1b3fc8342b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.258
@@ -1328,6 +1361,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7572625238213860707, guid: 0c7ea1a28646a5743b7c6e1b3fc8342b, type: 3}
+      propertyPath: checkPoint
+      value: 
+      objectReference: {fileID: 1188869712}
     - target: {fileID: 8314882932673435788, guid: 0c7ea1a28646a5743b7c6e1b3fc8342b, type: 3}
       propertyPath: healthBar
       value: 
@@ -1483,9 +1520,25 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 5471219172323994370, guid: beb418ec15bf187468e6dc687070bd77, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5471219172323994370, guid: beb418ec15bf187468e6dc687070bd77, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 3878444806146017050}
+    - target: {fileID: 5471219172323994370, guid: beb418ec15bf187468e6dc687070bd77, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ReviveButtonClicked
+      objectReference: {fileID: 0}
+    - target: {fileID: 5471219172323994370, guid: beb418ec15bf187468e6dc687070bd77, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UIFunction, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5471219172323994370, guid: beb418ec15bf187468e6dc687070bd77, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 5892300785821637500, guid: beb418ec15bf187468e6dc687070bd77, type: 3}
       propertyPath: m_Pivot.x
       value: 0

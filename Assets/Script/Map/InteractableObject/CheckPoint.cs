@@ -20,7 +20,7 @@ public class CheckPoint : InteractableObject
     protected virtual void SetCheckPoint()
     {
         //Setting
-        GamePlayLogic.Instance.SetCheckPoint(gameObject.transform);
+        PlayerManager.Instance.SetCheckPoint(gameObject.transform);
         this.settedCheckPoint = true;
 
         //Show in navigator
@@ -29,7 +29,7 @@ public class CheckPoint : InteractableObject
 
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == 7 && GamePlayLogic.Instance.checkPoint != transform)
+        if (collision.gameObject.layer == 7 && PlayerManager.Instance.checkPoint != transform)
         {
             base.interactable = true;
             if (base.activeState) base.SetPopUpShowing(true);
