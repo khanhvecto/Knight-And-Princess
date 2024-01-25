@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class SceneLoading : MonoBehaviour
@@ -14,7 +13,6 @@ public class SceneLoading : MonoBehaviour
     protected void LoadReferences()
     {
         this.animator = GetComponent<Animator>();
-        if (this.animator == null) Debug.LogError("Can't find animator for SceneLoading of " + transform.name);
     }
 
     public IEnumerator StartLoad()

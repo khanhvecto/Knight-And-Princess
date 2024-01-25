@@ -13,11 +13,12 @@ public class KnightBossStateChanger : MonoBehaviour
     protected void CheckStateChange()
     {
 
-        if (!this.statsScript.isCombating && this.IsInAttackRange())    //If player in combat Range
+        if (!this.statsScript.isCombating && this.IsInAttackRange() && !this.statsScript.isDead)    //If player in combat Range
         {
             this.statsScript.SetAttackState(true);
         }
-        else if (this.statsScript.isCombating && !this.IsInAttackRange())   //If player is out of combat Range
+        else if ((this.statsScript.isCombating && !this.IsInAttackRange())
+            || this.statsScript.isDead)   //If player is out of combat Range
         {
             this.statsScript.SetAttackState(false);
         }

@@ -19,7 +19,8 @@ public class KnightBossStats : MonoBehaviour
     [Header("Combat range")]
     public float approachDistance;
     public float RANGE_COEFF;
-    [Header("Speed")]
+    [Header("Movement")]
+    public MovingType moveType;
     public float normalSpeed;
     public float approachSpeed;
     [Header("Combat stats")]
@@ -60,6 +61,7 @@ public class KnightBossStats : MonoBehaviour
         this.normalSpeed = this.statSO.normalSpeed;
         this.defaultHorizontalMoveRange = this.statSO.horizontalMoveRange;
         this.defaultVerticalMoveRange = this.statSO.verticalMoveRange;
+        this.moveType = this.statSO.moveType;
     }
 
     protected void InitHealthBar()

@@ -15,7 +15,7 @@ public class KnightBoss_AirAttack_Fall : StateMachineBehaviour
     [Header("Stats")]
     protected float height;
     protected float oldGravity;
-    protected Vector2 velocity;
+    protected Vector2 momentum;
     protected int oldLayer;
 
     [Header("States")]
@@ -68,7 +68,7 @@ public class KnightBoss_AirAttack_Fall : StateMachineBehaviour
 
         var direction = this.statsScript.targetColl.transform.position - animator.transform.position;
         Vector2 initialVelocity = 2 * (direction / this.fallTime);
-        this.velocity = this.statsScript.rb2D.mass * initialVelocity;
+        this.momentum = this.statsScript.rb2D.mass * initialVelocity;
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -88,7 +88,7 @@ public class KnightBoss_AirAttack_Fall : StateMachineBehaviour
         }
         else
         {
-            this.movementScript.DashForward(this.velocity);
+            this.movementScript.DashForward(this.momentum);
         }
     }
     protected void FindHeight()

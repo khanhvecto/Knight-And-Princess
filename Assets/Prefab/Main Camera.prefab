@@ -128,16 +128,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerStatsScript: {fileID: 0}
+  playerMovementScript: {fileID: 0}
   playerTransform: {fileID: 0}
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  playerHUDObj: {fileID: 0}
+  fadeScreenCanvas: {fileID: 0}
   isFollowingPlayer: 1
   xAxisOffset: 1
   yAxisOffsetDefault: 3
-  fallOffset: -2
+  fallOffset: -1
   moveTime: 0.7
   smoothSpeed: 0.015
-  groundCheckLimit: 1.8
+  groundCheckLimit: 2.2
   yAxisOffsetLookUp: 4.9
   yAxisOffsetLookDown: -3.2
+  focusSpeed: 8

@@ -65,6 +65,5 @@ public class KnightBoss_Combat : MonoBehaviour, IDamageReceiver
     public void Revive()
     {
         this.statsScript.animator.SetBool("isDead", false);
-        this.statsScript.SetHealthValue(this.statsScript.maxHealth);
     }
 }

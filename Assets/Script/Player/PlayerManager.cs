@@ -22,4 +22,9 @@ public class PlayerManager : MonoBehaviour
         if(this.statsScript.isDead)
             this.statsScript.animator.SetTrigger("endState");
     }
+
+    public void TeleportPlayer(Transform newPlace)
+    {
+        transform.parent.position = newPlace.position;
+    }
 }

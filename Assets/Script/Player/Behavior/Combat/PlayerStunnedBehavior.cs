@@ -19,6 +19,7 @@ public class PlayerStunnedBehavior : StateMachineBehaviour
         if (!this.isLoadedReferences)
             this.LoadReferences(animator);
         this.SetStats();
+        this.statsScript.SetSprintMode(false);
     }
 
     protected void LoadReferences(Animator animator)

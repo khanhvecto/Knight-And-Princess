@@ -20,43 +20,32 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] protected Vector2 checkGroundBoxSize;
     [SerializeField] private float checkGroundBoxDistance;
 
-    void Start()
-    {
-        this.LoadReferences();
-    }
-
-    protected void LoadReferences()
-    {
-        // stats script
-        if (this.statsScript == null)
-            Debug.LogError("Can't find stats script for Player_Movement of " + transform.parent.name);
-    }
-
     void Update()
     {
         this.CheckGround();
         this.RecordEarlyInputs();
 
-        if (!this.statsScript.controlable) 
+        if (!this.statsScript.controlAbility || !this.statsScript.controlable) 
             return;
 
-        if (this.statsScript.movable)
-        {
-            this.CheckFlip();
-            if(this.statsScript.sprintable)
-                this.CheckSprint();
-            this.CheckLookFurther();
-        }
-        if (this.statsScript.rollable)
+        if(!this.statsScript.movementAbility || !this.statsScript.movable) 
+            return;
+
+        this.CheckFlip();
+        this.CheckLookFurther();
+
+        if(this.statsScript.sprintAbility && this.statsScript.sprintable)
+            this.CheckSprint();
+        if (this.statsScript.rollAbiity && this.statsScript.rollable)
             this.WaitRollInput();
     }
 
     protected void FixedUpdate()
     {
-        if (!this.statsScript.controlable) 
+        if (!this.statsScript.controlAbility || !this.statsScript.controlable) 
             return;
 
-        if(this.statsScript.movable)
+        if(this.statsScript.movementAbility && this.statsScript.movable)
             this.SetHorizontalMovement();
     }
 
@@ -78,8 +67,7 @@ public class PlayerMovement : MonoBehaviour
         bool wasOnGround = false;
         if (this.statsScript.isOnGround) wasOnGround = true;
 
-        this.statsScript.isOnGround = Physics2D.BoxCast(transform.position, checkGroundBoxSize, 0f, Vector2.down, checkGroundBoxDistance, this.statsScript.groundLayerMask)
-            || Physics2D.BoxCast(transform.position, checkGroundBoxSize, 0f, Vector2.down, checkGroundBoxDistance, this.statsScript.enemyLayerMask);
+        this.statsScript.isOnGround = Physics2D.BoxCast(transform.position, checkGroundBoxSize, 0f, Vector2.down, checkGroundBoxDistance, this.statsScript.groundLayerMask);
 
         if (!statsScript.isOnGround && wasOnGround && !InputManager.Instance.GetJumpKeyDown() && !InputManager.Instance.GetJumpKey())
         {
@@ -95,34 +83,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if ((horizontal < 0 && this.statsScript.isFacingRight) || (horizontal > 0 && !this.statsScript.isFacingRight))
             this.Flip();
-    }
-
-    protected void CheckSprint()
-    {
-        if (InputManager.Instance.GetSprintKeyDown() || InputManager.Instance.GetSprintKey())
-        {
-            if (!this.statsScript.isSprinting)
-            {
-                this.statsScript.speed *= this.statsScript.sprintCoef;
-                this.statsScript.isSprinting = true;
-            }
-        }
-        else if (InputManager.Instance.GetSprintKeyDown())
-        {
-            if (this.statsScript.isSprinting)
-            {
-                this.statsScript.speed /= this.statsScript.sprintCoef;
-                this.statsScript.isSprinting = false;
-            }
-        }
-        else
-        {
-            if(this.statsScript.isSprinting)
-            {
-                this.statsScript.speed /= this.statsScript.sprintCoef;
-                this.statsScript.isSprinting = false;
-            }
-        }
     }
 
     protected void CheckLookFurther()
@@ -149,10 +109,35 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    protected void SetHorizontalMovement()
+    protected void CheckSprint()
     {
-        this.horizontal = Input.GetAxisRaw("Horizontal");
-        this.statsScript.rb2D.velocity = new Vector2(horizontal * this.statsScript.speed, this.statsScript.rb2D.velocity.y);
+        //if (InputManager.Instance.GetSprintKeyDown() || InputManager.Instance.GetSprintKey())
+        //{
+        //    if (!this.statsScript.isSprinting)
+        //    {
+        //        this.statsScript.speed *= this.statsScript.sprintCoef;
+        //        this.statsScript.isSprinting = true;
+        //    }
+        //}
+        //else if (InputManager.Instance.GetSprintKeyDown())
+        //{
+        //    if (this.statsScript.isSprinting)
+        //    {
+        //        this.statsScript.speed /= this.statsScript.sprintCoef;
+        //        this.statsScript.isSprinting = false;
+        //    }
+        //}
+        //else
+        //{
+        //    if(this.statsScript.isSprinting)
+        //    {
+        //        this.statsScript.speed /= this.statsScript.sprintCoef;
+        //        this.statsScript.isSprinting = false;
+        //    }
+        //}
+
+        if (InputManager.Instance.GetSprintKeyDown())
+            this.statsScript.ChangeSprintMode();
     }
 
     protected void WaitRollInput()
@@ -168,6 +153,12 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    protected void SetHorizontalMovement()
+    {
+        this.horizontal = Input.GetAxisRaw("Horizontal");
+        this.statsScript.rb2D.velocity = new Vector2(horizontal * this.statsScript.speed, this.statsScript.rb2D.velocity.y);
+    }
+
     #endregion
 
     #region Check changing between states
@@ -181,7 +172,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void WaitJumpInput()
     {
-        if (!this.statsScript.isOnGround) return;
+        if (!this.statsScript.controlAbility || !this.statsScript.movementAbility)
+            return;
+
+        if (!this.statsScript.isOnGround || !this.statsScript.movable) return;
 
         if (InputManager.Instance.GetJumpKeyDown())
         {
@@ -197,6 +191,9 @@ public class PlayerMovement : MonoBehaviour
 
     public void WaitAirJumpInput()
     {
+        if (!this.statsScript.controlAbility || !this.statsScript.movementAbility)
+            return;
+
         if (InputManager.Instance.GetJumpKeyDown() && this.jumpTakenAmount < this.statsScript.stackJumpsAmount) 
             this.statsScript.animator.SetTrigger("airJump");
     }
@@ -213,12 +210,12 @@ public class PlayerMovement : MonoBehaviour
 
     public void SetJump()
     {
-        this.jumpTakenAmount = 0;
         this.statsScript.animator.SetBool("isJumping", true);
     }
 
     public void StopMoving()
     {
+        this.horizontal = 0f;
         this.statsScript.rb2D.velocity = Vector2.zero;
     }
 

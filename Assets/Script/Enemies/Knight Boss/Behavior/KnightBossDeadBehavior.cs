@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class KnightBossDeadBehavior : StateMachineBehaviour
 {
+    [Header("------ KNIGHT BOSS DEAD BEHAVIOR ------")]
     [Header("References")]
     protected KnightBossMove movementScript;
     protected KnightBossStats statsScript;
@@ -24,7 +25,7 @@ public class KnightBossDeadBehavior : StateMachineBehaviour
         this.isLoadedReferences = true;
     }
 
-    protected void SetStats()
+    protected virtual void SetStats()
     {
         this.statsScript.isDead = true;
         this.statsScript.rb2D.gameObject.layer = 9; //Dead layer
@@ -32,6 +33,11 @@ public class KnightBossDeadBehavior : StateMachineBehaviour
     }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        this.ResetStats();
+    }
+
+    protected virtual void ResetStats()
     {
         this.statsScript.isDead = false;
         this.statsScript.SetHealthValue(this.statsScript.maxHealth);

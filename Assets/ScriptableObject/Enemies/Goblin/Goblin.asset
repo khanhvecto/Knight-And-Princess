@@ -18,7 +18,7 @@ MonoBehaviour:
   cooldown: 1.5
   approachDistance: 1
   enduranceDecrement: 10
-  unharmedAttacksAmount: 3
+  unharmedAttacksAmount: 0
   choosableAttacksAmount: 2
   maxDelayAttackTime: 0
   attackTime1: 0

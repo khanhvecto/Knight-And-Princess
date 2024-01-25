@@ -33,13 +33,13 @@ public class PlayerCombat : MonoBehaviour, IDamageReceiver
     {
         this.RecordEarlyInput();
 
-        if (!this.statsScript.controlable)
+        if (!this.statsScript.controlAbility || !this.statsScript.controlable)
             return;
 
-        if (this.statsScript.attackable)
+        if (this.statsScript.attackAbility && this.statsScript.attackable)
             this.WaitAttackInput();
 
-        if (this.statsScript.blockable)
+        if (this.statsScript.blockAbility && this.statsScript.blockable)
             this.WaitBlockInput();
     }
 

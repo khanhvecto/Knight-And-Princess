@@ -17,6 +17,8 @@ public class PlayerHurtBehavior : StateMachineBehaviour
             this.LoadReferences(animator);
         this.SetStats();
         this.movementScript.StopMoving();
+        this.hurtSoundScript.PlayRandomHurtSound();
+        this.statsScript.SetSprintMode(false);
         this.CheckDead();
     }
 
@@ -45,7 +47,6 @@ public class PlayerHurtBehavior : StateMachineBehaviour
         this.statsScript.stunnedable = false;
         this.statsScript.controlable = false;
         this.statsScript.enduranceRestoreable = false;
-        this.hurtSoundScript.PlayRandomHurtSound();
     }
 
     protected void CheckDead()

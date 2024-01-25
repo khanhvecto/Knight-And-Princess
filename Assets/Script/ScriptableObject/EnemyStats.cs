@@ -4,7 +4,7 @@ using UnityEngine;
 public class EnemyStats : ScriptableObject
 {
     [Header("Type")]
-    public movingType moveType;
+    public MovingType moveType;
 
     [Header("Combat stats")]
     public float health;
@@ -32,7 +32,7 @@ public class EnemyStats : ScriptableObject
     public float verticalMoveRange;
 }
 
-public enum movingType
+public enum MovingType
 {
     walk = 100,
     flight = 200

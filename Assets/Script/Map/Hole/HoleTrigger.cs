@@ -11,6 +11,12 @@ public class HoleTrigger : MonoBehaviour
     [SerializeField] protected float waitTime = 1f; //If the hole is too high, then wait a few secs before move camera to spawn point
     [SerializeField] protected float fallDamage = 3f;
 
+    [Header("Target")]
+    protected Collider2D targetColl;
+    protected PlayerStats playerStatsScript;
+    protected PlayerManager playerManager;
+    protected PlayerMovement playerMovementScript;
+
     //State
     protected bool respawning = false;
 
@@ -22,30 +28,60 @@ public class HoleTrigger : MonoBehaviour
     {
         if (collision.gameObject.layer != 7) return;
 
-        if(!this.respawning)
+        this.targetColl = collision;
+        this.playerStatsScript = collision.GetComponentInChildren<PlayerStats>();
+        this.playerManager = collision.GetComponentInChildren<PlayerManager>();
+        this.playerMovementScript = collision.GetComponentInChildren<PlayerMovement>();
+
+        if(!CameraFollow.Instance.isFollowingPlayer)    // If camera is using for specific jobs
+        {
+            // Player take damage
+            IDamageReceiver receiveDamageScript = this.targetColl.GetComponentInChildren<IDamageReceiver>();
+            receiveDamageScript?.GotHit(this.fallDamage, transform, 0f);
+
+            // Respawn
+            this.playerManager.TeleportPlayer(this.respawnPlace);
+
+            return;
+        }
+
+        if (!this.respawning)
         {
             this.respawning = true;
             StartCoroutine(RespawnKnight());
+
+            if (CameraFollow.Instance.isFollowingPlayer)
+            {
+                
+            }
+            else
+            {
+                IDamageReceiver receiveDamageScript = this.targetColl.GetComponentInChildren<IDamageReceiver>();
+                receiveDamageScript?.GotHit(this.fallDamage, transform, 0f);
+            }
         }
     }
 
     protected IEnumerator RespawnKnight()
     {
         //Set stats
-        CameraMovement.Instance.followingKnight = false;
+        CameraFollow.Instance.isFollowingPlayer = false;
+        this.playerMovementScript.StopMoving();
+        this.playerStatsScript.controlAbility = false;
 
         //Player take fall damage;
-        KnightHurt.Instance.TakeDamage(fallDamage);
-            //Wait for animation
+        IDamageReceiver receiveDamageScript = this.targetColl.GetComponentInChildren<IDamageReceiver>();
+        receiveDamageScript?.GotHit(this.fallDamage, transform, 0f);
+        //Wait for animation
         yield return new WaitForSeconds(this.hurtTime);
             //Hide knight
-        KnightState.Instance.gameObject.GetComponent<SpriteRenderer>().forceRenderingOff = true;
+        this.targetColl.GetComponent<SpriteRenderer>().forceRenderingOff = true;
 
         //Check dead
-        if(!KnightState.Instance.alive)
+        if(this.playerStatsScript.isDead)
         {
-            KnightState.Instance.gameObject.GetComponent<SpriteRenderer>().forceRenderingOff = false;
-            CameraMovement.Instance.followingKnight = true;
+            this.targetColl.GetComponent<SpriteRenderer>().forceRenderingOff = false;
+            CameraFollow.Instance.isFollowingPlayer = true;
             this.respawning = false;
             yield break;
         }
@@ -57,16 +93,16 @@ public class HoleTrigger : MonoBehaviour
         }
 
         //Focus camera to respawn point
-        Vector3 spawnPos = new Vector3(this.respawnPlace.position.x, this.respawnPlace.position.y + CameraMovement.Instance.heightOffset, 0);
-        //Vector3 spawnPos = new Vector3(this.respawnPlace.position.x, CameraMovement.Instance.verticalLevel + CameraMovement.Instance.heightOffset, 0);
-        yield return StartCoroutine(CameraMovement.Instance.MoveToPos(spawnPos));
+        Vector3 spawnPos = new Vector3(this.respawnPlace.position.x, this.respawnPlace.position.y + CameraFollow.Instance.yAxisOffsetDefault, 0);
+        yield return StartCoroutine(CameraFollow.Instance.MoveToPos(spawnPos));
 
         //Respawn
-        GamePlayLogic.Instance.TeleportKnight(this.respawnPlace);
-        KnightState.Instance.gameObject.GetComponent<SpriteRenderer>().forceRenderingOff = false;
+        this.playerManager.TeleportPlayer(this.respawnPlace);
+        this.targetColl.GetComponent<SpriteRenderer>().forceRenderingOff = false;
 
         //Set stats
-        CameraMovement.Instance.ResetDeadzoneStats();
+        CameraFollow.Instance.isFollowingPlayer = true;
+        this.playerStatsScript.controlAbility = true;
         this.respawning = false;
     }
 }

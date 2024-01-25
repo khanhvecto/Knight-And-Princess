@@ -7,6 +7,7 @@ public class PlayerRunBehavior : StateMachineBehaviour
     protected PlayerSounds soundsScript;
     protected PlayerStats statsScript;
     protected Animator animator;
+    protected ParticleSystem sprintEffect;
 
     [Header("States")]
     protected bool isLoadedReferences = false;
@@ -15,6 +16,7 @@ public class PlayerRunBehavior : StateMachineBehaviour
     {
         if (!this.isLoadedReferences)
             this.LoadReferences(animator);
+        this.SetStats();
     }
 
     protected void LoadReferences(Animator animator)
@@ -33,23 +35,39 @@ public class PlayerRunBehavior : StateMachineBehaviour
             Debug.LogError("Can't find stats script for PlayerIdleBehavior of " + name);
         // animator
         this.animator = animator;
+        this.sprintEffect = animator.transform.Find("Effects").Find("Dust").GetComponent<ParticleSystem>();
 
         this.isLoadedReferences = true;
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        this.PlaySound();
+        this.CheckIfSprint();
         this.movementScript.WaitJumpInput();
         this.movementScript.CheckFalling();
         this.movementScript.CheckRunning();
     }
-    protected void PlaySound()
+
+    
+
+    protected void CheckIfSprint()
     {
         if (this.statsScript.isSprinting)
+        {
+            this.sprintEffect.Play();
             this.soundsScript.PlayRandomSprintSound();
+        }
         else
+        {
+            this.sprintEffect.Stop();
             this.soundsScript.PlayRandomRunSound();
+        }
+    }
+
+    protected void SetStats()
+    {
+        if (this.statsScript.isOnGround)
+            this.movementScript.jumpTakenAmount = 0;
     }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -61,6 +79,15 @@ public class PlayerRunBehavior : StateMachineBehaviour
     protected void ResetStats()
     {
         animator.SetBool("isRunning", false);
+
+        // Stop sound
+        if (this.statsScript.isSprinting)
+            this.soundsScript.StopSprintSound();
+        else
+            this.soundsScript.StopRunSound();
+
+        // Stop effect
+        this.sprintEffect.Stop();
     }
 
     protected void StopSound()

@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class KnightBossMove: MonoBehaviour
 {
+    [Header("--- KNIGHT BOSS MOVE ---")]
     [Header("References")]
     [SerializeField] protected KnightBossStats statsScript;
     [SerializeField] protected KnightBoss_Combat combatScript;
@@ -57,15 +58,37 @@ public class KnightBossMove: MonoBehaviour
         }
     }
 
-    protected void SetMove()
+    protected virtual void SetMove()
     {
-        if (this.statsScript.facingLeft)
+        if(this.statsScript.moveType == MovingType.walk)
         {
-            this.statsScript.rb2D.velocity = new Vector2(- this.statsScript.normalSpeed, this.statsScript.rb2D.velocity.y);
+            if (this.statsScript.facingLeft)
+                this.statsScript.rb2D.velocity = new Vector2(- this.statsScript.normalSpeed, this.statsScript.rb2D.velocity.y);
+            else
+                this.statsScript.rb2D.velocity = new Vector2(this.statsScript.normalSpeed, this.statsScript.rb2D.velocity.y);
         }
         else
         {
-            this.statsScript.rb2D.velocity = new Vector2(this.statsScript.normalSpeed, this.statsScript.rb2D.velocity.y);
+            if (this.statsScript.facingLeft)
+                this.SetMoveVertical(- this.statsScript.normalSpeed);
+            else
+                this.SetMoveVertical(this.statsScript.normalSpeed);
+        }
+    }
+
+    protected void SetMoveVertical(float horizontalSpeed)
+    {
+        if (Mathf.Abs(transform.position.y - this.spawnPlace.y) < this.statsScript.defaultVerticalMoveRange)    // If still in vertical range
+        {
+            float rand = Random.Range(- this.statsScript.normalSpeed / 5, this.statsScript.normalSpeed / 5);
+            this.statsScript.rb2D.velocity = new Vector2(horizontalSpeed, this.statsScript.rb2D.velocity.y + rand);
+        }
+        else
+        {
+            if (transform.position.y > this.spawnPlace.y)    // If enemy need to go lower
+                this.statsScript.rb2D.velocity = new Vector2(horizontalSpeed, - this.statsScript.normalSpeed / 3);
+            else                                            // If enemy need to go higher
+                this.statsScript.rb2D.velocity = new Vector2(horizontalSpeed, + this.statsScript.normalSpeed / 3);
         }
     }
 
@@ -74,7 +97,7 @@ public class KnightBossMove: MonoBehaviour
         // Check if Knight Boss freezed in a place for 2s
         if (Time.time - this.capturedTime < 2) return false;
 
-        if (this.capturedPos == (Vector2)transform.position)
+        if (this.capturedPos.x == transform.position.x)
         {
             return true;
         }
@@ -101,13 +124,24 @@ public class KnightBossMove: MonoBehaviour
 
         this.MoveToEnemy();
     }
+
     protected void MoveToEnemy()
     {
-        // Move on ground
-        if (this.statsScript.facingLeft)
-            this.statsScript.rb2D.velocity = new Vector2(-this.statsScript.approachSpeed, this.statsScript.rb2D.velocity.y);
+        if (this.statsScript.targetColl == null) return;
+
+        if (this.statsScript.moveType == MovingType.walk)
+        {
+            if (this.statsScript.facingLeft)
+                this.statsScript.rb2D.velocity = new Vector2(-this.statsScript.approachSpeed, this.statsScript.rb2D.velocity.y);
+            else
+                this.statsScript.rb2D.velocity = new Vector2(this.statsScript.approachSpeed, this.statsScript.rb2D.velocity.y);
+        }
         else
-            this.statsScript.rb2D.velocity = new Vector2(this.statsScript.approachSpeed, this.statsScript.rb2D.velocity.y);
+        {
+            var direction = this.statsScript.targetColl.transform.position - transform.position;
+            direction.Normalize();
+            this.statsScript.rb2D.velocity = direction * this.statsScript.approachSpeed;
+        }
     }
 
     #endregion
@@ -161,7 +195,7 @@ public class KnightBossMove: MonoBehaviour
             this.Flip();
     }
 
-    protected void Flip()
+    protected virtual void Flip()
     {
         this.statsScript.rb2D.velocity = new Vector2(-this.statsScript.rb2D.velocity.x, this.statsScript.rb2D.velocity.y);
         transform.parent.Rotate(0f, 180f, 0f);

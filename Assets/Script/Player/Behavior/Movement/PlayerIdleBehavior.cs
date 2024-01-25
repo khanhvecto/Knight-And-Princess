@@ -14,6 +14,7 @@ public class PlayerIdleBehavior : StateMachineBehaviour
     {
         if (!this.isLoadedReferences)
             this.LoadReferences(animator);
+        this.SetStats();
     }
 
     protected void LoadReferences(Animator animator)
@@ -30,6 +31,12 @@ public class PlayerIdleBehavior : StateMachineBehaviour
         this.animator = animator;
 
         this.isLoadedReferences = true;
+    }
+
+    protected void SetStats()
+    {
+        if (this.statsScript.isOnGround)
+            this.movementScript.jumpTakenAmount = 0;
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

@@ -9,7 +9,8 @@ public class PlayerStats : MonoBehaviour
 
     [Header("--- STATS ---")]
     [Header("Run")]
-    public float speed = 4;
+    public float speed;
+    public float defaultSpeed = 4f;
     public float sprintCoef = 1.5f;
     [Header("Jump")]
     public float jumpBuffer = 0.3f;
@@ -83,23 +84,17 @@ public class PlayerStats : MonoBehaviour
     public LayerMask deadLayerMask;
     public int deadLayer;
 
+    [Header("--- ABILITIES ---")]
+    public bool controlAbility = true;
+    public bool movementAbility = true;
+    public bool sprintAbility = true;
+    public bool rollAbiity = true;
+    public bool blockAbility = true;
+    public bool attackAbility = true;
+
     protected void Start()
     {
-        this.LoadReferences();
         this.InitStats();
-    }
-
-    protected void LoadReferences()
-    {
-        // rigid body 2D
-        if (this.rb2D == null)
-            Debug.LogError("Can't find rigid body 2D for Player_Stats of " + transform.parent.name);
-        // animator
-        if (this.animator == null)
-            Debug.LogError("Can't find animator for Player_Stats of " + transform.parent.name);
-        // HUD bar script
-        if (this.HUDBarScript == null)
-            Debug.LogError("Can't find HUD bar script for Player_Stats of " + transform.parent.name);
     }
 
     protected void InitStats()
@@ -114,6 +109,7 @@ public class PlayerStats : MonoBehaviour
 
         // Init stats
         this.ResetCurrentStasts();
+        this.speed = this.defaultSpeed;
     }
 
     protected int FindLayer(LayerMask layerMask)
@@ -127,7 +123,7 @@ public class PlayerStats : MonoBehaviour
         return counter;
     }
 
-    #region Set stats
+    #region Set combat stats
 
     public void ResetCurrentStasts()
     {
@@ -178,6 +174,32 @@ public class PlayerStats : MonoBehaviour
         {
             this.HUDBarScript.ShowEnduranceBar(false);
             this.isShowingEnduranceBar = false;
+        }
+    }
+
+    #endregion
+
+    #region Set sprint mode
+
+    public void ChangeSprintMode()
+    {
+        if (this.isSprinting)
+            this.SetSprintMode(false);
+        else
+            this.SetSprintMode(true);
+    }
+
+    public void SetSprintMode(bool state)
+    {
+        if (state == true)
+        {
+            this.speed = this.defaultSpeed * this.sprintCoef;
+            this.isSprinting = true;
+        }
+        else
+        {
+            this.speed = this.defaultSpeed;
+            this.isSprinting = false;
         }
     }
 

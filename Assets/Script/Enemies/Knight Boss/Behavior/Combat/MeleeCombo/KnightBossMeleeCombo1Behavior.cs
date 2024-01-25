@@ -94,6 +94,7 @@ public class KnightBossMeleeCombo1Behavior : StateMachineBehaviour
         this.statsScript.rb2D.gravityScale = this.oldGravity;
         animator.ResetTrigger("endState");
     }
+
     protected virtual void SetDashTime()
     {
         this.dashTime = 0.33f;

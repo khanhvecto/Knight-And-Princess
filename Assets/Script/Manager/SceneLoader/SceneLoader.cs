@@ -27,9 +27,8 @@ public class SceneLoader : MonoBehaviour
         this.LoadReferences();
     }
 
-    //
-    //Init steps
-    //
+    #region Init stats
+
     protected void SetSingletonAndDontDestroyOnLoad()
     {
         if (instance != null)
@@ -47,21 +46,19 @@ public class SceneLoader : MonoBehaviour
     {
         //Loading icon obj
         this.loadingIconObj = transform.Find("Canvas").Find("Loading Icon").gameObject;
-        if (this.loadingIconObj == null) Debug.LogError("Can't find loading icon obj for SceneLoader");
     }
     protected void SetLoadSceneObj(LoadingSceneType type)
     {
         //Loading scene obj
         this.loadingSceneObj = transform.Find("Canvas").Find(type.ToString()).gameObject;
-        if (this.loadingSceneObj == null) Debug.LogError("Can't find Loading Scene Obj for SceneLoader");
         //SceneLoading Script
         this.sceneLoadingScript = this.loadingSceneObj.GetComponent<SceneLoading>();
-        if (this.sceneLoadingScript == null) Debug.LogError("Can't find SceneLoading Script for SceneLoader");
     }
 
-    //
-    //Load scene
-    //
+    #endregion
+
+    #region Load scene
+
     public void LoadScene(string sceneName, LoadingSceneType type)
     {
         this.SetLoadSceneObj(type);
@@ -87,4 +84,6 @@ public class SceneLoader : MonoBehaviour
         yield return StartCoroutine(this.sceneLoadingScript.EndLoad());
         this.loadingSceneObj.SetActive(false);
     }
+
+    #endregion
 }

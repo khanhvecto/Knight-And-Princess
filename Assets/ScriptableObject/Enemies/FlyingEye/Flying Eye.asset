@@ -16,11 +16,11 @@ MonoBehaviour:
   health: 20
   damage: 5
   cooldown: 1.5
-  distance: 3
+  approachDistance: 2
   enduranceDecrement: 10
-  number_unharmedAttacks: 0
-  number_attackTypes: 2
-  maxDelayAttackTime: 0
+  unharmedAttacksAmount: 2
+  choosableAttacksAmount: 2
+  maxDelayAttackTime: 1
   attackTime1: 0.7
   attackTime2: 0.6
   range_coeff: 5
