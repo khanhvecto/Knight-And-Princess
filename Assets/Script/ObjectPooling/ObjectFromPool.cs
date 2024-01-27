@@ -16,5 +16,5 @@ public abstract class ObjectFromPool : MonoBehaviour
 
     protected abstract bool IsNeedToRelease();
 
-    protected abstract void ReleaseObject();
+    public abstract void ReleaseObject();
 }

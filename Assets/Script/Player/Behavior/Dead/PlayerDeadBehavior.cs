@@ -79,8 +79,6 @@ public class PlayerDeadBehavior : StateMachineBehaviour
         this.animator.gameObject.layer = this.oldLayer;
         // Stats
         this.statsScript.ResetCurrentStasts();
-        // Screens
-        this._UIScript.ShowDeadScreen(false);
         // Animator trigger
         this.animator.ResetTrigger("endState");
     }

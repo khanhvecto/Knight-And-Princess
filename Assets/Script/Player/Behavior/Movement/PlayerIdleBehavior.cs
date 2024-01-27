@@ -9,13 +9,13 @@ public class PlayerIdleBehavior : StateMachineBehaviour
 
     [Header("States")]
     protected bool isLoadedReferences = false;
+    protected bool isCheckedOnGround = false;
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         if (!this.isLoadedReferences)
             this.LoadReferences(animator);
         this.SetStats();
-        this.statsScript.SetSprintMode(false);
     }
 
     protected void LoadReferences(Animator animator)
@@ -36,14 +36,26 @@ public class PlayerIdleBehavior : StateMachineBehaviour
 
     protected void SetStats()
     {
-        if (this.statsScript.isOnGround)
-            this.movementScript.jumpTakenAmount = 0;
+        this.isCheckedOnGround = false;
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        if (!this.isCheckedOnGround)
+            this.CheckOnGround();
         this.movementScript.WaitJumpInput();
         this.movementScript.CheckFalling();
         this.movementScript.CheckRunning();
+    }
+
+    protected void CheckOnGround()
+    {
+        if (this.statsScript.isOnGround)
+        {
+            this.statsScript.rollable = true;
+            this.movementScript.jumpTakenAmount = 0;
+
+            this.isCheckedOnGround = true;
+        }
     }
 }

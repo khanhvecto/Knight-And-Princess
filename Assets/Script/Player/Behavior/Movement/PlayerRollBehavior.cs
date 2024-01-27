@@ -47,6 +47,7 @@ public class PlayerRollBehavior : StateMachineBehaviour
     {
         // Set stats
         this.statsScript.controlable = false;
+        this.statsScript.rollable = false;
         this.oldGravity = this.statsScript.rb2D.gravityScale;
         this.statsScript.rb2D.gravityScale = 0;
         this.statsScript.hurtable = false;

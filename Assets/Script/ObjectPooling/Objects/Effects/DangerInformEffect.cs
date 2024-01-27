@@ -1,6 +1,6 @@
 public class DangerInformEffect : ReusableEffect
 {
-    protected override void ReleaseObject()
+    public override void ReleaseObject()
     {
         DangerInformPool.Instance.Release(gameObject);
     }

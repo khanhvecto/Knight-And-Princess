@@ -34,7 +34,7 @@ public class KeyCollect : CollectableObj, SignalSourceInterface
     {
         yield return new WaitForSeconds(1);
 
-        yield return StartCoroutine(CameraFollow.Instance.FocusToObject(this.signalReceiverObj.transform.position));
+        yield return StartCoroutine(CameraFollow.Instance.SetMoveToPos(this.signalReceiverObj.transform.position));
 
         this.signalReceiverInterface.ReceiveSignal(true);
 

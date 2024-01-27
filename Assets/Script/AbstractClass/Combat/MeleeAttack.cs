@@ -19,7 +19,7 @@ public abstract class MeleeAttack: MonoBehaviour
         this.FindTarget();
 
         IDamageReceiver receiveDamageScript = this.targetCollider?.GetComponentInChildren<IDamageReceiver>();
-        receiveDamageScript?.GotHit(this.damage, transform.parent.parent.parent, this.enduranceDecrement);
+        receiveDamageScript?.GotHit(this.damage, transform.parent.parent.parent.position, this.enduranceDecrement);
     }
 
     protected abstract void LoadCombatStats();

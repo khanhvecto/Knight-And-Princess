@@ -5106,7 +5106,8 @@ MonoBehaviour:
   currentEndurance: 0
   maxEnduranceRestoreSpeed: 5
   currentEnduranceRestoreSpeed: 0
-  enduranceDecreaseSpeed: 10
+  enduranceDecreaseSpeed: 3
+  tiredTime: 3
   damage: 5
   maxParryWindow: 0.2
   parryBuffer: 0.4
@@ -6583,6 +6584,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statsScript: {fileID: 2892841597020179650}
+  uiFunction: {fileID: 764299428898642384}
   checkPoint: {fileID: 0}
 --- !u!1 &3835793021524912191
 GameObject:

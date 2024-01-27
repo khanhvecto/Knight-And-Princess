@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IDamageReceiver
 {
-    void GotHit(float damage, Transform attackPos, float enduranceDecrement);
+    void GotHit(float damage, Vector3 attackPos, float enduranceDecrement);
 }

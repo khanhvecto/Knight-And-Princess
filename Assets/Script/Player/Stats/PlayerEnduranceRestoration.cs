@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerEnduranceRestoration : MonoBehaviour
@@ -25,8 +26,44 @@ public class PlayerEnduranceRestoration : MonoBehaviour
 
     protected void Update()
     {
+        if (this.statsScript.isAttacking)
+            return;
+
+        if (this.statsScript.isSprinting)
+        {
+            this.CheckDecreaseEndurance();
+            return;
+        }
+
         if (this.statsScript.enduranceRestoreable)
             this.CheckRestoreEndurance();
+    }
+
+    protected void CheckDecreaseEndurance()
+    {
+        var newEndurance = this.statsScript.CurrentEndurance - this.statsScript.enduranceDecreaseSpeed * Time.deltaTime;
+        this.statsScript.SetCurrentEnduranceValue(newEndurance);
+
+        if (newEndurance <= 0 && this.statsScript.enduranceRestoreable)
+            StartCoroutine(this.PlayerTired());   
+    }
+
+    protected IEnumerator PlayerTired()
+    {
+        this.statsScript.enduranceRestoreable = false;
+        this.statsScript.sprintAbility = false;
+        this.statsScript.SetSprintMode(false);
+
+        float timer = 0;
+        float tiredTime = this.statsScript.tiredTime;
+        while(timer < tiredTime)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        this.statsScript.enduranceRestoreable = true;
+        this.statsScript.sprintAbility = true;
     }
 
     protected void CheckRestoreEndurance()

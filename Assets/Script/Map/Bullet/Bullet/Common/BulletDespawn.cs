@@ -1,0 +1,55 @@
+using UnityEngine;
+
+public abstract class BulletDespawn : ObjectFromPool
+    // Despawn by distance
+{
+    [Header("------ BULLET DESPAWN ------")]
+
+    [Header("References")]
+    protected GameObject spawner;
+
+    [Header("Stats")]
+    protected float speed;
+    protected float despawnDistance;
+    protected Vector2 direction;
+
+    protected override bool IsNeedToRelease()
+    {
+        if (this.spawner == null)
+            return false;
+
+        if (Vector2.Distance((Vector2)transform.position, (Vector2)this.spawner.transform.position) >= this.despawnDistance)
+            return true;
+        return false;
+    }
+
+    protected void FixedUpdate()
+    {
+        this.MoveBullet();
+    }
+
+    protected void MoveBullet()
+    {
+        transform.position = transform.position + (Vector3)direction * speed * Time.fixedDeltaTime;
+    }
+
+    #region Set Stats
+
+    public void SetDirection(Vector2 newDirection)
+    {
+        this.direction = newDirection;
+    }
+    public void SetSpawner(GameObject spawner)
+    {
+        this.spawner = spawner;
+    }
+    public void SetSpeed(float speed)
+    {
+        this.speed = speed;
+    }
+    public void SetDespawnDistance(float distance)
+    {
+        this.despawnDistance = distance;
+    }
+    #endregion
+}

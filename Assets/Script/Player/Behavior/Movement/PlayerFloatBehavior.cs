@@ -41,8 +41,8 @@ public class PlayerFloatBehavior : StateMachineBehaviour
     protected void InitStats()
     {
         this.oldGravity = this.statsScript.rb2D.gravityScale;
-        this.statsScript.rb2D.gravityScale = 0;
-        this.statsScript.rb2D.velocity = new Vector2(this.statsScript.rb2D.velocity.x, 0);  // Make vertical velocity to 0
+        this.statsScript.rb2D.gravityScale = 0.3f;
+        //this.statsScript.rb2D.velocity = new Vector2(this.statsScript.rb2D.velocity.x, 0);  // Make vertical velocity to 0
 
         this.floatTimer = 0;
         this.isReturnedGravity = false;

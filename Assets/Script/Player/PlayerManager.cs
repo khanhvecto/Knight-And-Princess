@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
@@ -8,6 +9,7 @@ public class PlayerManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] protected PlayerStats statsScript;
+    [SerializeField] protected UIFunction uiFunction;
 
     [Header("Respawn Knight")]
     [SerializeField] public Transform checkPoint;
@@ -43,9 +45,21 @@ public class PlayerManager : MonoBehaviour
             return;
 
         this.TeleportPlayer(this.checkPoint);
-        this.statsScript.animator.SetTrigger("endState");
+        this.uiFunction.ShowDeadScreen(false);
 
-        StartCoroutine(CameraFollow.Instance.FocusToKnight());
+        //this.statsScript.animator.SetTrigger("endState");
+
+        //StartCoroutine(CameraFollow.Instance.FocusToKnight());
+
+        StartCoroutine(this.CameraFocusRespawnPlace());
+    }
+
+    protected IEnumerator CameraFocusRespawnPlace()
+    {
+        yield return StartCoroutine(CameraFollow.Instance.FadeToPos(this.checkPoint.position));
+        CameraFollow.Instance.isFollowingPlayer = true;
+        
+        this.statsScript.animator.SetTrigger("endState");
     }
 
     public void TeleportPlayer(Transform newPlace)

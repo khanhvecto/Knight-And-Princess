@@ -88,7 +88,8 @@ public class PlayerMovement : MonoBehaviour
     protected void CheckLookFurther()
     {
         // If don't
-        if (this.statsScript.rb2D.velocity != Vector2.zero)
+        //if (this.statsScript.rb2D.velocity != Vector2.zero)
+        if (!this.statsScript.isOnGround || Mathf.Abs(this.statsScript.rb2D.velocity.x) >= 2)
         {
             CameraFollow.Instance.SetLookUp(false);
             CameraFollow.Instance.SetLookDown(false);
@@ -111,31 +112,6 @@ public class PlayerMovement : MonoBehaviour
 
     protected void CheckSprint()
     {
-        //if (InputManager.Instance.GetSprintKeyDown() || InputManager.Instance.GetSprintKey())
-        //{
-        //    if (!this.statsScript.isSprinting)
-        //    {
-        //        this.statsScript.speed *= this.statsScript.sprintCoef;
-        //        this.statsScript.isSprinting = true;
-        //    }
-        //}
-        //else if (InputManager.Instance.GetSprintKeyDown())
-        //{
-        //    if (this.statsScript.isSprinting)
-        //    {
-        //        this.statsScript.speed /= this.statsScript.sprintCoef;
-        //        this.statsScript.isSprinting = false;
-        //    }
-        //}
-        //else
-        //{
-        //    if(this.statsScript.isSprinting)
-        //    {
-        //        this.statsScript.speed /= this.statsScript.sprintCoef;
-        //        this.statsScript.isSprinting = false;
-        //    }
-        //}
-
         if (InputManager.Instance.GetSprintKeyDown())
             this.statsScript.ChangeSprintMode();
     }

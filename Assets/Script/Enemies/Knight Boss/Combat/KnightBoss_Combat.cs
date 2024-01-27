@@ -18,7 +18,7 @@ public class KnightBoss_Combat : MonoBehaviour, IDamageReceiver
 
     #region Damage receiver
 
-    public void GotHit(float damage, Transform attackPos, float enduranceDecrement)
+    public void GotHit(float damage, Vector3 attackPos, float enduranceDecrement)
     {
         if (this.statsScript.isDead)
             return;

@@ -1,6 +1,6 @@
 public class BleedEffect : ReusableEffect
 {
-    protected override void ReleaseObject()
+    public override void ReleaseObject()
     {
         BleedEffectPool.Instance.Release(gameObject);
     }

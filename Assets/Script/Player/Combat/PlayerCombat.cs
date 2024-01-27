@@ -77,7 +77,7 @@ public class PlayerCombat : MonoBehaviour, IDamageReceiver
 
     #region Damage receiver
 
-    public void GotHit(float damage, Transform attackPos, float enduranceDecrement)
+    public void GotHit(float damage, Vector3 attackPos, float enduranceDecrement)
     {
         if (!this.statsScript.hurtable)
             return;
@@ -90,15 +90,15 @@ public class PlayerCombat : MonoBehaviour, IDamageReceiver
         else
         {
             if(this.lastBlockPressedTime + this.currentParryTime >= Time.time)
-                this.ParryingAttack(damage, attackPos, enduranceDecrement);
+                this.ParryingAttack(enduranceDecrement);
             else if (this.statsScript.isBlocking)   
-                this.BlockingAttack(damage, attackPos, enduranceDecrement);
+                this.BlockingAttack(enduranceDecrement);
             else
                 this.GotHurt(damage, enduranceDecrement);
         }
     }
 
-    protected void ParryingAttack(float damage, Transform attackPos, float enduranceDecrement)
+    protected void ParryingAttack(float enduranceDecrement)
     {
         this.lastBlockPressedTime -= this.statsScript.parryBuffer;  // Allows player parry right after if successful parry, don't need to wait buffer again
         this.soundsScript.PlayRandomParrySound();
@@ -108,7 +108,7 @@ public class PlayerCombat : MonoBehaviour, IDamageReceiver
         this.statsScript.SetCurrentEnduranceValue(newEndurance);
     }
 
-    protected void BlockingAttack(float damage, Transform attackPos, float enduranceDecrement)
+    protected void BlockingAttack(float enduranceDecrement)
     {
         var newEndurance = this.statsScript.CurrentEndurance - enduranceDecrement;
         this.statsScript.SetCurrentEnduranceValue(newEndurance);
@@ -141,10 +141,10 @@ public class PlayerCombat : MonoBehaviour, IDamageReceiver
         this.statsScript.SetCurrentEnduranceValue(newEndurance);
     }
 
-    protected bool IsHeadingWrongWay(Transform attackPos)
+    protected bool IsHeadingWrongWay(Vector3 attackPos)
     {
-        if ((this.statsScript.isFacingRight && attackPos.position.x < transform.parent.position.x)
-            || (!this.statsScript.isFacingRight && attackPos.position.x > transform.parent.position.x))
+        if ((this.statsScript.isFacingRight && attackPos.x < transform.parent.position.x)
+            || (!this.statsScript.isFacingRight && attackPos.x > transform.parent.position.x))
         return true;
         
         return false;

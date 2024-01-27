@@ -1,6 +1,6 @@
 public class Thorn : DamagableObj
 {
-    protected void Start()
+    protected override void Start()
     {
         base.damage = 3f;
     }

@@ -37,7 +37,7 @@ public class HoleTrigger : MonoBehaviour
         {
             // Player take damage
             IDamageReceiver receiveDamageScript = this.targetColl.GetComponentInChildren<IDamageReceiver>();
-            receiveDamageScript?.GotHit(this.fallDamage, transform, 0f);
+            receiveDamageScript?.GotHit(this.fallDamage, transform.position, 0f);
 
             // Respawn
             this.playerManager.TeleportPlayer(this.respawnPlace);
@@ -57,7 +57,7 @@ public class HoleTrigger : MonoBehaviour
             else
             {
                 IDamageReceiver receiveDamageScript = this.targetColl.GetComponentInChildren<IDamageReceiver>();
-                receiveDamageScript?.GotHit(this.fallDamage, transform, 0f);
+                receiveDamageScript?.GotHit(this.fallDamage, transform.position, 0f);
             }
         }
     }
@@ -71,7 +71,7 @@ public class HoleTrigger : MonoBehaviour
 
         //Player take fall damage;
         IDamageReceiver receiveDamageScript = this.targetColl.GetComponentInChildren<IDamageReceiver>();
-        receiveDamageScript?.GotHit(this.fallDamage, transform, 0f);
+        receiveDamageScript?.GotHit(this.fallDamage, transform.position, 0f);
         //Wait for animation
         yield return new WaitForSeconds(this.hurtTime);
             //Hide knight

@@ -34,9 +34,12 @@ public class PlayerStats : MonoBehaviour
     public float minEndurance = 0;
     [SerializeField] protected float currentEndurance;
     public float CurrentEndurance { get => currentEndurance; }
+    // Endurance restoration
     public float maxEnduranceRestoreSpeed = 5;
     public float currentEnduranceRestoreSpeed;
-    public float enduranceDecreaseSpeed = 10;
+    // When player's printing
+    public float enduranceDecreaseSpeed = 3;
+    public float tiredTime = 3; // Endurance can stop restore if player's tired
     [Header("Damage")]
     public float damage = 5;
     [Header("Parry")]

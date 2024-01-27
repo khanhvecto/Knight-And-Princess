@@ -11,6 +11,7 @@ public class PlayerRunBehavior : StateMachineBehaviour
 
     [Header("States")]
     protected bool isLoadedReferences = false;
+    protected bool isCheckedOnGround;
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -39,16 +40,31 @@ public class PlayerRunBehavior : StateMachineBehaviour
 
         this.isLoadedReferences = true;
     }
+    protected void SetStats()
+    {
+        this.isCheckedOnGround = false;
+    }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        if (!this.isCheckedOnGround)
+            this.CheckOnGround();
         this.CheckIfSprint();
         this.movementScript.WaitJumpInput();
         this.movementScript.CheckFalling();
         this.movementScript.CheckRunning();
     }
 
-    
+    protected void CheckOnGround()
+    {
+        if (this.statsScript.isOnGround)
+        {
+            this.statsScript.rollable = true;
+            this.movementScript.jumpTakenAmount = 0;
+        }
+
+        this.isCheckedOnGround = true;
+    }
 
     protected void CheckIfSprint()
     {
@@ -62,12 +78,6 @@ public class PlayerRunBehavior : StateMachineBehaviour
             this.sprintEffect.Stop();
             this.soundsScript.PlayRandomRunSound();
         }
-    }
-
-    protected void SetStats()
-    {
-        if (this.statsScript.isOnGround)
-            this.movementScript.jumpTakenAmount = 0;
     }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

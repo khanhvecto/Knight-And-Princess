@@ -240,7 +240,7 @@ public class CameraFollow : MonoBehaviour
     #endregion
 
     #region Cut scene movement
-    public IEnumerator FocusToObject(Vector3 position)
+    public IEnumerator SetMoveToPos(Vector3 position)
         // Focus to a specific position like a cutscene
         // Need to focus back to knight by below function
     {
@@ -252,22 +252,6 @@ public class CameraFollow : MonoBehaviour
 
         //Move to object position
         yield return StartCoroutine(this.MoveToPos(position));
-    }
-    public IEnumerator FocusToKnight()
-    {
-        //Fade in screen
-        yield return StartCoroutine(this.FadeScreen(1, 1));
-
-        //Reset camera
-        transform.position = new Vector3(this.playerTransform.position.x, this.playerTransform.position.y + this.yAxisOffset, this.zAxisPos);
-
-        //Fade out screen
-        yield return StartCoroutine(this.FadeScreen(0, 1));
-
-        //Set stats
-        this.playerStatsScript.controlAbility = true;
-        this.isFollowingPlayer = true;
-        this.playerHUDObj.SetActive(true); //UI
     }
 
     public IEnumerator MoveToPos(Vector3 pos)
@@ -282,6 +266,31 @@ public class CameraFollow : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, newPos, this.focusSpeed * Time.deltaTime);
             yield return null;
         }
+    }
+
+    public IEnumerator FocusToKnight()
+    {
+        var knightPos = new Vector3(this.playerTransform.position.x, this.playerTransform.position.y + this.yAxisOffset, this.zAxisPos);
+        yield return StartCoroutine(this.FadeToPos(knightPos));
+
+        //Set stats
+        this.playerStatsScript.controlAbility = true;
+        this.playerHUDObj.SetActive(true); //UI
+        this.isFollowingPlayer = true;
+    }
+
+    public IEnumerator FadeToPos(Vector3 newPos)
+    {
+        this.isFollowingPlayer = false;
+
+        //Fade in screen
+        yield return StartCoroutine(this.FadeScreen(1, 1));
+
+        //Reset camera
+        transform.position = newPos;
+
+        //Fade out screen
+        yield return StartCoroutine(this.FadeScreen(0, 1));
     }
 
     protected IEnumerator FadeScreen(float targetValue, float duration) //Fade screen to target value in a duration
