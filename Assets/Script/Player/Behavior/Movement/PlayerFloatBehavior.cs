@@ -9,7 +9,6 @@ public class PlayerFloatBehavior : StateMachineBehaviour
 
     [Header("States")]
     protected bool isLoadedReferences = false;
-    protected bool isReturnedGravity = false;
 
     [Header("Stats")]
     protected float oldGravity;
@@ -45,17 +44,12 @@ public class PlayerFloatBehavior : StateMachineBehaviour
         //this.statsScript.rb2D.velocity = new Vector2(this.statsScript.rb2D.velocity.x, 0);  // Make vertical velocity to 0
 
         this.floatTimer = 0;
-        this.isReturnedGravity = false;
     }
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         this.movementScript.WaitAirJumpInput();
-
-        if (!this.isReturnedGravity)
-            this.CheckFloatTime();
-        else
-            this.movementScript.CheckFalling();
+        this.CheckFloatTime();
     }
 
     protected void CheckFloatTime()
@@ -63,13 +57,13 @@ public class PlayerFloatBehavior : StateMachineBehaviour
         this.floatTimer += Time.deltaTime;
         if (this.floatTimer >= this.statsScript.floatTime)
         {
-            this.statsScript.rb2D.gravityScale = this.oldGravity;
-            this.isReturnedGravity = true;
+            this.animator.SetTrigger("endState");
         }
     }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         this.statsScript.rb2D.gravityScale = this.oldGravity;
+        this.animator.ResetTrigger("endState");
     }
 }

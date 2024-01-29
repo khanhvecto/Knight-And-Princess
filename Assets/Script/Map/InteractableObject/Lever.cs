@@ -46,13 +46,20 @@ public class Lever : InteractableObject, SignalSourceInterface
         float waitTime = this.animator.GetCurrentAnimatorClipInfo(0).Length;
         yield return new WaitForSeconds(waitTime);
 
-        //Focus camera to signal receiver obj
-        yield return StartCoroutine(CameraMovement.Instance.FocusToObject(this.signalReceiverObj.transform.position));
-        //Send signal and back to knight
-        this.signalReceiverInterface.ReceiveSignal(this.turnedOn);
-            //Wait 1 secs
-        yield return new WaitForSeconds(1);
-        yield return StartCoroutine(CameraMovement.Instance.FocusToKnight());
+        if(CameraFollow.Instance.isFollowingPlayer)
+        {
+            //Focus camera to signal receiver obj
+            yield return StartCoroutine(CameraFollow.Instance.SetMoveToPos(this.signalReceiverObj.transform.position));
+            //Send signal and back to knight
+            this.signalReceiverInterface.ReceiveSignal(this.turnedOn);
+                //Wait 1 secs
+            yield return new WaitForSeconds(1);
+            yield return StartCoroutine(CameraFollow.Instance.FocusToKnight());
+        }
+        else
+        {
+            this.signalReceiverInterface.ReceiveSignal(this.turnedOn);
+        }
 
         //Reset state
         base.ResetInteract();

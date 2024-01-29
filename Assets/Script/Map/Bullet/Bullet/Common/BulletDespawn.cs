@@ -9,6 +9,7 @@ public abstract class BulletDespawn : ObjectFromPool
     protected GameObject spawner;
 
     [Header("Stats")]
+    [SerializeField] protected Vector2 defaultDirection;
     protected float speed;
     protected float despawnDistance;
     protected Vector2 direction;
@@ -38,6 +39,12 @@ public abstract class BulletDespawn : ObjectFromPool
     public void SetDirection(Vector2 newDirection)
     {
         this.direction = newDirection;
+
+        // Rotate bullet
+        var angle = Vector2.SignedAngle(this.defaultDirection, newDirection);
+        transform.Rotate(0f, 0f, angle);
+
+        this.defaultDirection = newDirection;
     }
     public void SetSpawner(GameObject spawner)
     {

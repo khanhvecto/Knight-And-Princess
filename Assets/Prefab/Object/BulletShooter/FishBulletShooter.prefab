@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 370188932948246146}
   - component: {fileID: 655559590162836405}
   m_Layer: 0
-  m_Name: BulletShooter
+  m_Name: FishBulletShooter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101,7 +101,10 @@ MonoBehaviour:
   spawnPoint: {fileID: 6572738914802198514}
   direction: {x: -1, y: 0}
   damage: 3
-  cooldown: 2
+  enduranceDecrement: 10
+  cooldown: 2.2
+  speed: 2
+  despawnDistance: 10
 --- !u!1 &6572738914802198514
 GameObject:
   m_ObjectHideFlags: 0

@@ -163,7 +163,7 @@ public class CameraFollow : MonoBehaviour
     {
         this.isMovingToFallingFreezePos = true;
 
-        var startPointVertical = this.playerVerticalLevel + this.yAxisOffset;
+        var startPointVertical = transform.position.y;
         float timePassed = 0f;
         while(true)
         {
@@ -242,7 +242,7 @@ public class CameraFollow : MonoBehaviour
     #region Cut scene movement
     public IEnumerator SetMoveToPos(Vector3 position)
         // Focus to a specific position like a cutscene
-        // Need to focus back to knight by below function
+        // Need to focus back to player by below function
     {
         //Set knight stays steady
         this.playerMovementScript.StopMoving();

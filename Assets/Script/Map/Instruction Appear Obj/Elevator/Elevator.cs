@@ -7,8 +7,8 @@ public class Elevator : InstructionAppearObj, SignalReceiverInterface
     [SerializeField] protected Animator animator;
 
     //State
-    protected bool working = false;
-    protected bool moving = false;
+    public bool working = false;
+    public bool moving = false;
 
     //Instruction name
     protected string signalRequiredInstruction = "SignalRequired";
@@ -16,6 +16,7 @@ public class Elevator : InstructionAppearObj, SignalReceiverInterface
     [Header("Position")]
     [SerializeField] protected Transform firstPos;
     [SerializeField] protected Transform secondPos;
+    public Vector3 newPos;
 
     //Stats
     protected float speed = 4f;
@@ -47,7 +48,6 @@ public class Elevator : InstructionAppearObj, SignalReceiverInterface
         if (this.working) 
         {
             if (this.moving) return;
-            this.moving = true;
             this.StartMove(); 
         }
         else    //Reset intereacted state
@@ -57,26 +57,27 @@ public class Elevator : InstructionAppearObj, SignalReceiverInterface
         }
     }
 
-    protected virtual void StartMove()   //Set up before move
+    public virtual void StartMove()   //Set up before move
     {
+        this.moving = true;
+
         //Find newPos
-        Vector3 newPos;
         if (transform.position == this.firstPos.position)
         {
-            newPos = this.secondPos.position;
+            this.newPos = this.secondPos.position;
         }
         else
         {
-            newPos = this.firstPos.position;
+            this.newPos = this.firstPos.position;
         }
 
         //Move
-        StartCoroutine(this.Move(newPos));
+        StartCoroutine(this.Move());
     }
 
-    protected IEnumerator Move(Vector3 newPos)
+    protected IEnumerator Move()
     {
-        while(transform.position != newPos)
+        while(transform.position != this.newPos)
         {
             transform.position = Vector3.MoveTowards(transform.position, newPos, this.speed * Time.deltaTime);
             yield return null;

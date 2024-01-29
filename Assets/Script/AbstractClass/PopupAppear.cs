@@ -3,7 +3,7 @@ using UnityEngine;
 public abstract class PopupAppear : MonoBehaviour
 {
     protected GameObject popupObj;
-    protected bool activeState = true;
+    protected bool isPopupActive = true;
     
     protected virtual void Awake()
     {
@@ -24,14 +24,14 @@ public abstract class PopupAppear : MonoBehaviour
     {
         if (collision.gameObject.layer == 7)
         {
-            if (this.activeState) this.SetPopUpShowing(true);
+            if (this.isPopupActive) this.SetPopUpShowing(true);
         }
     }
     protected virtual void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.layer == 7)
         {
-            if (this.activeState) this.SetPopUpShowing(false);
+            if (this.isPopupActive) this.SetPopUpShowing(false);
         }
     }
 }

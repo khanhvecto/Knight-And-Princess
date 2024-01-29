@@ -11,8 +11,8 @@ public abstract class InteractableObject : PopupAppear
         {
             //This
             this.interacted = true;
-            //Base
-            base.activeState = false;
+            // Popup
+            base.isPopupActive = false;
             base.SetPopUpShowing(false);
         }
     }
@@ -22,7 +22,7 @@ public abstract class InteractableObject : PopupAppear
         if (collision.gameObject.layer == 7)
         {
             this.interactable = true;
-            if (base.activeState) base.SetPopUpShowing(true);
+            if (base.isPopupActive) base.SetPopUpShowing(true);
         }
     }
 
@@ -31,13 +31,13 @@ public abstract class InteractableObject : PopupAppear
         if (collision.gameObject.layer == 7)
         {
             this.interactable = false;
-            if (base.activeState) base.SetPopUpShowing(false);
+            if (base.isPopupActive) base.SetPopUpShowing(false);
         }
     }
 
     protected virtual void ResetInteract()    //Make Objectable can interact again like a new one
     {
         this.interacted = false;
-        base.activeState = true;
+        base.isPopupActive = true;
     }
 }

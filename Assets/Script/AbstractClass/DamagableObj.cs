@@ -10,6 +10,7 @@ public class DamagableObj: MonoBehaviour
 
     [Header("Stats")]
     [SerializeField] protected float damage;
+    [SerializeField] protected float enduranceDecrement;
 
     protected virtual void Start()
     {
@@ -35,7 +36,7 @@ public class DamagableObj: MonoBehaviour
         if (collision.collider.gameObject.layer == this.targetLayer)    //Knight layer
         {
             IDamageReceiver receiveDamageScript = collision.collider.GetComponentInChildren<IDamageReceiver>();
-            receiveDamageScript?.GotHit(this.damage, (Vector2) transform.position + gameObject.GetComponent<Collider2D>().offset, 0f);
+            receiveDamageScript?.GotHit(this.damage, (Vector2) transform.position + gameObject.GetComponent<Collider2D>().offset, this.enduranceDecrement);
 
             this.OnTouchingTarget();
         }

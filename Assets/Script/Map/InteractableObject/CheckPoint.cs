@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CheckPoint : InteractableObject
@@ -32,7 +30,7 @@ public class CheckPoint : InteractableObject
         if (collision.gameObject.layer == 7 && PlayerManager.Instance.checkPoint != transform)
         {
             base.interactable = true;
-            if (base.activeState) base.SetPopUpShowing(true);
+            if (base.isPopupActive) base.SetPopUpShowing(true);
         }
     }
 

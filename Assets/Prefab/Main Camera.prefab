@@ -137,7 +137,7 @@ MonoBehaviour:
   fadeScreenCanvas: {fileID: 0}
   isFollowingPlayer: 1
   xAxisOffset: 1
-  yAxisOffsetDefault: 3
+  yAxisOffsetDefault: 2
   fallOffset: -1
   moveTime: 0.7
   smoothSpeed: 0.015

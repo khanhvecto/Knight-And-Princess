@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 5572931345245887868}
   - component: {fileID: 5634562216574234575}
   - component: {fileID: 7070811906889731698}
-  - component: {fileID: 3337226514116781831}
   - component: {fileID: 3043210997658174252}
+  - component: {fileID: 3337226514116781831}
   m_Layer: 0
   m_Name: Lever
   m_TagString: Untagged
@@ -133,20 +133,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.70505714, y: 0.68953323}
   m_EdgeRadius: 0
---- !u!114 &3337226514116781831
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2727352473339686126}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0984a1b7a86c68a4688756674c7bc130, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 3043210997658174252}
-  signalReceiverObj: {fileID: 0}
 --- !u!95 &3043210997658174252
 Animator:
   serializedVersion: 5
@@ -168,6 +154,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3337226514116781831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2727352473339686126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0984a1b7a86c68a4688756674c7bc130, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 3043210997658174252}
+  signalReceiverObj: {fileID: 0}
 --- !u!1 &8406860525081518230
 GameObject:
   m_ObjectHideFlags: 0

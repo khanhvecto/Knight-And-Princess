@@ -15,4 +15,8 @@ public class BulletDamage : DamagableObj
     {
         base.damage = damage;
     }
+    public void SetEnduranceDecrement(float enduranceDecrement)
+    {
+        base.enduranceDecrement = enduranceDecrement;
+    }
 }

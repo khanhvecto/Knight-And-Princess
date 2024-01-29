@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class InstructionAppearObj: InteractableObject
@@ -25,10 +24,16 @@ public abstract class InstructionAppearObj: InteractableObject
             Debug.LogError("Can't find " + name + " instruction for InstructionAppearObj of " + transform.name);
             return;
         }
-        instruction.gameObject.SetActive(state);
 
         //Store showing instruction
-        if(state==true) this.showingInstruction = instruction;
+        if (state == true)
+        {
+            if (this.showingInstruction != instruction && this.showingInstruction != null)
+                this.showingInstruction.gameObject.SetActive(false);
+            this.showingInstruction = instruction;
+        }
+
+        instruction.gameObject.SetActive(state);
     }
 
     protected override void OnTriggerExit2D(Collider2D collision)

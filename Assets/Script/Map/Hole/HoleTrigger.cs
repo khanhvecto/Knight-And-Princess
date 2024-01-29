@@ -49,16 +49,6 @@ public class HoleTrigger : MonoBehaviour
         {
             this.respawning = true;
             StartCoroutine(RespawnKnight());
-
-            if (CameraFollow.Instance.isFollowingPlayer)
-            {
-                
-            }
-            else
-            {
-                IDamageReceiver receiveDamageScript = this.targetColl.GetComponentInChildren<IDamageReceiver>();
-                receiveDamageScript?.GotHit(this.fallDamage, transform.position, 0f);
-            }
         }
     }
 

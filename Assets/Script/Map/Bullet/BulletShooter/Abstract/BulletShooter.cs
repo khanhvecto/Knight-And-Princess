@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public abstract class BulletShooter : MonoBehaviour
@@ -11,10 +12,13 @@ public abstract class BulletShooter : MonoBehaviour
     [Header("Stats")]
     [SerializeField] protected Vector2 direction;
     [SerializeField] protected float damage;
+    [SerializeField] protected float enduranceDecrement;
     [SerializeField] protected float cooldown;
     [SerializeField] protected float speed;
     [SerializeField] protected float despawnDistance;
-    protected float timer=0f;
+
+    [Header("States")]
+    protected bool shootable = true;
 
     protected void Start()
     {
@@ -23,18 +27,18 @@ public abstract class BulletShooter : MonoBehaviour
 
     protected void Update()
     {
-        if (this.Shootable()) this.Shoot();
+        if(this.shootable)
+        {
+            this.Shoot();
+            StartCoroutine(this.Cooldowning());
+        }
     }
 
-    protected bool Shootable()  
+    protected IEnumerator Cooldowning()
     {
-        if (this.timer > this.cooldown)
-        {
-            this.timer = 0f;
-            return true;
-        }
-        this.timer += Time.fixedDeltaTime;
-        return false;
+        this.shootable = false;
+        yield return new WaitForSeconds(this.cooldown);
+        this.shootable = true;
     }
 
     protected void Shoot()
@@ -52,6 +56,7 @@ public abstract class BulletShooter : MonoBehaviour
         bulletDespawn.SetSpeed(this.speed);
         bulletDespawn.SetDespawnDistance(this.despawnDistance);
         bulletDamage.SetDamage(this.damage);
+        bulletDamage.SetEnduranceDecrement(this.enduranceDecrement);
         bullet.transform.position = this.spawnPoint.transform.position;
     }
 

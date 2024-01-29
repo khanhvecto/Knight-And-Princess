@@ -28,7 +28,7 @@ public class KnightBoss_TakeHit_Behavior : StateMachineBehaviour
         this.isLoadedReferences = true;
     }
 
-    protected void CounterAttack()
+    protected virtual void CounterAttack()
     {
         this.combatScript.ChooseAttack();
     }
