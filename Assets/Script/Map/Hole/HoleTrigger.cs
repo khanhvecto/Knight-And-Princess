@@ -33,6 +33,9 @@ public class HoleTrigger : MonoBehaviour
         this.playerManager = collision.GetComponentInChildren<PlayerManager>();
         this.playerMovementScript = collision.GetComponentInChildren<PlayerMovement>();
 
+        if (this.playerStatsScript.isDead)
+            return;
+
         if(!CameraFollow.Instance.isFollowingPlayer)    // If camera is using for specific jobs
         {
             // Player take damage
@@ -72,6 +75,7 @@ public class HoleTrigger : MonoBehaviour
         {
             this.targetColl.GetComponent<SpriteRenderer>().forceRenderingOff = false;
             CameraFollow.Instance.isFollowingPlayer = true;
+            this.playerStatsScript.controlAbility = true;
             this.respawning = false;
             yield break;
         }
@@ -92,6 +96,7 @@ public class HoleTrigger : MonoBehaviour
 
         //Set stats
         CameraFollow.Instance.isFollowingPlayer = true;
+        CameraFollow.Instance.ExitFreezeState();
         this.playerStatsScript.controlAbility = true;
         this.respawning = false;
     }

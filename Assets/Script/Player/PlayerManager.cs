@@ -47,10 +47,6 @@ public class PlayerManager : MonoBehaviour
         this.TeleportPlayer(this.checkPoint);
         this.uiFunction.ShowDeadScreen(false);
 
-        //this.statsScript.animator.SetTrigger("endState");
-
-        //StartCoroutine(CameraFollow.Instance.FocusToKnight());
-
         StartCoroutine(this.CameraFocusRespawnPlace());
     }
 

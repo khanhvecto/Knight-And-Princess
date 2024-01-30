@@ -1,0 +1,108 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &8919277023679133960
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 370188932948246146, guid: 14a505fef501ccb4fac6fd6a26b906a3, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 370188932948246146, guid: 14a505fef501ccb4fac6fd6a26b906a3, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5307878584602912252, guid: 14a505fef501ccb4fac6fd6a26b906a3, type: 3}
+      propertyPath: m_Name
+      value: FallingCeilling
+      objectReference: {fileID: 0}
+    - target: {fileID: 6206315220574579109, guid: 14a505fef501ccb4fac6fd6a26b906a3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6206315220574579109, guid: 14a505fef501ccb4fac6fd6a26b906a3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6206315220574579109, guid: 14a505fef501ccb4fac6fd6a26b906a3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6206315220574579109, guid: 14a505fef501ccb4fac6fd6a26b906a3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6206315220574579109, guid: 14a505fef501ccb4fac6fd6a26b906a3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6206315220574579109, guid: 14a505fef501ccb4fac6fd6a26b906a3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6206315220574579109, guid: 14a505fef501ccb4fac6fd6a26b906a3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6206315220574579109, guid: 14a505fef501ccb4fac6fd6a26b906a3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6206315220574579109, guid: 14a505fef501ccb4fac6fd6a26b906a3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6206315220574579109, guid: 14a505fef501ccb4fac6fd6a26b906a3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6899382101151593128, guid: 14a505fef501ccb4fac6fd6a26b906a3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6899382101151593128, guid: 14a505fef501ccb4fac6fd6a26b906a3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 655559590162836405, guid: 14a505fef501ccb4fac6fd6a26b906a3, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5307878584602912252, guid: 14a505fef501ccb4fac6fd6a26b906a3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7991738315612919104}
+  m_SourcePrefab: {fileID: 100100000, guid: 14a505fef501ccb4fac6fd6a26b906a3, type: 3}
+--- !u!1 &2373586163708026618 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6572738914802198514, guid: 14a505fef501ccb4fac6fd6a26b906a3, type: 3}
+  m_PrefabInstance: {fileID: 8919277023679133960}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3634119305766526196 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5307878584602912252, guid: 14a505fef501ccb4fac6fd6a26b906a3, type: 3}
+  m_PrefabInstance: {fileID: 8919277023679133960}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7991738315612919104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3634119305766526196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ef9bd41b646b80449dc4138e1a7afcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnPoint: {fileID: 2373586163708026618}
+  direction: {x: 0, y: -1}
+  damage: 5
+  enduranceDecrement: 20
+  cooldown: 3
+  speed: 10
+  despawnDistance: 25

@@ -9,6 +9,7 @@ public abstract class TutorialActivate : MonoBehaviour
         if(collision.gameObject.layer == this.playerLayer)
         {
             this.ActivateFeatures();
+            gameObject.SetActive(false);
         }
     }
 

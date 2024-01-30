@@ -176,7 +176,7 @@ public class CameraFollow : MonoBehaviour
 
             transform.position = new Vector3(lerpPos.x, desiredPosVertical, zAxisPos);
 
-            // If clome to desired pos vertical, exit Moving
+            // If come to desired pos vertical, exit Moving
             if (timePassed >= this.moveTime)
             {
                 this.isMovingToFallingFreezePos = false;
@@ -194,7 +194,7 @@ public class CameraFollow : MonoBehaviour
         }
     }
 
-    protected void ExitFreezeState()
+    public void ExitFreezeState()
     {
         this.isFreezingCamera = false;
         this.ResetFreezeParameters();

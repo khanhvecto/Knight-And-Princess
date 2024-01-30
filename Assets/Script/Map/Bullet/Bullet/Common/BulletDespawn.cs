@@ -41,11 +41,18 @@ public abstract class BulletDespawn : ObjectFromPool
         this.direction = newDirection;
 
         // Rotate bullet
+        this.RotateBullet(newDirection);
+    }
+
+    protected virtual void RotateBullet(Vector2 newDirection)
+        // If the bullet has a default head, this function make the bullet head to the right direction
+    {
         var angle = Vector2.SignedAngle(this.defaultDirection, newDirection);
         transform.Rotate(0f, 0f, angle);
 
         this.defaultDirection = newDirection;
     }
+
     public void SetSpawner(GameObject spawner)
     {
         this.spawner = spawner;
