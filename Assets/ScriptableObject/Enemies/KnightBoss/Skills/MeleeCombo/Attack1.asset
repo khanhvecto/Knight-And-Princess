@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e4c082491b83814a8a23cd0c55fcdca, type: 3}
   m_Name: Attack1
   m_EditorClassIdentifier: 
-  damage: 5
+  damage: 2
   enduranceDecrement: 10

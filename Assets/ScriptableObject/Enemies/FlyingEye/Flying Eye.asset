@@ -13,16 +13,11 @@ MonoBehaviour:
   m_Name: Flying Eye
   m_EditorClassIdentifier: 
   moveType: 200
-  health: 20
-  damage: 5
-  cooldown: 1.5
-  approachDistance: 2
-  enduranceDecrement: 10
+  health: 15
+  approachDistance: 3
   unharmedAttacksAmount: 2
   choosableAttacksAmount: 2
   maxDelayAttackTime: 1
-  attackTime1: 0.7
-  attackTime2: 0.6
   range_coeff: 5
   normalSpeed: 2
   combatSpeed: 3

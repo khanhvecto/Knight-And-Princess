@@ -151,4 +151,16 @@ public class InputManager : MonoBehaviour
         return false;
     }
     #endregion
+
+    #region Pause game
+
+    [SerializeField] protected KeyCode pauseGameKey = KeyCode.Escape;
+
+    public bool GetPauseGameKeyDown()
+    {
+        if(Input.GetKeyDown(this.pauseGameKey)) return true;
+        return false;
+    }
+
+    #endregion
 }

@@ -14,15 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveType: 100
   health: 20
-  damage: 5
-  cooldown: 1.5
   approachDistance: 1
-  enduranceDecrement: 10
-  unharmedAttacksAmount: 0
+  unharmedAttacksAmount: 1
   choosableAttacksAmount: 2
   maxDelayAttackTime: 0
-  attackTime1: 0
-  attackTime2: 0
   range_coeff: 4
   normalSpeed: 2
   combatSpeed: 3
