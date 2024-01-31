@@ -33,7 +33,6 @@ public class SceneLoader : MonoBehaviour
     {
         if (instance != null)
         {
-            Debug.LogError("Only 1 SceneLoader allows to exist");
             Destroy(gameObject);
         }
         else
