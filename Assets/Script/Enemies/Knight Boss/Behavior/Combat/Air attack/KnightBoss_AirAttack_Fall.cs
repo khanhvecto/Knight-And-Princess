@@ -88,6 +88,7 @@ public class KnightBoss_AirAttack_Fall : StateMachineBehaviour
             this.blastEffect.Play();
             this.fallExplosion.Attack();
             this.movementScript.StopMoving();
+            CameraFollow.Instance.ShakeCamera(0.2f, 0.1f);
         }
     }
     protected void FindHeight()

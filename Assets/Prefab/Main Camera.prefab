@@ -146,6 +146,7 @@ MonoBehaviour:
   yAxisOffsetLookUp: 4.9
   yAxisOffsetLookDown: -3.2
   focusSpeed: 8
+  amplitude: 1
 --- !u!114 &4517990759863141689
 MonoBehaviour:
   m_ObjectHideFlags: 0

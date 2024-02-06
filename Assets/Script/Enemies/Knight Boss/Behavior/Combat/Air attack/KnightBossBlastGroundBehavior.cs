@@ -62,6 +62,7 @@ public class KnightBossBlastGroundBehavior : StateMachineBehaviour
         if(!this.isPlayedBlastEffect)
         {
             this.blast_ParticleSystem.Play();
+            CameraFollow.Instance.ShakeCamera(0.3f, 0.1f);
             this.blast_gameObject.SetActive(true);  // Send damage
             this.isPlayedBlastEffect = true;
             return;

@@ -307,4 +307,31 @@ public class CameraFollow : MonoBehaviour
     }
 
     #endregion
+
+    #region Shake screen
+
+    public void ShakeCamera(float duration, float amplitude)
+    {
+        StartCoroutine(this.Shaking(duration, amplitude));
+    }
+
+    protected IEnumerator Shaking(float duration, float amplitude)
+    {
+        float timer = 0f;
+        Vector3 oldOffset = Vector3.zero;
+
+        while(timer < duration)
+        {
+            timer += Time.deltaTime;
+            float randX = Random.Range(-1, 1) * amplitude;
+            float randY = Random.Range(-1, 1) * amplitude;
+            Vector3 shakeOffset = new Vector3(randX, randY, 0f);
+            transform.position =  transform.position - oldOffset + shakeOffset;
+            oldOffset = shakeOffset;
+
+            yield return null;
+        }
+    }
+
+    #endregion
 }
