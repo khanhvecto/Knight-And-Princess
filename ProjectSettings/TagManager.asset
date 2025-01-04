@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Ground
+  - Check Point
+  - Knight
+  - PoolBullet1
+  - PoolFireBall
+  - PoolArrow
+  - PoolBrick
+  - PoolNavigator
+  - BloodSplashSoundPool
+  - SwordSlashSoundPool
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Ground
+  - Knight
+  - Combat
+  - Dead
+  - Item
+  - FloatGround
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Background
+    uniqueID: 1407225829
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Ground
+    uniqueID: 3630921497
+    locked: 0
+  - name: Living creature
+    uniqueID: 1271032851
+    locked: 0
+  - name: Front ground
+    uniqueID: 1511767443
+    locked: 0
+  - name: Instruction
+    uniqueID: 2611212471
+    locked: 0

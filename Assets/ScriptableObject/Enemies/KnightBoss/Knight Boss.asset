@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f04b303c401e831449e83fcfeaa219a6, type: 3}
+  m_Name: Knight Boss
+  m_EditorClassIdentifier: 
+  moveType: 100
+  health: 200
+  approachDistance: 5
+  unharmedAttacksAmount: 5
+  choosableAttacksAmount: 2
+  maxDelayAttackTime: 2
+  range_coeff: 10
+  normalSpeed: 2
+  combatSpeed: 3
+  horizontalMoveRange: 0
+  verticalMoveRange: 0
